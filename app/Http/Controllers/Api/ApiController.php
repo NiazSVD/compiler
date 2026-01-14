@@ -6,17 +6,23 @@ use App\Http\Controllers\Controller;
 use App\Models\LandingPage;
 use App\Models\Language;
 use App\Models\Setting;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Http\Request;
 
 class ApiController extends Controller
 {
-    public function index(){
+    public function index()
+    {
         $languages = Language::where('is_active', true)
             ->orderBy('display_name')
             ->get();
 
-        // $defaultLanguage = Language::where('is_default', true)->first();
-        $landing = LandingPage::first();
+        $landingRaw = DB::table('landing_pages')->get();
+
+        $landing = [];
+        foreach ($landingRaw as $item) {
+            $landing[$item->key] = $item->value;
+        }
 
         $setting = Setting::first();
 
@@ -24,8 +30,8 @@ class ApiController extends Controller
             'success' => 200,
             'data' => [
                 'language' => $languages,
-                'landing' => $landing,
-                'setting' => $setting
+                'landing'  => $landing,
+                'setting'  => $setting,
             ]
         ]);
     }

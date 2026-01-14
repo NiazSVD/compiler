@@ -10,89 +10,406 @@
 
         <div class="card shadow-sm border-0">
             <div class="card-body">
-                <form method="POST" action="{{ route('admin.landing.update') }}">
+                <form method="POST" action="{{ route('admin.landing.update') }}" enctype="multipart/form-data">
                     @csrf
 
                     <div class="row">
                         {{-- Header Color --}}
                         <div class="col-md-2 mb-3">
-                            <label class="form-label fw-semibold">Header Color</label>
+                            <label class="form-label fw-semibold">Theme Color</label>
                             <div class="d-flex gap-2 align-items-center">
                                 <input type="color" id="header_color_picker" class="form-control form-control-color"
-                                    value="{{ old('header_color', $landing->header_color ?? '#ffffff') }}">
-                                <input type="text" name="header_color" id="header_color_text" class="form-control"
-                                    value="{{ old('header_color', $landing->header_color ?? '#ffffff') }}">
-                            </div>
-                        </div>
-
-                        {{-- Hero Section Color --}}
-                        <div class="col-md-2 mb-3">
-                            <label class="form-label fw-semibold">Hero Section Color</label>
-                            <div class="d-flex gap-2 align-items-center">
-                                <input type="color" id="hero_color_picker" class="form-control form-control-color"
-                                    value="{{ old('hero_color', $landing->hero_color ?? '#ffffff') }}">
-                                <input type="text" name="hero_color" id="hero_color_text" class="form-control"
-                                    value="{{ old('hero_color', $landing->hero_color ?? '#ffffff') }}">
-                            </div>
-                        </div>
-
-                        {{-- Language Card Color --}}
-                        <div class="col-md-2 mb-3">
-                            <label class="form-label fw-semibold">Language Card Color</label>
-                            <div class="d-flex gap-2 align-items-center">
-                                <input type="color" id="language_color_picker" class="form-control form-control-color"
-                                    value="{{ old('language_color', $landing->language_color ?? '#ffffff') }}">
-                                <input type="text" name="language_color" id="language_color_text" class="form-control"
-                                    value="{{ old('language_color', $landing->language_color ?? '#ffffff') }}">
-                            </div>
-                        </div>
-
-                        {{-- Body Color --}}
-                        <div class="col-md-2 mb-3">
-                            <label class="form-label fw-semibold">Body Color</label>
-                            <div class="d-flex gap-2 align-items-center">
-                                <input type="color" id="body_color_picker" class="form-control form-control-color"
-                                    value="{{ old('body_color', $landing->body_color ?? '#ffffff') }}">
-                                <input type="text" name="body_color" id="body_color_text" class="form-control"
-                                    value="{{ old('body_color', $landing->body_color ?? '#ffffff') }}">
-                            </div>
-                        </div>
-
-                        {{-- Footer Color --}}
-                        <div class="col-md-2 mb-3">
-                            <label class="form-label fw-semibold">Footer Color</label>
-                            <div class="d-flex gap-2 align-items-center">
-                                <input type="color" id="footer_color_picker" class="form-control form-control-color"
-                                    value="{{ old('footer_color', $landing->footer_color ?? '#ffffff') }}">
-                                <input type="text" name="footer_color" id="footer_color_text" class="form-control"
-                                    value="{{ old('footer_color', $landing->footer_color ?? '#ffffff') }}">
+                                    value="{{ old('theme_color', $landing->theme_color ?? '#ffffff') }}">
+                                <input type="text" name="theme_color" id="header_color_text" class="form-control"
+                                    value="{{ old('theme_color', $landing->theme_color ?? '#ffffff') }}">
                             </div>
                         </div>
                     </div>
 
-                    {{-- Header Text --}}
-                    <div class="mb-3">
-                        <label class="form-label fw-semibold">Header Text</label>
-                        <input type="text" name="header_text" class="form-control"
-                            value="{{ old('header_text', $landing->header_text ?? '') }}" placeholder="Enter main heading"
-                            required>
+
+                    <div class="card card-body shadow" style="background-color: rgb(248, 247, 247)">
+                        <h3 class="text-center">Header Section</h3>
+                        <div class="row">
+                            <div class="col-md-6 mb-3">
+                                <label class="form-label fw-semibold">No setup required (Header Sub Title)</label>
+                                <input type="text" name="header_sub_title" class="form-control"
+                                    value="{{ old('header_sub_title', $landing->header_sub_title ?? '') }}"
+                                    placeholder="Enter header sub title" required>
+                            </div>
+
+                            <div class="col-md-6 mb-3">
+                                <label class="form-label fw-semibold">Header Title</label>
+                                <input type="text" name="header_title" class="form-control"
+                                    value="{{ old('header_title', $landing->header_title ?? '') }}"
+                                    placeholder="Enter header title" required>
+                            </div>
+
+                            <div class="col-md-12 mb-3">
+                                <label class="form-label fw-semibold">Header Short Description</label>
+                                <textarea name="header_short_description" class="form-control" rows="3" placeholder="Short header description">{{ old('header_short_description', $landing->header_short_description ?? '') }}</textarea>
+                            </div>
+                        </div>
                     </div>
 
-                    {{-- Header Description --}}
-                    <div class="mb-3">
-                        <label class="form-label fw-semibold">Header Description</label>
-                        <textarea name="header_description" class="form-control" rows="3" placeholder="Short header description">{{ old('header_description', $landing->header_description ?? '') }}</textarea>
+
+
+                    <div class="card card-body shadow mt-5" style="background-color: rgb(233, 232, 232)">
+                        <h3 class="text-center">Language Section</h3>
+
+                        <div class="mb-3">
+                            <label class="form-label fw-semibold">Language Header</label>
+                            <input type="text" name="lang_header" class="form-control"
+                                value="{{ old('lang_header', $landing->lang_header ?? '') }}"
+                                placeholder="Enter main heading" required>
+                        </div>
+
+                        <div class="mb-3">
+                            <label class="form-label fw-semibold">Language Description</label>
+                            <textarea name="lang_description" class="form-control" rows="3" placeholder="Short header description">{{ old('lang_description', $landing->lang_description ?? '') }}</textarea>
+                        </div>
                     </div>
 
-                    {{-- Main Description --}}
-                    <div class="mb-4">
-                        <label class="form-label fw-semibold">Main Description</label>
-                        <textarea name="description" id="summernote" class="form-control">
-                        {{ old('description', $landing->description ?? '') }}
-                    </textarea>
+
+
+                    <div class="card card-body shadow mt-5" style="background-color: rgb(255, 255, 255)">
+                        <h3 class="text-center">About Section</h3>
+
+                        <div class="mb-3">
+                            <label class="form-label fw-semibold">About Header</label>
+                            <input type="text" name="about_header" class="form-control"
+                                value="{{ old('about_header', $landing->about_header ?? '') }}"
+                                placeholder="Enter about header" required>
+                        </div>
+
+                        <div class="mb-3">
+                            <label class="form-label fw-semibold">About short description</label>
+                            <textarea name="about_short_description" class="form-control" rows="3" placeholder="Short header description">{{ old('about_short_description', $landing->about_short_description ?? '') }}</textarea>
+                        </div>
+
+                        <div class="mb-4">
+                            <label class="form-label fw-semibold">About Description</label>
+                            <textarea name="about_description" id="summernote" class="form-control">
+                                {{ old('about_description', $landing->about_description ?? '') }}
+                            </textarea>
+                        </div>
+
+                        <div class="card card-body shadow mt-3" style="background-color: rgb(217, 235, 234)">
+                            <h3 class="text-center">About card Section</h3>
+                            <div class="row">
+                                <div class="col-md-4">
+                                    <div class="card card-body shadow" style="background-color: rgb(245, 235, 235)">
+
+                                        <div class="row">
+                                            <div class="col-md-8 mb-3">
+                                                <label class="form-label fw-semibold">Icon</label>
+                                                <input type="file" name="about_card_icon_1" class="form-control">
+                                            </div>
+                                            <div class="col-md-4 mb-3">
+                                                <label class="form-label fw-semibold">Icon</label>
+                                                <img src="{{ $landing->about_card_icon_1 ? asset($landing->about_card_icon_1) : '#' }}"
+                                                    class="form-control" height="100">
+                                            </div>
+                                        </div>
+
+                                        <div class="mb-3">
+                                            <label class="form-label fw-semibold">Header</label>
+                                            <input type="text" name="about_card_header_1" class="form-control"
+                                                value="{{ old('about_card_header_1', $landing->about_card_header_1 ?? '') }}"
+                                                placeholder="Enter card heading" required>
+                                        </div>
+
+                                        <div class="mb-3">
+                                            <label class="form-label fw-semibold">Description</label>
+                                            <textarea name="about_card_description_1" class="form-control" rows="3"
+                                                placeholder="Card description">{{ old('about_card_description_1', $landing->about_card_description_1 ?? '') }}</textarea>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="col-md-4">
+                                    <div class="card card-body shadow" style="background-color: rgb(245, 235, 235)">
+
+                                        <div class="row">
+                                            <div class="col-md-8 mb-3">
+                                                <label class="form-label fw-semibold">Icon</label>
+                                                <input type="file" name="about_card_icon_2" class="form-control">
+                                            </div>
+                                            <div class="col-md-4 mb-3">
+                                                <label class="form-label fw-semibold">Icon</label>
+                                                 <img src="{{ $landing->about_card_icon_2 ? asset($landing->about_card_icon_2) : '#' }}"
+                                                    class="form-control" height="100">
+                                            </div>
+                                        </div>
+
+                                        <div class="mb-3">
+                                            <label class="form-label fw-semibold">Header</label>
+                                            <input type="text" name="about_card_header_2" class="form-control"
+                                                value="{{ old('about_card_header_2', $landing->about_card_header_2 ?? '') }}"
+                                                placeholder="Enter card heading" required>
+                                        </div>
+
+                                        <div class="mb-3">
+                                            <label class="form-label fw-semibold">Description</label>
+                                            <textarea name="about_card_description_2" class="form-control" rows="3"
+                                                placeholder="Card description">{{ old('about_card_description_2', $landing->about_card_description_2 ?? '') }}</textarea>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="col-md-4">
+                                    <div class="card card-body shadow" style="background-color: rgb(245, 235, 235)">
+
+                                        <div class="row">
+                                            <div class="col-md-8 mb-3">
+                                                <label class="form-label fw-semibold">Icon</label>
+                                                <input type="file" name="about_card_icon_3" class="form-control">
+                                            </div>
+                                            <div class="col-md-4 mb-3">
+                                                <label class="form-label fw-semibold">Icon</label>
+                                                 <img src="{{ $landing->about_card_icon_3 ? asset($landing->about_card_icon_3) : '#' }}"
+                                                    class="form-control" height="100">
+                                            </div>
+                                        </div>
+
+                                        <div class="mb-3">
+                                            <label class="form-label fw-semibold">Header</label>
+                                            <input type="text" name="about_card_header_3" class="form-control"
+                                                value="{{ old('about_card_header_3', $landing->about_card_header_3 ?? '') }}"
+                                                placeholder="Enter card heading" required>
+                                        </div>
+
+                                        <div class="mb-3">
+                                            <label class="form-label fw-semibold">Description</label>
+                                            <textarea name="about_card_description_3" class="form-control" rows="3"
+                                                placeholder="Card description">{{ old('about_card_description_3', $landing->about_card_description_3 ?? '') }}</textarea>
+                                        </div>
+                                    </div>
+                                </div>
+
+                            </div>
+
+                        </div>
+
                     </div>
 
-                    <div class="d-flex gap-2">
+
+
+
+                    <div class="card card-body shadow mt-5" style="background-color: rgb(248, 247, 247)">
+                        <h3 class="text-center">About Section</h3>
+
+                        <div class="mb-3">
+                            <label class="form-label fw-semibold">About Header</label>
+                            <input type="text" name="about_header_2" class="form-control"
+                                value="{{ old('about_header_2', $landing->about_header_2 ?? '') }}"
+                                placeholder="Enter main heading" required>
+                        </div>
+
+                        <div class="mb-3">
+                            <label class="form-label fw-semibold">About short description</label>
+                            <textarea name="about_short_description_2" class="form-control" rows="3"
+                                placeholder="Short header description">{{ old('about_short_description_2', $landing->about_short_description_2 ?? '') }}</textarea>
+                        </div>
+
+
+                        <div class="card card-body shadow mt-3" style="background-color: rgb(217, 235, 234)">
+                            <h3 class="text-center">About card Section</h3>
+                            <div class="row">
+                                <div class="col-md-4">
+                                    <div class="card card-body shadow" style="background-color: rgb(245, 235, 235)">
+
+                                        <div class="row">
+                                            <div class="col-md-8 mb-3">
+                                                <label class="form-label fw-semibold">Icon</label>
+                                                <input type="file" name="about_card_icon_4" class="form-control">
+                                            </div>
+                                            <div class="col-md-4 mb-3">
+                                                <label class="form-label fw-semibold">Icon</label>
+                                                 <img src="{{ $landing->about_card_icon_4 ? asset($landing->about_card_icon_4) : '#' }}"
+                                                    class="form-control" height="100">
+                                            </div>
+                                        </div>
+
+                                        <div class="mb-3">
+                                            <label class="form-label fw-semibold">Header</label>
+                                            <input type="text" name="about_card_header_4" class="form-control"
+                                                value="{{ old('about_card_header_4', $landing->about_card_header_4 ?? '') }}"
+                                                placeholder="Enter card heading" required>
+                                        </div>
+
+                                        <div class="mb-3">
+                                            <label class="form-label fw-semibold">Description</label>
+                                            <textarea name="about_card_description_4" class="form-control" rows="3"
+                                                placeholder="Card description">{{ old('about_card_description_4', $landing->about_card_description_4 ?? '') }}</textarea>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="col-md-4">
+                                    <div class="card card-body shadow" style="background-color: rgb(245, 235, 235)">
+
+                                        <div class="row">
+                                            <div class="col-md-8 mb-3">
+                                                <label class="form-label fw-semibold">Icon</label>
+                                                <input type="file" name="about_card_icon_5" class="form-control">
+                                            </div>
+                                            <div class="col-md-4 mb-3">
+                                                <label class="form-label fw-semibold">Icon</label>
+                                                 <img src="{{ $landing->about_card_icon_5 ? asset($landing->about_card_icon_5) : '#' }}"
+                                                    class="form-control" height="100">
+                                            </div>
+                                        </div>
+
+                                        <div class="mb-3">
+                                            <label class="form-label fw-semibold">Header</label>
+                                            <input type="text" name="about_card_header_5" class="form-control"
+                                                value="{{ old('about_card_header_5', $landing->about_card_header_5 ?? '') }}"
+                                                placeholder="Enter card heading" required>
+                                        </div>
+
+                                        <div class="mb-3">
+                                            <label class="form-label fw-semibold">Description</label>
+                                            <textarea name="about_card_description_5" class="form-control" rows="3"
+                                                placeholder="Card description">{{ old('about_card_description_5', $landing->about_card_description_5 ?? '') }}</textarea>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="col-md-4">
+                                    <div class="card card-body shadow" style="background-color: rgb(245, 235, 235)">
+
+                                        <div class="row">
+                                            <div class="col-md-8 mb-3">
+                                                <label class="form-label fw-semibold">Icon</label>
+                                                <input type="file" name="about_card_icon_6" class="form-control">
+                                            </div>
+                                            <div class="col-md-4 mb-3">
+                                                <label class="form-label fw-semibold">Icon</label>
+                                                 <img src="{{ $landing->about_card_icon_6 ? asset($landing->about_card_icon_6) : '#' }}"
+                                                    class="form-control" height="100">
+                                            </div>
+                                        </div>
+
+                                        <div class="mb-3">
+                                            <label class="form-label fw-semibold">Header</label>
+                                            <input type="text" name="about_card_header_6" class="form-control"
+                                                value="{{ old('about_card_header_6', $landing->about_card_header_6 ?? '') }}"
+                                                placeholder="Enter card heading" required>
+                                        </div>
+
+                                        <div class="mb-3">
+                                            <label class="form-label fw-semibold">Description</label>
+                                            <textarea name="about_card_description_6" class="form-control" rows="3"
+                                                placeholder="Card description">{{ old('about_card_description_6', $landing->about_card_description_6 ?? '') }}</textarea>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="col-md-4">
+                                    <div class="card card-body mt-3 shadow" style="background-color: rgb(245, 235, 235)">
+
+                                        <div class="row">
+                                            <div class="col-md-8 mb-3">
+                                                <label class="form-label fw-semibold">Icon</label>
+                                                <input type="file" name="about_card_icon_7" class="form-control">
+                                            </div>
+                                            <div class="col-md-4 mb-3">
+                                                <label class="form-label fw-semibold">Icon</label>
+                                                 <img src="{{ $landing->about_card_icon_7 ? asset($landing->about_card_icon_7) : '#' }}"
+                                                    class="form-control" height="100">
+                                            </div>
+                                        </div>
+
+                                        <div class="mb-3">
+                                            <label class="form-label fw-semibold">Header</label>
+                                            <input type="text" name="about_card_header_7" class="form-control"
+                                                value="{{ old('about_card_header_7', $landing->about_card_header_7 ?? '') }}"
+                                                placeholder="Enter card heading" required>
+                                        </div>
+
+                                        <div class="mb-3">
+                                            <label class="form-label fw-semibold">Description</label>
+                                            <textarea name="about_card_description_7" class="form-control" rows="3"
+                                                placeholder="Card description">{{ old('about_card_description_7', $landing->about_card_description_7 ?? '') }}</textarea>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="col-md-4">
+                                    <div class="card card-body mt-3 shadow" style="background-color: rgb(245, 235, 235)">
+
+                                        <div class="row">
+                                            <div class="col-md-8 mb-3">
+                                                <label class="form-label fw-semibold">Icon</label>
+                                                <input type="file" name="about_card_icon_8" class="form-control">
+                                            </div>
+                                            <div class="col-md-4 mb-3">
+                                                <label class="form-label fw-semibold">Icon</label>
+                                                <img src="{{ $landing->about_card_icon_8 ? asset($landing->about_card_icon_8) : '#' }}"
+                                                    class="form-control" height="100">
+                                            </div>
+                                        </div>
+
+                                        <div class="mb-3">
+                                            <label class="form-label fw-semibold">Header</label>
+                                            <input type="text" name="about_card_header_8" class="form-control"
+                                                value="{{ old('about_card_header_8', $landing->about_card_header_8 ?? '') }}"
+                                                placeholder="Enter card heading" required>
+                                        </div>
+
+                                        <div class="mb-3">
+                                            <label class="form-label fw-semibold">Description</label>
+                                            <textarea name="about_card_description_8" class="form-control" rows="3"
+                                                placeholder="Card description">{{ old('about_card_description_8', $landing->about_card_description_8 ?? '') }}</textarea>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="col-md-4">
+                                    <div class="card card-body mt-3 shadow" style="background-color: rgb(245, 235, 235)">
+
+                                        <div class="row">
+                                            <div class="col-md-8 mb-3">
+                                                <label class="form-label fw-semibold">Icon</label>
+                                                <input type="file" name="about_card_icon_9" class="form-control">
+                                            </div>
+                                            <div class="col-md-4 mb-3">
+                                                <label class="form-label fw-semibold">Icon</label>
+                                                <img src="{{ $landing->about_card_icon_9 ? asset($landing->about_card_icon_9) : '#' }}"
+                                                    class="form-control" height="100">
+                                            </div>
+                                        </div>
+
+                                        <div class="mb-3">
+                                            <label class="form-label fw-semibold">Header</label>
+                                            <input type="text" name="about_card_header_9" class="form-control"
+                                                value="{{ old('about_card_header_9', $landing->about_card_header_9 ?? '') }}"
+                                                placeholder="Enter card heading" required>
+                                        </div>
+
+                                        <div class="mb-3">
+                                            <label class="form-label fw-semibold">Description</label>
+                                            <textarea name="about_card_description_9" class="form-control" rows="3"
+                                                placeholder="Card description">{{ old('about_card_description_9', $landing->about_card_description_9 ?? '') }}</textarea>
+                                        </div>
+                                    </div>
+                                </div>
+
+                            </div>
+
+                        </div>
+
+
+                        <div class="col-md-12 mt-3">
+                            <label class="form-label fw-semibold">Footer text</label>
+                            <input type="text" name="footer_text" class="form-control" placeholder="Enter footer text"
+                                value="{{ $landing->footer_text ?? '' }}">
+                        </div>
+
+                    </div>
+
+
+                    <div class="d-flex gap-2 mt-5">
                         <button type="submit" class="btn btn-primary">
                             <i class="bi bi-check-circle me-1"></i> Update Content
                         </button>

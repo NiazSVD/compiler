@@ -51,7 +51,7 @@
                                 <th>Version</th>
                                 <th>Runtime</th>
                                 <th>Status</th>
-                                <th>Default</th>
+                                {{-- <th>Default</th> --}}
                                 <th>Action</th>
                             </tr>
                         </thead>
@@ -72,11 +72,11 @@
                                         </span>
                                     </td>
 
-                                    <td>
+                                    {{-- <td>
                                         <span class="badge {{ $lang->is_default ? 'bg-primary' : 'bg-secondary' }}">
                                             {{ $lang->is_default ? 'Yes' : 'No' }}
                                         </span>
-                                    </td>
+                                    </td> --}}
 
                                     <td>
                                         <a href="{{ route('admin.languages.edit', $lang) }}"
