@@ -34,4 +34,15 @@ class Language extends Model
     {
         return 'slug';
     }
+
+    public function getIconShowAttribute()
+    {
+        if ($this->icon && file_exists(public_path($this->icon))) {
+            return asset($this->icon);
+        }
+
+        return asset('uploads/code.png');
+    }
+
+    protected $appends = ['icon_show'];
 }

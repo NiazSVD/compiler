@@ -23,7 +23,6 @@ return new class extends Migration
             $table->boolean('is_default')->default(false);
 
             $table->string('icon')->nullable();
-            $table->string('icon_color')->nullable();
             $table->text('description')->nullable();
 
             $table->timestamps();

@@ -36,57 +36,31 @@ class UserController extends Controller
 
     public function create()
     {
-        $teams = Team::where('status', true)->get();
         $roles = Role::get();
-        return view('backend.users.create', compact('teams', 'roles'));
+        return view('backend.users.create', compact('roles'));
     }
 
 
     public function store(Request $request)
     {
+        dd($request->all);
         $request->validate([
             'name'      => 'required|string|max:255',
-            'phone'     => 'required|unique:users,phone',
+            'email'     => 'required|unique:users,email',
+            'phone'     => 'nullable|unique:users,phone',
             'role'      => 'required',
             'password'  => 'required|min:8|confirmed',
-
-            'employee_number' => 'required_unless:role,employee,admin|nullable',
-            'team_id'         => 'required_unless:role,employee,admin|nullable|exists:teams,id',
-            'floor'           => 'required_unless:role,employee,admin|nullable',
-            'row'             => 'required_unless:role,employee,admin|nullable',
-            'seat_number'     => 'required_unless:role,employee,admin|nullable',
-
-            'nid'             => 'required_if:role,vendor|nullable',
-            'nid_image'       => 'required_if:role,vendor|nullable|file|mimes:jpeg,png,jpg,pdf|max:10240',
-            'trade_licence'   => 'required_if:role,vendor|nullable|file|mimes:jpeg,png,jpg,pdf|max:10240',
-            'visiting_card'   => 'required_if:role,vendor|nullable|file|mimes:jpeg,png,jpg,pdf|max:10240',
         ]);
 
         $userData = [
             'name'      => $request->name,
+            'email'     => $request->email,
             'phone'     => $request->phone,
             'password'  => Hash::make($request->password),
             'role'      => $request->role,
         ];
 
-        if ($request->role != 'vendor') {
-            $userData['employee_number'] = $request->employee_number;
-            $userData['team_id']         = $request->team_id;
-            $userData['floor']           = $request->floor;
-            $userData['row']             = $request->row;
-            $userData['seat_number']     = $request->seat_number;
-        }
-
         $user = User::create($userData);
-
-        if ($request->role == 'vendor') {
-            $user->nid_image = UploadHelper::handleUpload($request->file('nid_image'), 'uploads/nid_images/');
-            $user->trade_licence = UploadHelper::handleUpload($request->file('trade_licence'), 'uploads/trade_licences/');
-            $user->visiting_card = UploadHelper::handleUpload($request->file('visiting_card'), 'uploads/visiting_cards/');
-            $user->nid = $request->nid;
-
-            $user->save();
-        }
 
         $user->assignRole($request->role);
 
@@ -99,10 +73,9 @@ class UserController extends Controller
     public function edit($id)
     {
         $user = User::findOrFail($id);
-        $teams = Team::where('status', true)->get();
         $roles = Role::get();
 
-        return view('backend.users.edit', compact('user', 'teams', 'roles'));
+        return view('backend.users.edit', compact('user', 'roles'));
     }
 
 
@@ -112,65 +85,24 @@ class UserController extends Controller
 
         $request->validate([
             'name'      => 'required|string|max:255',
-            'phone'     => 'required|unique:users,phone,' . $user->id,
+            'phone'     => 'nullable|unique:users,phone,' . $user->id,
+            'phone'     => 'required|unique:users,email,' . $user->id,
             'role'      => 'required',
             'password'  => 'nullable|min:8|confirmed',
 
-            'employee_number' => 'required_unless:role,employee,admin|nullable',
-            'team_id'         => 'required_unless:role,employee,admin|nullable|exists:teams,id',
-            'floor'           => 'required_unless:role,employee,admin|nullable',
-            'row'             => 'required_unless:role,employee,admin|nullable',
-            'seat_number'     => 'required_unless:role,employee,admin|nullable',
-
-            'nid'             => 'required_if:role,vendor|nullable',
-            'nid_image'       => 'required_if:role,vendor|nullable|file|mimes:jpeg,png,jpg,pdf|max:10240',
-            'trade_licence'   => 'required_if:role,vendor|nullable|file|mimes:jpeg,png,jpg,pdf|max:10240',
-            'visiting_card'   => 'required_if:role,vendor|nullable|file|mimes:jpeg,png,jpg,pdf|max:10240',
         ]);
 
         $userData = [
             'name'      => $request->name,
             'phone'     => $request->phone,
+            'email'     => $request->email,
             'role'      => $request->role,
             'password'  => $request->password ? Hash::make($request->password) : $user->password,
         ];
 
-        if ($request->role != 'vendor') {
-            $userData['employee_number'] = $request->employee_number;
-            $userData['team_id']         = $request->team_id;
-            $userData['floor']           = $request->floor;
-            $userData['row']             = $request->row;
-            $userData['seat_number']     = $request->seat_number;
-        } else {
-            $userData['nid'] = $request->nid;
-        }
+
 
         $user->update($userData);
-
-        if ($request->role == 'vendor') {
-            if ($request->hasFile('nid_image')) {
-                if ($user->nid_image) {
-                    Storage::delete($user->nid_image);
-                }
-                $user->nid_image = UploadHelper::handleUpload($request->file('nid_image'), 'uploads/nid_images/', $user->nid_image);
-            }
-
-            if ($request->hasFile('trade_licence')) {
-                if ($user->trade_licence) {
-                    Storage::delete($user->trade_licence);
-                }
-                $user->trade_licence = UploadHelper::handleUpload($request->file('trade_licence'), 'uploads/trade_licences/', $user->trade_licence);
-            }
-
-            if ($request->hasFile('visiting_card')) {
-                if ($user->visiting_card) {
-                    Storage::delete($user->visiting_card);
-                }
-                $user->visiting_card = UploadHelper::handleUpload($request->file('visiting_card'), 'uploads/visiting_cards/', $user->visiting_card);
-            }
-
-            $user->save();
-        }
 
         $user->syncRoles($request->role);
 

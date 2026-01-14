@@ -24,24 +24,55 @@ class LanguageController extends Controller
     public function store(Request $request)
     {
         $request->validate([
-            'name' => 'required',
-            'display_name' => 'required'
+            'name' => 'required|string|max:255',
+            'display_name' => 'required|string|max:255',
+            'slug' => 'nullable|string|max:255',
+            'icon' => 'nullable|image|mimes:jpg,jpeg,png,webp|max:2048',
+            'description' => 'nullable|string',
+            'is_active' => 'nullable|boolean',
+            'is_default' => 'nullable|boolean',
+            'version' => 'nullable|string|max:50',
+            'runtime' => 'nullable|string|max:50',
         ]);
 
-
-        Language::create([
+        $data = [
             'name' => strtolower($request->name),
             'display_name' => $request->display_name,
             'version' => $request->version ?? 'latest',
             'runtime' => $request->runtime ?? strtolower($request->name),
             'slug' => $request->slug ? Str::slug($request->slug) : Str::slug($request->name),
+            'description' => $request->description,
             'is_active' => $request->is_active ?? false,
-        ]);
+            'is_default' => $request->is_default ?? false,
+        ];
 
+        if ($request->hasFile('icon')) {
+            $image = $request->file('icon');
 
-        return redirect()->route('admin.languages.index')
-            ->with('success', 'Language added');
+            $uploadPath = public_path('uploads/languages');
+            if (!file_exists($uploadPath)) {
+                mkdir($uploadPath, 0755, true);
+            }
+
+            $extension = $image->getClientOriginalExtension();
+            $filename = time() . '_' . uniqid() . '.' . $extension;
+
+            $image->move($uploadPath, $filename);
+
+            $data['icon'] = 'uploads/languages/' . $filename;
+        }
+
+        $language = Language::create($data);
+
+        if ($request->is_default) {
+            Language::where('id', '!=', $language->id)
+                ->update(['is_default' => false]);
+        }
+
+        return redirect()->route('admin.languages.index')->with('success', 'Language added successfully');
     }
+
+
 
     public function edit(Language $language)
     {
@@ -50,25 +81,82 @@ class LanguageController extends Controller
 
     public function update(Request $request, Language $language)
     {
-        $language->update([
-            'display_name' => $request->display_name,
-            'is_active' => $request->is_active ?? false,
-            'is_default' => $request->is_default ?? false,
-            'slug' => $request->slug ? Str::slug($request->slug) : Str::slug($language->display_name),
-            'icon' => $request->icon,
-            'icon_color' => $request->icon_color,
-            'description' => $request->description,
+        $request->validate([
+            'display_name' => 'required|string|max:255',
+            'is_active'    => 'nullable|boolean',
+            'is_default'   => 'nullable|boolean',
+            'slug'         => 'nullable|string|max:255',
+            'icon'         => 'nullable|image|mimes:jpg,jpeg,png,webp|max:2048',
+            'description'  => 'nullable|string',
         ]);
+
+        $data = [
+            'display_name' => $request->display_name,
+            'is_active'    => $request->is_active ?? false,
+            'is_default'   => $request->is_default ?? false,
+            'slug'         => $request->slug ? Str::slug($request->slug) : Str::slug($request->display_name),
+            'description'  => $request->description,
+        ];
+
+        if ($request->has('remove_icon') && $language->icon) {
+            $oldPath = public_path($language->icon);
+            if (file_exists($oldPath)) {
+                unlink($oldPath);
+            }
+            $data['icon'] = null;
+        }
+
+        if ($request->hasFile('icon')) {
+            $image = $request->file('icon');
+            if ($language->icon && file_exists(public_path($language->icon))) {
+                unlink(public_path($language->icon));
+            }
+            $uploadPath = public_path('uploads/languages');
+            if (!file_exists($uploadPath)) {
+                mkdir($uploadPath, 0755, true);
+            }
+
+            $extension = $image->getClientOriginalExtension();
+            $filename = time() . '_' . uniqid() . '.' . $extension;
+
+            $image->move($uploadPath, $filename);
+
+            $data['icon'] = 'uploads/languages/' . $filename;
+        }
+
+        $language->update($data);
 
         if ($request->is_default) {
             Language::where('id', '!=', $language->id)
                 ->update(['is_default' => false]);
         }
 
-
-        return redirect()->route('admin.languages.index')
-            ->with('success', 'Language updated');
+        return redirect()->route('admin.languages.index')->with('success', 'Language updated successfully');
     }
+
+
+
+    // public function update(Request $request, Language $language)
+    // {
+    //     $language->update([
+    //         'display_name' => $request->display_name,
+    //         'is_active' => $request->is_active ?? false,
+    //         'is_default' => $request->is_default ?? false,
+    //         'slug' => $request->slug ? Str::slug($request->slug) : Str::slug($language->display_name),
+    //         'icon' => $request->icon,
+    //         'icon_color' => $request->icon_color,
+    //         'description' => $request->description,
+    //     ]);
+
+    //     if ($request->is_default) {
+    //         Language::where('id', '!=', $language->id)
+    //             ->update(['is_default' => false]);
+    //     }
+
+
+    //     return redirect()->route('admin.languages.index')
+    //         ->with('success', 'Language updated');
+    // }
 
     public function destroy(Language $language)
     {

@@ -9,7 +9,7 @@
  <script src="{{ asset('backend/vendor/chartist-plugin-tooltips/dist/chartist-plugin-tooltip.min.js') }}"></script>
  <script src="{{ asset('backend/vendor/vanillajs-datepicker/dist/js/datepicker.min.js') }}"></script>
  <script src="{{ asset('backend/vendor/sweetalert2/dist/sweetalert2.all.min.js') }}"></script>
- <script src="{{ asset('backend/vendor/dropify-master/dist/js/dropify.min.js') }}"></script>
+ {{-- <script src="{{ asset('backend/vendor/dropify-master/dist/js/dropify.min.js') }}"></script> --}}
  <script src="{{ asset('backend/vendor/DataTables/datatables.min.js') }}"></script>
  <script src="{{ asset('backend/vendor/timepicker/jquery.timepicker.min.js') }}"></script>
  <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.27.0/moment.min.js"></script>
@@ -19,7 +19,8 @@
  <script src="{{ asset('backend/vendor/simplebar/dist/simplebar.min.js') }}"></script>
  <script src="{{ asset('backend/assets/js/volt.js') }}"></script>
  <script src="{{ asset('backend/assets/js/custom.js') }}"></script>
-
+<!-- Dropify JS -->
+<script src="https://cdn.jsdelivr.net/npm/dropify/dist/js/dropify.min.js"></script>
 
  <script>
      document.addEventListener('DOMContentLoaded', function() {

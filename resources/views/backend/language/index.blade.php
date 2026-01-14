@@ -45,6 +45,7 @@
                         <thead>
                             <tr>
                                 <th>#</th>
+                                <th>Icon</th>
                                 <th>Name</th>
                                 <th>Slug</th>
                                 <th>Version</th>
@@ -59,6 +60,7 @@
                             @foreach ($languages as $key => $lang)
                                 <tr>
                                     <td>{{ $key + 1 }}</td>
+                                    <td><img src="{{ $lang->icon_show }}" style="height: 50px; witdh: 50px"></td>
                                     <td>{{ $lang->display_name }}</td>
                                     <td>{{ $lang->slug }}</td>
                                     <td>{{ $lang->version }}</td>

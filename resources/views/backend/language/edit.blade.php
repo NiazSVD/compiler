@@ -30,7 +30,7 @@
                 </div>
 
                 <div class="card-body">
-                    <form method="POST" action="{{ route('admin.languages.update', $language) }}">
+                    <form method="POST" action="{{ route('admin.languages.update', $language) }}" enctype="multipart/form-data">
                         @csrf
                         @method('PUT')
 
@@ -73,17 +73,17 @@
 
                             <div class="col-md-4 mb-3">
                                 <label for="icon" class="form-label">Icon</label>
-                                <input type="text" name="icon" id="icon" class="form-control"
-                                    value="{{ old('icon', $language->icon) }}">
-                                <small class="text-muted">FontAwesome icon class, example: fa-brands fa-python</small>
+                                <input type="file" name="icon" id="icon" class="form-control dropify"
+                                    data-default-file="{{ $language->icon_show }}" data-allow-remove="true">
+                                {{-- <small class="text-muted">FontAwesome icon class, example: fa-brands fa-python</small> --}}
                             </div>
 
-                            <div class="col-md-2 mb-3">
+                            {{-- <div class="col-md-2 mb-3">
                                 <label for="icon_color" class="form-label">Icon Color</label>
                                 <input type="color" name="icon_color" id="icon_color"
                                     class="form-control form-control-color"
                                     value="{{ old('icon_color', $language->icon_color ?? '#000000') }}">
-                            </div>
+                            </div> --}}
 
                         </div>
 
@@ -129,6 +129,21 @@
 @section('script')
     <!-- Summernote JS -->
     <script src="https://cdn.jsdelivr.net/npm/summernote@0.8.20/dist/summernote.min.js"></script>
+
+
+    <script>
+        $(document).ready(function() {
+            var drEvent = $('#icon').dropify();
+
+            drEvent.on('dropify.afterClear', function(event, element){
+                $('<input>').attr({
+                    type: 'hidden',
+                    name: 'remove_icon',
+                    value: '1'
+                }).appendTo('form');
+            });
+        });
+    </script>
 
     <script>
         $(document).ready(function() {

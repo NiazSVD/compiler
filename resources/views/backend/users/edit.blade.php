@@ -40,6 +40,15 @@
                             </div>
 
                             <div class="col-md-12 mb-3">
+                                <label class="form-label">Email</label>
+                                <input type="email" name="email" value="{{ old('email', $user->email) }}"
+                                    class="form-control @error('email') is-invalid @enderror">
+                                @error('email')
+                                    <small class="text-danger">{{ $message }}</small>
+                                @enderror
+                            </div>
+
+                            <div class="col-md-12 mb-3">
                                 <label class="form-label">Phone</label>
                                 <input type="number" name="phone" value="{{ old('phone', $user->phone) }}"
                                     class="form-control @error('phone') is-invalid @enderror">
@@ -84,94 +93,6 @@
                         </div>
                     </div>
 
-                    <div class="col-md-6" id="nonVendorSection">
-                        <div class="row">
-
-                            <div class="col-md-12 mb-3">
-                                <label class="form-label">Employee Number</label>
-                                <input type="text" name="employee_number"
-                                    value="{{ old('employee_number', $user->employee_number) }}" class="form-control">
-                            </div>
-
-                            <div class="col-md-12 mb-3">
-                                <label class="form-label">Team</label>
-                                <select name="team_id" class="form-select">
-                                    <option value="">Select one</option>
-                                    @foreach ($teams as $team)
-                                        <option value="{{ $team->id }}"
-                                            {{ old('team_id', $user->team_id) == $team->id ? 'selected' : '' }}>
-                                            {{ $team->name }}
-                                        </option>
-                                    @endforeach
-                                </select>
-                            </div>
-
-                            <div class="col-md-12 mb-3">
-                                <label class="form-label">Floor</label>
-                                <input type="text" name="floor" value="{{ old('floor', $user->floor) }}"
-                                    class="form-control">
-                            </div>
-
-                            <div class="col-md-12 mb-3">
-                                <label class="form-label">Row</label>
-                                <input type="text" name="row" value="{{ old('row', $user->row) }}"
-                                    class="form-control">
-                            </div>
-
-                            <div class="col-md-12 mb-3">
-                                <label class="form-label">Seat Number</label>
-                                <input type="text" name="seat_number"
-                                    value="{{ old('seat_number', $user->seat_number) }}" class="form-control">
-                            </div>
-
-                        </div>
-                    </div>
-
-                    <div class="col-md-6" id="vendorSection" style="display:none;">
-                        <div class="row">
-
-                            <div class="col-md-12 mb-3">
-                                <label class="form-label">NID Number</label>
-                                <input type="text" name="nid" value="{{ old('nid', $user->nid ?? '') }}"
-                                    class="form-control @error('nid') is-invalid @enderror" placeholder="Vendor NID Number">
-                                @error('nid')
-                                    <small class="text-danger">{{ $message }}</small>
-                                @enderror
-                            </div>
-
-                            <div class="mb-3">
-                                <label class="form-label">NID Image</label>
-                                <input type="file" name="nid_image" class="dropify"
-                                    data-allowed-file-extensions="jpg jpeg png pdf" data-max-file-size="10M"
-                                    @if (isset($user->nid_image)) data-default-file="{{ asset($user->nid_image) }}" @endif>
-                                @error('nid_image')
-                                    <small class="text-danger">{{ $message }}</small>
-                                @enderror
-                            </div>
-
-                            <div class="mb-3">
-                                <label class="form-label">Trade Licence</label>
-                                <input type="file" name="trade_licence" class="dropify"
-                                    data-allowed-file-extensions="jpg jpeg png pdf" data-max-file-size="10M"
-                                    @if (isset($user->trade_licence)) data-default-file="{{ asset($user->trade_licence) }}" @endif>
-                                @error('trade_licence')
-                                    <small class="text-danger">{{ $message }}</small>
-                                @enderror
-                            </div>
-
-                            <div class="mb-3">
-                                <label class="form-label">Visiting Card</label>
-                                <input type="file" name="visiting_card" class="dropify"
-                                    data-allowed-file-extensions="jpg jpeg png pdf" data-max-file-size="10M"
-                                    @if (isset($user->visiting_card)) data-default-file="{{ asset($user->visiting_card) }}" @endif>
-                                @error('visiting_card')
-                                    <small class="text-danger">{{ $message }}</small>
-                                @enderror
-                            </div>
-
-                        </div>
-                    </div>
-
 
                 </div>
 
@@ -184,21 +105,3 @@
     </div>
 @endsection
 
-@section('script')
-    <script>
-        function toggleVendor() {
-            let role = $('#role').val();
-
-            if (role === 'vendor') {
-                $('#vendorSection').show();
-                $('#nonVendorSection').hide();
-            } else {
-                $('#vendorSection').hide();
-                $('#nonVendorSection').show();
-            }
-        }
-
-        $('#role').on('change', toggleVendor);
-        toggleVendor();
-    </script>
-@endsection
