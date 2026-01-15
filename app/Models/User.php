@@ -23,15 +23,7 @@ class User extends Authenticatable
         'name',
         'phone',
         'password',
-        'employee_number',
-        'team_id',
-        'floor',
-        'row',
-        'seat_number',
-        'nid',
-        'nid_image',
-        'trade_licence',
-        'visiting_card'
+        'email',
     ];
 
 

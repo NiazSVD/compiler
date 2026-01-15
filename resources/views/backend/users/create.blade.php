@@ -40,10 +40,10 @@
 
                             <div class="col-md-12 mb-3">
                                 <label class="form-label">Email</label>
-                                <input type="emial" name="emial" value="{{ old('emial') }}"
-                                    class="form-control @error('emial') is-invalid @enderror"
-                                    placeholder="Enter emial">
-                                @error('emial')
+                                <input type="email" name="email" value="{{ old('email') }}"
+                                    class="form-control @error('email') is-invalid @enderror"
+                                    placeholder="Enter email">
+                                @error('email')
                                     <small class="text-danger">{{ $message }}</small>
                                 @enderror
                             </div>
@@ -100,7 +100,7 @@
 
                 </div>
 
-                <button class="btn btn-primary mt-3 animate-up-2">
+                <button type="submit" class="btn btn-primary mt-3 animate-up-2">
                     <i class="bi bi-save me-1"></i> Save User
                 </button>
 

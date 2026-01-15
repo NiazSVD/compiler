@@ -43,7 +43,6 @@ class UserController extends Controller
 
     public function store(Request $request)
     {
-        dd($request->all);
         $request->validate([
             'name'      => 'required|string|max:255',
             'email'     => 'required|unique:users,email',
@@ -145,6 +144,7 @@ class UserController extends Controller
 
             return response()->json([
                 'name' => $user->name,
+                'email' => $user->phone,
                 'phone' => $user->phone,
                 'role' => $user->getRoleNames()->first(),
                 'team' => optional($user->team)->name,

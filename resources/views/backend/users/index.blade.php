@@ -29,7 +29,7 @@
         @endcan
     </div>
 
-    <form method="GET" action="{{ route('users') }}">
+    {{-- <form method="GET" action="{{ route('users') }}">
         <div class="table-settings mb-4">
             <div class="row g-4">
 
@@ -62,7 +62,7 @@
 
             </div>
         </div>
-    </form>
+    </form> --}}
 
 
     <div class="card card-body border-0 shadow table-wrapper table-responsive">
@@ -71,11 +71,12 @@
                 <tr>
                     <th>#</th>
                     <th>Name</th>
+                    <th>Email</th>
                     <th>Phone</th>
-                    <th>Employee Id</th>
+                    {{-- <th>Employee Id</th> --}}
                     <th>Role</th>
-                    <th>Status</th>
-                    <th>Action</th>
+                    {{-- <th>Status</th> --}}
+                    {{-- <th>Action</th> --}}
                 </tr>
             </thead>
 
@@ -85,14 +86,15 @@
                     <tr>
                         <td><span class="fw-bold">{{ $index + 1 }}</span></td>
                         <td>{{ $user->name }}</td>
+                        <td>{{ $user->email }}</td>
                         <td>{{ $user->phone }}</td>
-                        <td>
+                        {{-- <td>
                             @if ($user->employee_number != null)
                                 {{ $user->employee_number }}
                             @else
                                 <span class="badge bg-warning">Vendor</span>
                             @endif
-                        </td>
+                        </td> --}}
                         @php
                             $role = $user->getRoleNames()->first();
                         @endphp
@@ -101,15 +103,15 @@
                             <span
                                 class="badge
                                     @if ($role == 'admin') bg-danger
-                                    @elseif($role == 'employee') bg-info
-                                    @elseif($role == 'vendor') bg-warning
+                                    {{-- @elseif($role == 'employee') bg-info
+                                    @elseif($role == 'vendor') bg-warning --}}
                                     @else bg-tertiary @endif
                                 ">
                                 {{ ucfirst($role) }}
                             </span>
                         </td>
 
-                        <td>
+                        {{-- <td>
                             @if (auth()->user()->hasRole('admin'))
                                 <div class="form-check form-switch">
                                     <input class="form-check-input status-toggle" type="checkbox"
@@ -126,7 +128,7 @@
                                     {{ $user->status ? 'Active' : 'Deactive' }}
                                 </span>
                             @endif
-                        </td>
+                        </td> --}}
 
 
 
@@ -138,20 +140,20 @@
                                     <i class="bi bi-three-dots-vertical"></i>
                                 </button>
                                 <ul class="dropdown-menu" aria-labelledby="actionDropdown{{ $user->id }}">
-                                    <li>
+                                    {{-- <li>
                                         <a class="dropdown-item viewUser" href="javascript:void(0)"
                                             data-id="{{ $user->id }}">
                                             <i class="bi bi-eye me-2"></i> View
                                         </a>
-                                    </li>
+                                    </li> --}}
 
-                                    @can('user.edit')
+                                    {{-- @can('user.edit') --}}
                                         <li>
                                             <a class="dropdown-item" href="{{ route('users.edit', $user->id) }}">
                                                 <i class="bi bi-pencil me-2"></i> Edit
                                             </a>
                                         </li>
-                                    @endcan
+                                    {{-- @endcan --}}
 
                                     @can('user.delete')
                                         @if ($user->id != auth()->id())
@@ -205,13 +207,14 @@
 
                 <div class="modal-body">
                     <p><strong>Name:</strong> <span id="u_name">-</span></p>
+                    <p><strong>Email:</strong> <span id="u_email">-</span></p>
                     <p><strong>Phone:</strong> <span id="u_phone">-</span></p>
                     <p><strong>Role:</strong> <span id="u_role">-</span></p>
-                    <p><strong>Team:</strong> <span id="u_team">-</span></p>
+                    {{-- <p><strong>Team:</strong> <span id="u_team">-</span></p>
                     <p><strong>Employee No:</strong> <span id="u_employee">-</span></p>
                     <p><strong>Floor:</strong> <span id="u_floor">-</span></p>
                     <p><strong>Row:</strong> <span id="u_row">-</span></p>
-                    <p><strong>Seat:</strong> <span id="u_seat">-</span></p>
+                    <p><strong>Seat:</strong> <span id="u_seat">-</span></p> --}}
                 </div>
             </div>
         </div>
@@ -252,7 +255,7 @@
         $(document).on('click', '.viewUser', function() {
             var id = $(this).data('id');
 
-            $('#u_name,#u_phone,#u_role,#u_team,#u_employee,#u_floor,#u_row,#u_seat').text('-');
+            $('#u_name,#u_email,#u_phone,#u_role,#u_team,#u_employee,#u_floor,#u_row,#u_seat').text('-');
 
             $.ajax({
                 url: "/users/show/" + id,
@@ -261,6 +264,7 @@
                 success: function(res) {
 
                     $('#u_name').text(res.name ?? 'N/A');
+                    $('#u_email').text(res.name ?? 'N/A');
                     $('#u_phone').text(res.phone ?? 'N/A');
                     $('#u_role').text(res.role ?? 'N/A');
 
