@@ -211,9 +211,8 @@
                         class="{{ request()->route('slug') == $lang->slug ? 'active' : '' }}"
                         title="{{ $lang->display_name }}">
 
-                        {{-- Dynamic Icon with Color --}}
-                        <i class="{{ $lang->icon ?? 'fa-solid fa-code' }}"
-                            style="color: {{ $lang->icon_color ?? '#000' }}; font-size: 20px;"></i>
+
+                        <img src="{{ $lang->icon_show}}" style="height: 30px; width: 30px">
                     </a>
                 @endif
             @endforeach
