@@ -73,12 +73,21 @@
 
 
                             {{-- Status --}}
+                            <div class="form-check form-switch mb-3">
+                                <input class="form-check-input" type="checkbox" name="status" id="statusSwitch"
+                                    value="active">
+                                <label class="form-check-label">Active</label>
+                            </div>
+
+                            {{-- Set as Home Page --}}
                             <div class="form-check form-switch mb-4">
-                                <input class="form-check-input" type="checkbox" name="status" value="active">
+                                <input class="form-check-input" type="checkbox" name="set_home" id="setHomeSwitch"
+                                    value="1">
                                 <label class="form-check-label">
-                                    Active
+                                    Set as Home Page
                                 </label>
                             </div>
+
                         </div>
 
                         <div class="d-flex gap-2">
@@ -125,4 +134,22 @@
             });
         });
     </script>
+
+    <script>
+    const setHome = document.getElementById('setHomeSwitch');
+    const status  = document.getElementById('statusSwitch');
+
+    function syncHomeStatus() {
+        if (setHome.checked) {
+            status.checked = true;
+            status.disabled = true;
+        } else {
+            status.disabled = false;
+        }
+    }
+
+    setHome.addEventListener('change', syncHomeStatus);
+    document.addEventListener('DOMContentLoaded', syncHomeStatus);
+</script>
+
 @endsection

@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\DynamicHomeController;
 use App\Http\Controllers\DynamicPageController;
 use App\Http\Controllers\Frontend\FrontendController;
 use App\Http\Controllers\LandingPageController;
@@ -38,12 +39,26 @@ Route::prefix('admin')->middleware(['auth'])->group(function () {
     Route::get('dynamic-page-edit/{id}', [DynamicPageController::class, 'edit'])->name('admin.dynamic_page.edit');
     Route::post('dynamic-page-update/{id}', [DynamicPageController::class, 'update'])->name('admin.dynamic_page.update');
     Route::delete('dynamic-page-delete/{id}', [DynamicPageController::class, 'delete'])->name('admin.dynamic_page.delete');
+
+
+    //dynamic home page
+    Route::get('dynamic-home-page', [DynamicHomeController::class, 'index'])->name('admin.dynamic_home.index');
+    Route::post('dynamic-home-page-update', [DynamicHomeController::class, 'updateHome'])->name('admin.dynamic_home.update');
+
+
+
 });
 
 
 
 //Frontend routes start here
-Route::get('/', [FrontendController::class,'home'])->name('frontend.home');
+// Route::get('/', [FrontendController::class,'home'])->name('frontend.home');
+
+Route::get('/', [FrontendController::class, 'index'])->name('home');
+
+
+
+
 Route::get('/{slug}', [FrontendController::class, 'editor'])->name('frontend.editor');
 
 Route::post('/run', [FrontendController::class,'runCode'])->name('frontend.run');

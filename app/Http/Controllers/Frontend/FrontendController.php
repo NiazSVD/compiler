@@ -3,6 +3,8 @@
 namespace App\Http\Controllers\Frontend;
 
 use App\Http\Controllers\Controller;
+use App\Models\DynamicPage;
+use App\Models\HomeSettings;
 use App\Models\LandingPage;
 use App\Models\Language;
 use App\Models\SharedCode;
@@ -12,17 +14,74 @@ use Illuminate\Support\Str;
 
 class FrontendController extends Controller
 {
-    public function home()
+    public function index()
     {
+        $home = HomeSettings::first();
+
         $languages = Language::where('is_active', true)
             ->orderBy('display_name')
             ->get();
 
-        $defaultLanguage = Language::where('is_default', true)->first();
-        $landing = LandingPage::first();
+        if (!$home) {
+            return view('frontend.home', compact('languages'));
+        }
 
-        return view('frontend.home', compact('languages', 'defaultLanguage','landing'));
+        if ($home->type === 'page') {
+
+            if ($home->slug === 'landing') {
+                return view('frontend.home', compact('languages'));
+            }
+
+            $page = DynamicPage::where('page_slug', $home->slug)
+                ->where('status', 'active')
+                ->first();
+
+            if (!$page) {
+                return view('frontend.home', compact('languages'));
+            }
+
+            return view('frontend.dynamic_page', compact('page'));
+        }
+
+        if ($home->type === 'language') {
+
+            $language = Language::where('slug', $home->slug)
+                ->where('is_active', true)
+                ->first();
+
+            if (!$language) {
+                return view('frontend.home', compact('languages'));
+            }
+
+            return view('frontend.editor', compact('languages', 'language'));
+        }
+
+        return view('frontend.home', compact('languages'));
     }
+
+    public function show($slug)
+    {
+        $page = DynamicPage::where('page_slug', $slug)
+            ->where('status', 'active')
+            ->firstOrFail();
+
+        return view('frontend.dynamic_page', compact('page'));
+    }
+
+
+
+
+    // public function home()
+    // {
+    //     $languages = Language::where('is_active', true)
+    //         ->orderBy('display_name')
+    //         ->get();
+
+    //     $defaultLanguage = Language::where('is_default', true)->first();
+    //     $landing = LandingPage::first();
+
+    //     return view('frontend.home', compact('languages', 'defaultLanguage','landing'));
+    // }
 
     public function editor($slug)
     {

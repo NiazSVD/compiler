@@ -193,7 +193,7 @@
     <nav class="navbar navbar-expand-lg navbar-dark shadow-sm fixed-top"
         style="background-color: {{ $landing->header_color ?? '#007bff' }}">
         <div class="p-2" style="margin-left: 75px">
-            <a class="navbar-brand fw-bold text-white" href="{{ route('frontend.home') }}"><img
+            <a class="navbar-brand fw-bold text-white" href="{{ url('/') }}"><img
                     src="{{ asset($settings->logo) }}" style="filter: brightness(0) invert(1);"></a>
         </div>
     </nav>
@@ -201,7 +201,7 @@
     <div class="d-flex flex-grow-1">
         <!-- Sidebar -->
         <div class="sidebar d-flex flex-column align-items-center shadow">
-            <a href="{{ route('frontend.home') }}" class="{{ request()->routeIs('frontend.home') ? 'active' : '' }}">
+            <a href="{{ url('/') }}" class="{{ request()->routeIs('frontend.home') ? 'active' : '' }}">
                 <i class="fa-solid fa-house"></i>
             </a>
 

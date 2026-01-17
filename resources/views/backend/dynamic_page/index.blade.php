@@ -56,8 +56,8 @@
                                     <td>{{ $page->page_slug }}</td>
                                     <td>{!! \Illuminate\Support\Str::limit(strip_tags($page->page_content), 20, '...') !!}</td>
                                     <td>
-                                        <span class="badge {{ $page->status ? 'bg-success' : 'bg-danger' }}">
-                                            {{ $page->status ? 'Active' : 'Inactive' }}
+                                        <span class="badge {{ $page->status === 'active' ? 'bg-success' : 'bg-danger' }}">
+                                            {{ ucfirst($page->status) }}
                                         </span>
                                     </td>
                                     <td>
@@ -107,4 +107,3 @@
         }
     </script>
 @endsection
-

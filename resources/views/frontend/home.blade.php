@@ -156,7 +156,7 @@
     <nav class="navbar navbar-expand-lg navbar-dark shadow-sm fixed-top"
         style="background-color: {{ $landing->header_color ?? '#007bff' }}">
         <div class="container">
-            <a class="navbar-brand" href="{{ route('frontend.home') }}"><img src="{{ asset($settings->logo) }}"
+            <a class="navbar-brand" href="{{ url('/') }}"><img src="{{ asset($settings->logo) }}"
                     style="filter: brightness(0) invert(1);"></a>
             <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav"
                 aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">

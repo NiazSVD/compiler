@@ -83,6 +83,13 @@
                 </a>
             </li>
 
+            <li class="nav-item {{ request()->routeIs('admin.dynamic_home.*') ? 'active' : '' }}">
+                <a href="{{ route('admin.dynamic_home.index') }}" class="nav-link">
+                    <span class="sidebar-icon"><i class="bi bi-layout-text-sidebar-reverse me-2"></i></span>
+                    <span class="sidebar-text">{{ __('Dynamic Home') }}</span>
+                </a>
+            </li>
+
             <li class="nav-item {{ request()->routeIs('settings*') ? 'active' : '' }}">
                 <a href="{{ route('settings') }}" class="nav-link">
                     <span class="sidebar-icon"><i class="bi bi-gear me-2"></i></span>
