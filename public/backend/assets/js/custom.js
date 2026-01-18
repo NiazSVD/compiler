@@ -39,24 +39,23 @@ document.addEventListener("DOMContentLoaded", function () {
 //     lengthChange: false
 // });
 
-
- $('#datatable').DataTable({
+$("#datatable").DataTable({
     responsive: {
         details: {
-            type: 'column',
-            target: 'tr'
-        }
+            type: "column",
+            target: "tr",
+        },
     },
     columnDefs: [
         { responsivePriority: 1, targets: 1 },
         { responsivePriority: 2, targets: -1 },
-        { orderable: false, targets: -1 }
+        { orderable: false, targets: -1 },
     ],
     pageLength: 10,
     language: {
         emptyTable: "No language found",
         search: "Search:",
         lengthMenu: "Show _MENU_ entries",
-        info: "Showing _START_ to _END_ of _TOTAL_ entries"
-    }
+        info: "Showing _START_ to _END_ of _TOTAL_ entries",
+    },
 });

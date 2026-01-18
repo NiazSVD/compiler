@@ -5,6 +5,7 @@ use App\Http\Controllers\DynamicPageController;
 use App\Http\Controllers\Frontend\FrontendController;
 use App\Http\Controllers\LandingPageController;
 use App\Http\Controllers\LanguageController;
+use App\Http\Controllers\MenuController;
 use App\Http\Controllers\ProfileController;
 use Illuminate\Support\Facades\Route;
 
@@ -46,7 +47,11 @@ Route::prefix('admin')->middleware(['auth'])->group(function () {
     Route::post('dynamic-home-page-update', [DynamicHomeController::class, 'updateHome'])->name('admin.dynamic_home.update');
 
 
-
+    Route::get('/menu-builder', [MenuController::class, 'index'])->name('admin.menu');
+    Route::post('/menu-builder/store', [MenuController::class, 'store'])->name('admin.menu.store');
+    Route::get('/menu-builder/edit/{id}', [MenuController::class, 'edit'])->name('admin.menu.edit');
+    Route::post('/menu-builder/update/{id}', [MenuController::class, 'update'])->name('admin.menu.update');
+    Route::delete('/menu-builder/delete/{id}', [MenuController::class, 'delete'])->name('admin.menu.delete');
 });
 
 

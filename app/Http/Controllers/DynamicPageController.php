@@ -79,69 +79,69 @@ class DynamicPageController extends Controller
 
 
     public function edit(string $id)
-{
-    $page = DynamicPage::findOrFail($id);
+    {
+        $page = DynamicPage::findOrFail($id);
 
-    // Check if this page is current home page
-    $page->is_home = optional(HomeSettings::where('type', 'page')->first())->slug === $page->page_slug ? 1 : 0;
+        // Check if this page is current home page
+        $page->is_home = optional(HomeSettings::where('type', 'page')->first())->slug === $page->page_slug ? 1 : 0;
 
-    return view('backend.dynamic_page.edit', compact('page'));
-}
-
-public function update(Request $request, string $id)
-{
-    $request->validate([
-        'page_title'   => 'required|string|max:255',
-        'page_content' => 'required',
-        'page_slug'    => 'nullable|string|max:255',
-        'order'        => 'nullable|integer',
-    ]);
-
-    $page = DynamicPage::findOrFail($id);
-
-    // Generate unique slug
-    $baseSlug = $request->page_slug
-        ? Str::slug($request->page_slug)
-        : Str::slug($request->page_title);
-
-    $slug = $baseSlug;
-    $count = 1;
-    while (DynamicPage::where('page_slug', $slug)->where('id', '!=', $page->id)->exists()) {
-        $slug = $baseSlug . '-' . $count++;
+        return view('backend.dynamic_page.edit', compact('page'));
     }
 
-    $page->page_title   = $request->page_title;
-    $page->page_content = $request->page_content;
-    $page->order        = $request->order;
-    $page->page_slug    = $slug;
+    public function update(Request $request, string $id)
+    {
+        $request->validate([
+            'page_title'   => 'required|string|max:255',
+            'page_content' => 'required',
+            'page_slug'    => 'nullable|string|max:255',
+            'order'        => 'nullable|integer',
+        ]);
 
-    // ENUM-safe status (unchanged unless checkbox checked)
-    $page->status = in_array($request->input('status'), ['active','inactive'])
-        ? $request->input('status')
-        : 'inactive';
+        $page = DynamicPage::findOrFail($id);
 
-    $page->save();
+        // Generate unique slug
+        $baseSlug = $request->page_slug
+            ? Str::slug($request->page_slug)
+            : Str::slug($request->page_title);
 
-    // Handle Set as Home Page
-    if ($request->input('set_home') == 1) {
-        HomeSettings::updateOrCreate(
-            ['id' => 1],
-            [
-                'type' => 'page',
-                'slug' => $page->page_slug,
-            ]
-        );
-    } else {
-        // Optional: remove if unchecked
-        HomeSettings::where('id', 1)
-            ->where('slug', $page->page_slug)
-            ->delete();
+        $slug = $baseSlug;
+        $count = 1;
+        while (DynamicPage::where('page_slug', $slug)->where('id', '!=', $page->id)->exists()) {
+            $slug = $baseSlug . '-' . $count++;
+        }
+
+        $page->page_title   = $request->page_title;
+        $page->page_content = $request->page_content;
+        $page->order        = $request->order;
+        $page->page_slug    = $slug;
+
+        // ENUM-safe status (unchanged unless checkbox checked)
+        $page->status = in_array($request->input('status'), ['active', 'inactive'])
+            ? $request->input('status')
+            : 'inactive';
+
+        $page->save();
+
+        // Handle Set as Home Page
+        if ($request->input('set_home') == 1) {
+            HomeSettings::updateOrCreate(
+                ['id' => 1],
+                [
+                    'type' => 'page',
+                    'slug' => $page->page_slug,
+                ]
+            );
+        } else {
+            // Optional: remove if unchecked
+            HomeSettings::where('id', 1)
+                ->where('slug', $page->page_slug)
+                ->delete();
+        }
+
+        return redirect()
+            ->route('admin.dynamic_page.index')
+            ->with('success', 'Page updated successfully');
     }
-
-    return redirect()
-        ->route('admin.dynamic_page.index')
-        ->with('success', 'Page updated successfully');
-}
 
 
     public function delete(string $id)
