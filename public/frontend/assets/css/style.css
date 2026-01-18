@@ -7,7 +7,8 @@
     --primary-color: #7c3bed;
     --gradient-btn: linear-gradient(116deg, #7c3bed 0%, #a936e2 100%);
     --transition: all 0.3s cubic-bezier(0.76, 0, 0.24, 1);
-    --box-shadow: 0 2px 8px -2px rgba(124, 59, 237, 0.08),
+    --box-shadow:
+        0 2px 8px -2px rgba(124, 59, 237, 0.08),
         0 4px 16px -4px rgba(23, 25, 28, 0.06);
 }
 
@@ -95,7 +96,7 @@ button:active,
 
 .heading-text h3 {
     color: #17171c;
-    font-size: 30px;
+    font-size: 36px;
     font-weight: 700;
     line-height: 36px;
     letter-spacing: -0.75px;
@@ -104,7 +105,7 @@ button:active,
 
 .heading-text p {
     color: #6b7280;
-    font-size: 18px;
+    font-size: 16px;
     font-weight: 400;
     line-height: 24px;
     margin-bottom: 0;
@@ -182,6 +183,7 @@ button:active,
 .nav-link {
     font-size: 14px;
     color: #6b7280 !important;
+    font-weight: 500;
 }
 
 .nav-link:hover {
@@ -241,22 +243,23 @@ button:active,
     padding: 8px 16px;
     border-radius: 9999px;
     background: rgba(124, 59, 237, 0.1);
-    margin-bottom: 30px;
+    margin-bottom: 56px;
 }
 
 .hero-tag-content p {
     margin: 0;
     color: var(--primary-color);
     font-size: 14px;
+    font-weight: 500;
 }
 
 .hero h1 {
     color: #17171c;
-    font-size: 60px;
+    font-size: 64px;
     font-weight: 700;
     line-height: 60px;
     letter-spacing: -1.5px;
-    margin-bottom: 28px;
+    margin-bottom: 32px;
 }
 
 .hero h4 {
@@ -299,11 +302,21 @@ button:active,
     border-radius: 12px;
     border: 1px solid #e5e7eb;
     background: #fff;
-    box-shadow: 0 1px 3px 0 rgba(23, 25, 28, 0.04),
+    box-shadow:
+        0 1px 3px 0 rgba(23, 25, 28, 0.04),
         0 4px 12px 0 rgba(23, 25, 28, 0.03);
     padding: 20px 17px 20px 49px;
     width: 100%;
     font-size: 16px;
+    outline: none;
+}
+
+.propular-lang .search-box:hover,
+.propular-lang .search-box:focus {
+    box-shadow:
+        0 1px 3px 0 rgba(23, 25, 28, 0.04),
+        0 4px 12px 0 rgba(23, 25, 28, 0.03),
+        0 0 0 3px var(--primary-color);
 }
 
 .search-box::placeholder {
@@ -314,7 +327,8 @@ button:active,
     border-radius: 12px;
     border: 1px solid #e5e7eb;
     background: #fff;
-    box-shadow: 0 1px 3px 0 rgba(23, 25, 28, 0.04),
+    box-shadow:
+        0 1px 3px 0 rgba(23, 25, 28, 0.04),
         0 4px 12px 0 rgba(23, 25, 28, 0.03);
     padding-block: 25px;
     display: flex;
@@ -361,7 +375,8 @@ button:active,
     border-radius: 12px;
     border: 1px solid #e5e7eb;
     background: #fff;
-    box-shadow: 0 1px 3px 0 rgba(23, 25, 28, 0.04),
+    box-shadow:
+        0 1px 3px 0 rgba(23, 25, 28, 0.04),
         0 4px 12px 0 rgba(23, 25, 28, 0.03);
     padding: 32px 20px;
     margin-bottom: 74px;
@@ -420,10 +435,13 @@ button:active,
     border-radius: 12px;
     border: 1px solid #e5e7eb;
     background: #fff;
-    box-shadow: 0 1px 3px 0 rgba(23, 25, 28, 0.04),
+    box-shadow:
+        0 1px 3px 0 rgba(23, 25, 28, 0.04),
         0 4px 12px 0 rgba(23, 25, 28, 0.03);
     padding: 25px;
     padding-bottom: 29px;
+    display: flex;
+    flex-direction: column;
 }
 
 .choose-us-item h4 {
@@ -445,4 +463,94 @@ button:active,
 
 /* =======================================
   Why-Section-End
+==========================================*/
+
+/* =======================================
+  Footer-Section-Start
+==========================================*/
+
+footer {
+    padding-block: 28px;
+    border-top: 1px solid #e5e7eb;
+    background: rgba(243, 244, 246, 0.3);
+    margin-top: 56px;
+    position: relative;
+    z-index: 9999;
+}
+
+footer p,
+footer a {
+    color: #6b7280;
+    font-size: 14px;
+    font-weight: 400;
+}
+
+footer a:hover {
+    color: var(--primary-color);
+}
+
+footer span {
+    color: #17171c;
+}
+
+/* =======================================
+   Footer-Section-End
+==========================================*/
+
+/* =======================================
+   Sidenav-Section-Start
+==========================================*/
+
+.sidenav {
+    height: 100vh;
+    width: 80px;
+    position: fixed;
+    top: 0;
+    left: 0;
+    background: rgba(243, 244, 246, 1);
+    overflow-x: hidden;
+    padding-top: 90px;
+}
+
+.sidenav ul {
+    padding: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+}
+
+.sidenav ul li {
+    width: 48px;
+    height: 48px;
+    background: #fff;
+    border: 1px solid #e5e7eb;
+    box-shadow:
+        0 1px 3px 0 rgba(23, 25, 28, 0.04),
+        0 4px 12px 0 rgba(23, 25, 28, 0.03);
+    margin: 0 auto;
+    border-radius: 6px;
+}
+
+.sidenav ul li.active {
+    background: var(--gradient-btn);
+}
+
+.sidenav ul li a {
+    width: 100%;
+    height: 100%;
+    padding: 10px;
+}
+
+.sidenav ul li img {
+    width: 100%;
+    height: 100%;
+}
+
+.editor-section {
+    margin-left: 100px;
+    background: red;
+}
+
+/* =======================================
+   Sidenav-Section-End
 ==========================================*/

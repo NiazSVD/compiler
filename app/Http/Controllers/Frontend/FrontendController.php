@@ -162,4 +162,19 @@ class FrontendController extends Controller
             'fromShare'  => true
         ]);
     }
+
+
+    public function editor1($slug)
+    {
+
+        $landing = LandingPage::first();
+
+        $language = Language::where('slug', $slug)
+            ->where('is_active', true)
+            ->firstOrFail();
+
+        $languages = Language::where('is_active', true)->get();
+
+        return view('frontend.editor1', compact('language', 'languages', 'landing'));
+    }
 }

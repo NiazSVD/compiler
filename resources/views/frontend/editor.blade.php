@@ -212,7 +212,7 @@
                         title="{{ $lang->display_name }}">
 
 
-                        <img src="{{ $lang->icon_show}}" style="height: 30px; width: 30px">
+                        <img src="{{ $lang->icon_show }}" style="height: 30px; width: 30px">
                     </a>
                 @endif
             @endforeach
@@ -242,7 +242,7 @@
                                             class="fas fa-play me-1"></i>Run</button>
                                 </div>
                             </div>
-                            <div id="editor">// Write your {{ $language->display_name }} code here...</div>
+                            <div id="editor"></div>
                         </div>
                     </div>
                 </div>

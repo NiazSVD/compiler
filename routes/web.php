@@ -56,6 +56,9 @@ Route::get('/', [FrontendController::class, 'index'])->name('home');
 
 
 
+Route::get('/editor/1/{slug}', [FrontendController::class, 'editor1'])->name('frontend.editor1');
+
+
 Route::get('/{slug}', [FrontendController::class, 'editor'])->name('frontend.editor');
 
 Route::post('/run', [FrontendController::class, 'runCode'])->name('frontend.run');
