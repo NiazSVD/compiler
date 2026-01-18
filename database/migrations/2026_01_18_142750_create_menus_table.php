@@ -20,7 +20,7 @@ return new class extends Migration
             $table->unsignedBigInteger('lang_id')->nullable();
             $table->foreign('lang_id')->references('id')->on('languages')->onDelete('cascade');
             $table->string('name');
-            $table->string('menu_type')->nullable(); // page / custom
+            $table->string('menu_type')->nullable(); // page / language
             $table->string('position')->nullable();  // header / footer
             $table->integer('order')->default(0);
             $table->boolean('status')->default(true);
