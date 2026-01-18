@@ -2,75 +2,78 @@
 
 @section('content')
     <div class="container">
-        <h4 class="mb-4">Dynamic Home Page Settings</h4>
+        <div class="card card-body shadow-sm">
+            <h4 class="mb-4">Dynamic Home Page Settings</h4>
 
-        <form action="{{ route('admin.dynamic_home.update') }}" method="POST">
-            @csrf
+            <form action="{{ route('admin.dynamic_home.update') }}" method="POST">
+                @csrf
 
-            {{-- Home Type --}}
-            <div class="mb-3">
-                <label class="form-label">Home Type</label>
-                <select name="type" id="homeType" class="form-select @error('type') is-invalid @enderror" required>
-                    <option value="">-- Select Type --</option>
-                    <option value="page" {{ old('type', optional($home)->type) == 'page' ? 'selected' : '' }}>
-                        Page
-                    </option>
-                    <option value="language" {{ old('type', optional($home)->type) == 'language' ? 'selected' : '' }}>
-                        Language
-                    </option>
-                </select>
-                @error('type')
-                    <div class="invalid-feedback">{{ $message }}</div>
-                @enderror
-            </div>
-
-            {{-- Page Dropdown --}}
-            <div class="mb-3 d-none" id="pageBox">
-                <label class="form-label">Select Page</label>
-
-                <select name="slug" id="pageSelect" class="form-select @error('slug') is-invalid @enderror" disabled>
-                    <option value="">-- Select Page --</option>
-
-                    {{-- Static Landing Page --}}
-                    <option value="landing" {{ old('slug', optional($home)->slug) == 'landing' ? 'selected' : '' }}>
-                        Landing Page (Default)
-                    </option>
-
-                    {{-- Dynamic Pages --}}
-                    @foreach ($pages as $page)
-                        <option value="{{ $page->page_slug }}"
-                            {{ old('slug', optional($home)->slug) == $page->page_slug ? 'selected' : '' }}>
-                            {{ $page->page_title }}
+                {{-- Home Type --}}
+                <div class="mb-3">
+                    <label class="form-label">Home Type</label>
+                    <select name="type" id="homeType" class="form-select @error('type') is-invalid @enderror" required>
+                        <option value="">-- Select Type --</option>
+                        <option value="page" {{ old('type', optional($home)->type) == 'page' ? 'selected' : '' }}>
+                            Page
                         </option>
-                    @endforeach
-                </select>
-
-                @error('slug')
-                    <div class="invalid-feedback d-block">{{ $message }}</div>
-                @enderror
-            </div>
-
-            {{-- Language Dropdown --}}
-            <div class="mb-3 d-none" id="languageBox">
-                <label class="form-label">Select Language</label>
-
-                <select name="slug" id="languageSelect" class="form-select @error('slug') is-invalid @enderror" disabled>
-                    <option value="">-- Select Language --</option>
-                    @foreach ($languages as $lang)
-                        <option value="{{ $lang->slug }}"
-                            {{ old('slug', optional($home)->slug) == $lang->slug ? 'selected' : '' }}>
-                            {{ $lang->display_name }}
+                        <option value="language" {{ old('type', optional($home)->type) == 'language' ? 'selected' : '' }}>
+                            Language
                         </option>
-                    @endforeach
-                </select>
+                    </select>
+                    @error('type')
+                        <div class="invalid-feedback">{{ $message }}</div>
+                    @enderror
+                </div>
 
-                @error('slug')
-                    <div class="invalid-feedback d-block">{{ $message }}</div>
-                @enderror
-            </div>
+                {{-- Page Dropdown --}}
+                <div class="mb-3 d-none" id="pageBox">
+                    <label class="form-label">Select Page</label>
 
-            <button class="btn btn-primary">Save Home Page</button>
-        </form>
+                    <select name="slug" id="pageSelect" class="form-select @error('slug') is-invalid @enderror" disabled>
+                        <option value="">-- Select Page --</option>
+
+                        {{-- Static Landing Page --}}
+                        <option value="landing" {{ old('slug', optional($home)->slug) == 'landing' ? 'selected' : '' }}>
+                            Landing Page (Default)
+                        </option>
+
+                        {{-- Dynamic Pages --}}
+                        @foreach ($pages as $page)
+                            <option value="{{ $page->page_slug }}"
+                                {{ old('slug', optional($home)->slug) == $page->page_slug ? 'selected' : '' }}>
+                                {{ $page->page_title }}
+                            </option>
+                        @endforeach
+                    </select>
+
+                    @error('slug')
+                        <div class="invalid-feedback d-block">{{ $message }}</div>
+                    @enderror
+                </div>
+
+                {{-- Language Dropdown --}}
+                <div class="mb-3 d-none" id="languageBox">
+                    <label class="form-label">Select Language</label>
+
+                    <select name="slug" id="languageSelect" class="form-select @error('slug') is-invalid @enderror"
+                        disabled>
+                        <option value="">-- Select Language --</option>
+                        @foreach ($languages as $lang)
+                            <option value="{{ $lang->slug }}"
+                                {{ old('slug', optional($home)->slug) == $lang->slug ? 'selected' : '' }}>
+                                {{ $lang->display_name }}
+                            </option>
+                        @endforeach
+                    </select>
+
+                    @error('slug')
+                        <div class="invalid-feedback d-block">{{ $message }}</div>
+                    @enderror
+                </div>
+
+                <button class="btn btn-primary">Save Home Page</button>
+            </form>
+        </div>
     </div>
 @endsection
 
