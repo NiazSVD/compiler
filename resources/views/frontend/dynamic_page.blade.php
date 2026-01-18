@@ -1,5 +1,4 @@
-@extends('layouts.app')
+@extends('backend.master')
 
 @section('content')
-
 @endsection

@@ -120,8 +120,7 @@
 
                                         <div class="mb-3">
                                             <label class="form-label fw-semibold">Description</label>
-                                            <textarea name="about_card_description_1" class="form-control" rows="3"
-                                                placeholder="Card description">{{ old('about_card_description_1', $landing->about_card_description_1 ?? '') }}</textarea>
+                                            <textarea name="about_card_description_1" class="form-control" rows="3" placeholder="Card description">{{ old('about_card_description_1', $landing->about_card_description_1 ?? '') }}</textarea>
                                         </div>
                                     </div>
                                 </div>
@@ -136,7 +135,7 @@
                                             </div>
                                             <div class="col-md-4 mb-3">
                                                 <label class="form-label fw-semibold">Icon</label>
-                                                 <img src="{{ $landing->about_card_icon_2 ? asset($landing->about_card_icon_2) : '#' }}"
+                                                <img src="{{ $landing->about_card_icon_2 ? asset($landing->about_card_icon_2) : '#' }}"
                                                     class="form-control" height="100">
                                             </div>
                                         </div>
@@ -150,8 +149,7 @@
 
                                         <div class="mb-3">
                                             <label class="form-label fw-semibold">Description</label>
-                                            <textarea name="about_card_description_2" class="form-control" rows="3"
-                                                placeholder="Card description">{{ old('about_card_description_2', $landing->about_card_description_2 ?? '') }}</textarea>
+                                            <textarea name="about_card_description_2" class="form-control" rows="3" placeholder="Card description">{{ old('about_card_description_2', $landing->about_card_description_2 ?? '') }}</textarea>
                                         </div>
                                     </div>
                                 </div>
@@ -166,7 +164,7 @@
                                             </div>
                                             <div class="col-md-4 mb-3">
                                                 <label class="form-label fw-semibold">Icon</label>
-                                                 <img src="{{ $landing->about_card_icon_3 ? asset($landing->about_card_icon_3) : '#' }}"
+                                                <img src="{{ $landing->about_card_icon_3 ? asset($landing->about_card_icon_3) : '#' }}"
                                                     class="form-control" height="100">
                                             </div>
                                         </div>
@@ -180,8 +178,7 @@
 
                                         <div class="mb-3">
                                             <label class="form-label fw-semibold">Description</label>
-                                            <textarea name="about_card_description_3" class="form-control" rows="3"
-                                                placeholder="Card description">{{ old('about_card_description_3', $landing->about_card_description_3 ?? '') }}</textarea>
+                                            <textarea name="about_card_description_3" class="form-control" rows="3" placeholder="Card description">{{ old('about_card_description_3', $landing->about_card_description_3 ?? '') }}</textarea>
                                         </div>
                                     </div>
                                 </div>
@@ -225,7 +222,7 @@
                                             </div>
                                             <div class="col-md-4 mb-3">
                                                 <label class="form-label fw-semibold">Icon</label>
-                                                 <img src="{{ $landing->about_card_icon_4 ? asset($landing->about_card_icon_4) : '#' }}"
+                                                <img src="{{ $landing->about_card_icon_4 ? asset($landing->about_card_icon_4) : '#' }}"
                                                     class="form-control" height="100">
                                             </div>
                                         </div>
@@ -239,8 +236,7 @@
 
                                         <div class="mb-3">
                                             <label class="form-label fw-semibold">Description</label>
-                                            <textarea name="about_card_description_4" class="form-control" rows="3"
-                                                placeholder="Card description">{{ old('about_card_description_4', $landing->about_card_description_4 ?? '') }}</textarea>
+                                            <textarea name="about_card_description_4" class="form-control" rows="3" placeholder="Card description">{{ old('about_card_description_4', $landing->about_card_description_4 ?? '') }}</textarea>
                                         </div>
                                     </div>
                                 </div>
@@ -255,7 +251,7 @@
                                             </div>
                                             <div class="col-md-4 mb-3">
                                                 <label class="form-label fw-semibold">Icon</label>
-                                                 <img src="{{ $landing->about_card_icon_5 ? asset($landing->about_card_icon_5) : '#' }}"
+                                                <img src="{{ $landing->about_card_icon_5 ? asset($landing->about_card_icon_5) : '#' }}"
                                                     class="form-control" height="100">
                                             </div>
                                         </div>
@@ -269,8 +265,7 @@
 
                                         <div class="mb-3">
                                             <label class="form-label fw-semibold">Description</label>
-                                            <textarea name="about_card_description_5" class="form-control" rows="3"
-                                                placeholder="Card description">{{ old('about_card_description_5', $landing->about_card_description_5 ?? '') }}</textarea>
+                                            <textarea name="about_card_description_5" class="form-control" rows="3" placeholder="Card description">{{ old('about_card_description_5', $landing->about_card_description_5 ?? '') }}</textarea>
                                         </div>
                                     </div>
                                 </div>
@@ -285,7 +280,7 @@
                                             </div>
                                             <div class="col-md-4 mb-3">
                                                 <label class="form-label fw-semibold">Icon</label>
-                                                 <img src="{{ $landing->about_card_icon_6 ? asset($landing->about_card_icon_6) : '#' }}"
+                                                <img src="{{ $landing->about_card_icon_6 ? asset($landing->about_card_icon_6) : '#' }}"
                                                     class="form-control" height="100">
                                             </div>
                                         </div>
@@ -299,8 +294,7 @@
 
                                         <div class="mb-3">
                                             <label class="form-label fw-semibold">Description</label>
-                                            <textarea name="about_card_description_6" class="form-control" rows="3"
-                                                placeholder="Card description">{{ old('about_card_description_6', $landing->about_card_description_6 ?? '') }}</textarea>
+                                            <textarea name="about_card_description_6" class="form-control" rows="3" placeholder="Card description">{{ old('about_card_description_6', $landing->about_card_description_6 ?? '') }}</textarea>
                                         </div>
                                     </div>
                                 </div>
@@ -315,7 +309,7 @@
                                             </div>
                                             <div class="col-md-4 mb-3">
                                                 <label class="form-label fw-semibold">Icon</label>
-                                                 <img src="{{ $landing->about_card_icon_7 ? asset($landing->about_card_icon_7) : '#' }}"
+                                                <img src="{{ $landing->about_card_icon_7 ? asset($landing->about_card_icon_7) : '#' }}"
                                                     class="form-control" height="100">
                                             </div>
                                         </div>
@@ -329,8 +323,7 @@
 
                                         <div class="mb-3">
                                             <label class="form-label fw-semibold">Description</label>
-                                            <textarea name="about_card_description_7" class="form-control" rows="3"
-                                                placeholder="Card description">{{ old('about_card_description_7', $landing->about_card_description_7 ?? '') }}</textarea>
+                                            <textarea name="about_card_description_7" class="form-control" rows="3" placeholder="Card description">{{ old('about_card_description_7', $landing->about_card_description_7 ?? '') }}</textarea>
                                         </div>
                                     </div>
                                 </div>
@@ -359,8 +352,7 @@
 
                                         <div class="mb-3">
                                             <label class="form-label fw-semibold">Description</label>
-                                            <textarea name="about_card_description_8" class="form-control" rows="3"
-                                                placeholder="Card description">{{ old('about_card_description_8', $landing->about_card_description_8 ?? '') }}</textarea>
+                                            <textarea name="about_card_description_8" class="form-control" rows="3" placeholder="Card description">{{ old('about_card_description_8', $landing->about_card_description_8 ?? '') }}</textarea>
                                         </div>
                                     </div>
                                 </div>
@@ -389,8 +381,7 @@
 
                                         <div class="mb-3">
                                             <label class="form-label fw-semibold">Description</label>
-                                            <textarea name="about_card_description_9" class="form-control" rows="3"
-                                                placeholder="Card description">{{ old('about_card_description_9', $landing->about_card_description_9 ?? '') }}</textarea>
+                                            <textarea name="about_card_description_9" class="form-control" rows="3" placeholder="Card description">{{ old('about_card_description_9', $landing->about_card_description_9 ?? '') }}</textarea>
                                         </div>
                                     </div>
                                 </div>
@@ -402,8 +393,8 @@
 
                         <div class="col-md-12 mt-3">
                             <label class="form-label fw-semibold">Footer text</label>
-                            <input type="text" name="footer_text" class="form-control" placeholder="Enter footer text"
-                                value="{{ $landing->footer_text ?? '' }}">
+                            <input type="text" name="footer_text" class="form-control"
+                                placeholder="Enter footer text" value="{{ $landing->footer_text ?? '' }}">
                         </div>
 
                     </div>

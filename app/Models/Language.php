@@ -29,7 +29,6 @@ class Language extends Model
         'is_default' => 'boolean'
     ];
 
-    // Route binding by slug
     public function getRouteKeyName()
     {
         return 'slug';
