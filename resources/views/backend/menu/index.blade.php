@@ -55,7 +55,7 @@
                                     <td>{{ ucfirst($menu->menu_type) }}</td>
                                     <td>
                                         @if ($menu->menu_type == 'page' && $menu->page_id)
-                                            <a href="{{ url($menu->page->page_slug ?? '#') }}" target="_blank"
+                                            <a href="{{ url('/page/' . ($menu->page->page_slug ?? '#')) }}" target="_blank"
                                                 class="btn btn-sm btn-outline-primary">
                                                 {{ $menu->page->page_title ?? 'N/A' }}
                                             </a>

@@ -90,6 +90,13 @@
                 </a>
             </li>
 
+             <li class="nav-item {{ request()->routeIs('admin.menu') ? 'active' : '' }}">
+                <a href="{{ route('admin.menu') }}" class="nav-link">
+                    <span class="sidebar-icon"><i class="bi bi-layout-text-sidebar-reverse me-2"></i></span>
+                    <span class="sidebar-text">{{ __('Menu Setting') }}</span>
+                </a>
+            </li>
+
             <li class="nav-item {{ request()->routeIs('settings*') ? 'active' : '' }}">
                 <a href="{{ route('settings') }}" class="nav-link">
                     <span class="sidebar-icon"><i class="bi bi-gear me-2"></i></span>

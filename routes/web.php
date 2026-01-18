@@ -60,6 +60,7 @@ Route::prefix('admin')->middleware(['auth'])->group(function () {
 // Route::get('/', [FrontendController::class,'home'])->name('frontend.home');
 
 Route::get('/', [FrontendController::class, 'index'])->name('home');
+Route::get('/page/{slug}', [FrontendController::class, 'show'])->name('dynamic.page');
 
 
 

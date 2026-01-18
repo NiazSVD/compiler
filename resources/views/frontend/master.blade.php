@@ -21,7 +21,7 @@
     </main>
 
 
-    @if (Route::is('home'))
+    @if (!Route::is('frontend.editor'))
         @include('frontend.layouts.footer')
     @endif
 
