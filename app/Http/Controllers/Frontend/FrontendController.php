@@ -63,7 +63,7 @@ class FrontendController extends Controller
             return view('frontend.editor', compact('languages', 'language'));
         }
 
-        dd($languages);
+        // dd($languages);
 
         return view('frontend.home', compact('languages', 'landing'));
     }
