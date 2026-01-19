@@ -69,7 +69,7 @@
 
             <li class="nav-item {{ request()->routeIs('admin.dynamic_home.*') ? 'active' : '' }}">
                 <a href="{{ route('admin.dynamic_home.index') }}" class="nav-link">
-                    <span class="sidebar-icon"><i class="bi bi-layout-text-sidebar-reverse me-2"></i></span>
+                    <span class="sidebar-icon"><i class="bi bi-house-check-fill me-2"></i></span>
                     <span class="sidebar-text">{{ __('Home Setup') }}</span>
                 </a>
             </li>
@@ -78,14 +78,14 @@
 
             <li class="nav-item {{ request()->routeIs('admin.landing.*') ? 'active' : '' }}">
                 <a href="{{ route('admin.landing.index') }}" class="nav-link">
-                    <span class="sidebar-icon"><i class="bi bi-layout-text-sidebar-reverse me-2"></i></span>
+                    <span class="sidebar-icon"><i class="bi bi-display me-2"></i></span>
                     <span class="sidebar-text">{{ __('Landing Page') }}</span>
                 </a>
             </li>
 
             <li class="nav-item {{ request()->routeIs('admin.menu') ? 'active' : '' }}">
                 <a href="{{ route('admin.menu') }}" class="nav-link">
-                    <span class="sidebar-icon"><i class="bi bi-layout-text-sidebar-reverse me-2"></i></span>
+                    <span class="sidebar-icon"><i class="bi bi-menu-button-fill me-2"></i></span>
                     <span class="sidebar-text">{{ __('Menus') }}</span>
                 </a>
             </li>
@@ -94,7 +94,7 @@
 
             <li class="nav-item {{ request()->routeIs('admin.dynamic_page.*') ? 'active' : '' }}">
                 <a href="{{ route('admin.dynamic_page.index') }}" class="nav-link">
-                    <span class="sidebar-icon"><i class="bi bi-layout-text-sidebar-reverse me-2"></i></span>
+                    <span class="sidebar-icon"><i class="bi bi-book-half me-2"></i></span>
                     <span class="sidebar-text">{{ __('Pages') }}</span>
                 </a>
             </li>

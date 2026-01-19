@@ -38,10 +38,10 @@
                         <thead>
                             <tr>
                                 <th>#</th>
-                                <th>Page Order</th>
                                 <th>Page Title</th>
                                 <th>Slug</th>
                                 <th>Page Content</th>
+                                <th>Page Order</th>
                                 <th>Status</th>
                                 <th>Action</th>
                             </tr>
@@ -51,10 +51,10 @@
                             @foreach ($pages as $key => $page)
                                 <tr>
                                     <td>{{ $key + 1 }}</td>
-                                    <td>{{ $page->order }}</td>
                                     <td>{{ $page->page_title }}</td>
                                     <td>{{ $page->page_slug }}</td>
                                     <td>{!! \Illuminate\Support\Str::limit(strip_tags($page->page_content), 20, '...') !!}</td>
+                                    <td>{{ $page->order }}</td>
                                     <td>
                                         <span class="badge {{ $page->status === 'active' ? 'bg-success' : 'bg-danger' }}">
                                             {{ ucfirst($page->status) }}
