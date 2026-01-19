@@ -4,7 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>{{ $settings->site_name ?? 'SVD Delta' }} - {{ $language->display_name }}</title>
+    <title>{{ $settings->site_name ?? 'SVD Delta' }} | {{ $language->display_name }}</title>
     <link rel="icon" type="image/x-icon" href="{{ asset($settings->favicon ?? '') }}">
 
     <!-- Bootstrap 5 CSS -->

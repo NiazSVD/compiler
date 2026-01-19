@@ -4,7 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Code - @yield('title')</title>
+    <title>{{ $settings->site_name }} | @yield('title')</title>
     <link rel="icon" type="image/x-icon" href="{{ asset($settings->favicon ?? '') }}">
 
     @include('frontend.layouts.styles')
