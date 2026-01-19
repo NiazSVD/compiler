@@ -56,14 +56,21 @@
                 </a>
             </li>
 
-
-
             <li class="nav-item {{ request()->routeIs('admin.languages.*') ? 'active' : '' }}">
                 <a href="{{ route('admin.languages.index') }}" class="nav-link">
                     <span class="sidebar-icon">
                         <i class="bi bi-translate me-2"></i>
                     </span>
                     <span class="sidebar-text">{{ __('Languages') }}</span>
+                </a>
+            </li>
+
+            <li role="separator" class="dropdown-divider mt-4 mb-3 border-gray-700"></li>
+
+            <li class="nav-item {{ request()->routeIs('admin.dynamic_home.*') ? 'active' : '' }}">
+                <a href="{{ route('admin.dynamic_home.index') }}" class="nav-link">
+                    <span class="sidebar-icon"><i class="bi bi-layout-text-sidebar-reverse me-2"></i></span>
+                    <span class="sidebar-text">{{ __('Home Setup') }}</span>
                 </a>
             </li>
 
@@ -76,26 +83,23 @@
                 </a>
             </li>
 
+            <li class="nav-item {{ request()->routeIs('admin.menu') ? 'active' : '' }}">
+                <a href="{{ route('admin.menu') }}" class="nav-link">
+                    <span class="sidebar-icon"><i class="bi bi-layout-text-sidebar-reverse me-2"></i></span>
+                    <span class="sidebar-text">{{ __('Menus') }}</span>
+                </a>
+            </li>
+
+            <li role="separator" class="dropdown-divider mt-4 mb-3 border-gray-700"></li>
+
             <li class="nav-item {{ request()->routeIs('admin.dynamic_page.*') ? 'active' : '' }}">
                 <a href="{{ route('admin.dynamic_page.index') }}" class="nav-link">
                     <span class="sidebar-icon"><i class="bi bi-layout-text-sidebar-reverse me-2"></i></span>
-                    <span class="sidebar-text">{{ __('Dynamic Pages') }}</span>
+                    <span class="sidebar-text">{{ __('Pages') }}</span>
                 </a>
             </li>
 
-            <li class="nav-item {{ request()->routeIs('admin.dynamic_home.*') ? 'active' : '' }}">
-                <a href="{{ route('admin.dynamic_home.index') }}" class="nav-link">
-                    <span class="sidebar-icon"><i class="bi bi-layout-text-sidebar-reverse me-2"></i></span>
-                    <span class="sidebar-text">{{ __('Dynamic Home') }}</span>
-                </a>
-            </li>
-
-             <li class="nav-item {{ request()->routeIs('admin.menu') ? 'active' : '' }}">
-                <a href="{{ route('admin.menu') }}" class="nav-link">
-                    <span class="sidebar-icon"><i class="bi bi-layout-text-sidebar-reverse me-2"></i></span>
-                    <span class="sidebar-text">{{ __('Menu Setting') }}</span>
-                </a>
-            </li>
+            <li role="separator" class="dropdown-divider mt-4 mb-3 border-gray-700"></li>
 
             <li class="nav-item {{ request()->routeIs('settings*') ? 'active' : '' }}">
                 <a href="{{ route('settings') }}" class="nav-link">
