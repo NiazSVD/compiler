@@ -2,9 +2,11 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\DynamicPage;
 use App\Models\Food;
 use App\Models\FoodCategory;
 use App\Models\Language;
+use App\Models\Menu;
 use App\Models\Order;
 use App\Models\TodayMeal;
 use App\Models\User;
@@ -18,7 +20,9 @@ class DashboardController extends Controller
     public function index()
     {
         $languages = Language::all();
-        return view('backend.dashboard.index', compact('languages'));
+        $menus = Menu::all();
+        $pages = DynamicPage::all();
+        return view('backend.dashboard.index', compact('languages', 'menus', 'pages'));
     }
 
 

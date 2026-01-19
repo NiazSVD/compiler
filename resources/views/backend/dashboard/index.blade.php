@@ -84,11 +84,11 @@
                         <div class="card-body">
                             <div class="d-flex align-items-center gap-4">
                                 <div class="d-icon green">
-                                    <i class="bi bi-translate"></i>
+                                    <i class="bi bi-book-half"></i>
                                 </div>
                                 <div class="d-right-text">
-                                    <h4>{{ __('Total Languages') }}</h4>
-                                    <h3>{{ $languages->count() }}</h3>
+                                    <h4>{{ __('Total  Active Pages') }}</h4>
+                                    <h3>{{ $pages->where('status', 'active')->count() }}</h3>
                                 </div>
                             </div>
                         </div>
@@ -99,11 +99,11 @@
                         <div class="card-body">
                             <div class="d-flex align-items-center gap-4">
                                 <div class="d-icon orange">
-                                    <i class="bi bi-translate"></i>
+                                    <i class="bi bi-menu-button-fill"></i>
                                 </div>
                                 <div class="d-right-text">
-                                    <h4>{{ __('Total Languages') }}</h4>
-                                    <h3>{{ $languages->count() }}</h3>
+                                    <h4>{{ __('Total Active Menus') }}</h4>
+                                    <h3>{{ $menus->where('status', 1)->count() }}</h3>
                                 </div>
                             </div>
                         </div>
