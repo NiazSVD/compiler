@@ -68,8 +68,35 @@ class FrontendController extends Controller
         return view('frontend.home', compact('languages', 'landing'));
     }
 
-    public function show($slug)
+    // public function show($slug)
+    // {
+    //     $page = DynamicPage::where('page_slug', $slug)
+    //         ->where('status', 'active')
+    //         ->firstOrFail();
+
+    //     return view('frontend.dynamic_page', compact('page'));
+    // }
+
+
+    public function handle($slug)
     {
+        ///editor route handling
+        $language = Language::where('slug', $slug)
+            ->where('is_active', true)
+            ->first();
+
+        if ($language) {
+            $landing = LandingPage::first();
+            $languages = Language::where('is_active', true)->get();
+
+            return view('frontend.editor', compact(
+                'language',
+                'languages',
+                'landing'
+            ));
+        }
+
+        ///dynamic page route handling
         $page = DynamicPage::where('page_slug', $slug)
             ->where('status', 'active')
             ->firstOrFail();
@@ -78,32 +105,18 @@ class FrontendController extends Controller
     }
 
 
-
-
-    // public function home()
+    // public function editor($slug)
     // {
-    //     $languages = Language::where('is_active', true)
-    //         ->orderBy('display_name')
-    //         ->get();
-
-    //     $defaultLanguage = Language::where('is_default', true)->first();
     //     $landing = LandingPage::first();
 
-    //     return view('frontend.home', compact('languages', 'defaultLanguage','landing'));
+    //     $language = Language::where('slug', $slug)
+    //         ->where('is_active', true)
+    //         ->firstOrFail();
+
+    //     $languages = Language::where('is_active', true)->get();
+
+    //     return view('frontend.editor', compact('language', 'languages', 'landing'));
     // }
-
-    public function editor($slug)
-    {
-        $landing = LandingPage::first();
-
-        $language = Language::where('slug', $slug)
-            ->where('is_active', true)
-            ->firstOrFail();
-
-        $languages = Language::where('is_active', true)->get();
-
-        return view('frontend.editor', compact('language', 'languages', 'landing'));
-    }
 
 
     public function runCode(Request $request)

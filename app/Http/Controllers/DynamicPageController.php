@@ -4,8 +4,10 @@ namespace App\Http\Controllers;
 
 use App\Models\DynamicPage;
 use App\Models\HomeSettings;
+use App\Models\Language;
 use Illuminate\Http\Request;
 use Illuminate\Support\Str;
+use Illuminate\Validation\Rule;
 
 class DynamicPageController extends Controller
 {
@@ -26,8 +28,18 @@ class DynamicPageController extends Controller
         $request->validate([
             'page_title'   => 'required|string|max:255',
             'page_content' => 'required',
-            'page_slug'    => 'nullable|string|max:255',
-            'order'        => 'nullable|integer',
+            'page_slug'    => [
+                'nullable',
+                'string',
+                'max:255',
+                Rule::unique('dynamic_pages', 'page_slug'),
+                function ($attr, $value, $fail) {
+                    if (Language::where('slug', $value)->exists()) {
+                        $fail('This slug is reserved for language.');
+                    }
+                },
+            ],
+            'order' => 'nullable|integer',
         ]);
 
         try {
@@ -74,55 +86,108 @@ class DynamicPageController extends Controller
     }
 
 
-
-
-
-
     public function edit(string $id)
     {
         $page = DynamicPage::findOrFail($id);
 
-        // Check if this page is current home page
         $page->is_home = optional(HomeSettings::where('type', 'page')->first())->slug === $page->page_slug ? 1 : 0;
 
         return view('backend.dynamic_page.edit', compact('page'));
     }
 
+    // public function update(Request $request, string $id)
+    // {
+    //     $request->validate([
+    //         'page_title'   => 'required|string|max:255',
+    //         'page_content' => 'required',
+    //         'page_slug'    => 'nullable|string|max:255',
+    //         'order'        => 'nullable|integer',
+    //     ]);
+
+    //     $page = DynamicPage::findOrFail($id);
+
+    //     // Generate unique slug
+    //     $baseSlug = $request->page_slug
+    //         ? Str::slug($request->page_slug)
+    //         : Str::slug($request->page_title);
+
+    //     $slug = $baseSlug;
+    //     $count = 1;
+    //     while (DynamicPage::where('page_slug', $slug)->where('id', '!=', $page->id)->exists()) {
+    //         $slug = $baseSlug . '-' . $count++;
+    //     }
+
+    //     $page->page_title   = $request->page_title;
+    //     $page->page_content = $request->page_content;
+    //     $page->order        = $request->order;
+    //     $page->page_slug    = $slug;
+
+    //     // ENUM-safe status (unchanged unless checkbox checked)
+    //     $page->status = in_array($request->input('status'), ['active', 'inactive'])
+    //         ? $request->input('status')
+    //         : 'inactive';
+
+    //     $page->save();
+
+    //     // Handle Set as Home Page
+    //     if ($request->input('set_home') == 1) {
+    //         HomeSettings::updateOrCreate(
+    //             ['id' => 1],
+    //             [
+    //                 'type' => 'page',
+    //                 'slug' => $page->page_slug,
+    //             ]
+    //         );
+    //     } else {
+    //         // Optional: remove if unchecked
+    //         HomeSettings::where('id', 1)
+    //             ->where('slug', $page->page_slug)
+    //             ->delete();
+    //     }
+
+    //     return redirect()
+    //         ->route('admin.dynamic_page.index')
+    //         ->with('success', 'Page updated successfully');
+    // }
+
+
     public function update(Request $request, string $id)
     {
+        $page = DynamicPage::findOrFail($id);
+
         $request->validate([
             'page_title'   => 'required|string|max:255',
             'page_content' => 'required',
-            'page_slug'    => 'nullable|string|max:255',
+            'page_slug'    => [
+                'nullable',
+                'string',
+                'max:255',
+                Rule::unique('dynamic_pages', 'page_slug')->ignore($page->id),
+                function ($attr, $value, $fail) {
+                    if (Language::where('slug', $value)->exists()) {
+                        $fail('This slug is reserved for language.');
+                    }
+                },
+            ],
             'order'        => 'nullable|integer',
         ]);
 
-        $page = DynamicPage::findOrFail($id);
-
-        // Generate unique slug
         $baseSlug = $request->page_slug
             ? Str::slug($request->page_slug)
             : Str::slug($request->page_title);
 
-        $slug = $baseSlug;
-        $count = 1;
-        while (DynamicPage::where('page_slug', $slug)->where('id', '!=', $page->id)->exists()) {
-            $slug = $baseSlug . '-' . $count++;
-        }
+        $slug = $this->generateUniqueSlug($baseSlug, $page->id);
 
-        $page->page_title   = $request->page_title;
-        $page->page_content = $request->page_content;
-        $page->order        = $request->order;
-        $page->page_slug    = $slug;
+        $page->update([
+            'page_title'   => $request->page_title,
+            'page_content' => $request->page_content,
+            'page_slug'    => $slug,
+            'order'        => $request->order,
+            'status'       => in_array($request->input('status'), ['active', 'inactive'])
+                ? $request->input('status')
+                : 'inactive',
+        ]);
 
-        // ENUM-safe status (unchanged unless checkbox checked)
-        $page->status = in_array($request->input('status'), ['active', 'inactive'])
-            ? $request->input('status')
-            : 'inactive';
-
-        $page->save();
-
-        // Handle Set as Home Page
         if ($request->input('set_home') == 1) {
             HomeSettings::updateOrCreate(
                 ['id' => 1],
@@ -132,7 +197,6 @@ class DynamicPageController extends Controller
                 ]
             );
         } else {
-            // Optional: remove if unchecked
             HomeSettings::where('id', 1)
                 ->where('slug', $page->page_slug)
                 ->delete();
@@ -155,54 +219,34 @@ class DynamicPageController extends Controller
         }
     }
 
-    public function changeStatus($id)
-    {
-        $data = DynamicPage::find($id);
-        if (empty($data)) {
-            return response()->json([
-                "success" => false,
-                "message" => "Item not found."
-            ], 404);
-        }
-
-
-        // Toggle status
-        if ($data->status == 'active') {
-            $data->status = 'inactive';
-            $data->save();
-
-            return response()->json([
-                'success' => false,
-                'message' => 'Unpublished Successfully.',
-                'data' => $data,
-            ]);
-        } else {
-            $data->status = 'active';
-            $data->save();
-
-            return response()->json([
-                'success' => true,
-                'message' => 'Published Successfully.',
-                'data' => $data,
-            ]);
-        }
-        $page->save();
-        return response()->json([
-            'success' => true,
-            'message' => 'Item status changed successfully.'
-        ]);
-    }
 
 
 
-    private function generateUniqueSlug($slug)
+    // private function generateUniqueSlug($slug)
+    // {
+    //     $originalSlug = $slug;
+    //     $count = 1;
+
+    //     while (DynamicPage::where('page_slug', $slug)->exists()) {
+    //         $slug = $originalSlug . '-' . $count;
+    //         $count++;
+    //     }
+
+    //     return $slug;
+    // }
+
+    private function generateUniqueSlug(string $slug, ?int $ignoreId = null): string
     {
         $originalSlug = $slug;
         $count = 1;
 
-        while (DynamicPage::where('page_slug', $slug)->exists()) {
-            $slug = $originalSlug . '-' . $count;
-            $count++;
+        while (
+            DynamicPage::where('page_slug', $slug)
+            ->when($ignoreId, fn($q) => $q->where('id', '!=', $ignoreId))
+            ->exists()
+            || Language::where('slug', $slug)->exists()
+        ) {
+            $slug = $originalSlug . '-' . $count++;
         }
 
         return $slug;

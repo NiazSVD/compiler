@@ -2,6 +2,8 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\DynamicPage;
+use Illuminate\Validation\Rule;
 use App\Models\Language;
 use Illuminate\Support\Facades\Http;
 use Illuminate\Http\Request;
@@ -26,7 +28,17 @@ class LanguageController extends Controller
         $request->validate([
             'name' => 'required|string|max:255',
             'display_name' => 'required|string|max:255',
-            'slug' => 'nullable|string|max:255',
+            'slug'         => [
+                'nullable',
+                'string',
+                'max:255',
+                Rule::unique('languages', 'slug'),
+                function ($attr, $value, $fail) {
+                    if (DynamicPage::where('page_slug', $value)->exists()) {
+                        $fail('This slug is reserved for a dynamic page.');
+                    }
+                },
+            ],
             'icon' => 'nullable|image|mimes:jpg,jpeg,png,webp|max:2048',
             'description' => 'nullable|string',
             'is_active' => 'nullable|boolean',
@@ -35,15 +47,19 @@ class LanguageController extends Controller
             'runtime' => 'nullable|string|max:50',
         ]);
 
+        $baseSlug = $request->filled('slug') ? Str::slug($request->slug) : Str::slug($request->name);
+
+        $uniqueSlug = $this->generateUniqueSlugForLanguage($baseSlug);
+
         $data = [
             'name' => strtolower($request->name),
             'display_name' => $request->display_name,
-            'version' => $request->version ?? 'latest',
-            'runtime' => $request->runtime ?? strtolower($request->name),
-            'slug' => $request->slug ? Str::slug($request->slug) : Str::slug($request->name),
-            'description' => $request->description,
-            'is_active' => $request->is_active ?? false,
-            'is_default' => $request->is_default ?? false,
+            'version'      => $request->version ?? 'latest',
+            'runtime'      => $request->runtime ?? strtolower($request->name),
+            'slug'         => $uniqueSlug,
+            'description'  => $request->description,
+            'is_active'    => $request->is_active ?? false,
+            'is_default'   => $request->is_default ?? false,
         ];
 
         if ($request->hasFile('icon')) {
@@ -85,7 +101,17 @@ class LanguageController extends Controller
             'display_name' => 'required|string|max:255',
             'is_active'    => 'nullable|boolean',
             'is_default'   => 'nullable|boolean',
-            'slug'         => 'nullable|string|max:255',
+            'slug'         => [
+                'nullable',
+                'string',
+                'max:255',
+                Rule::unique('languages', 'slug')->ignore($language->id),
+                function ($attr, $value, $fail) {
+                    if (DynamicPage::where('page_slug', $value)->exists()) {
+                        $fail('This slug is reserved for a dynamic page.');
+                    }
+                },
+            ],
             'icon'         => 'nullable|image|mimes:jpg,jpeg,png,webp|max:2048',
             'description'  => 'nullable|string',
         ]);
@@ -199,5 +225,22 @@ class LanguageController extends Controller
         }
 
         return back()->with('success', 'New Piston languages synced successfully!');
+    }
+
+
+
+    private function generateUniqueSlugForLanguage(string $slug): string
+    {
+        $originalSlug = $slug;
+        $count = 1;
+
+        while (
+            Language::where('slug', $slug)->exists()
+            || DynamicPage::where('page_slug', $slug)->exists()
+        ) {
+            $slug = $originalSlug . '-' . $count++;
+        }
+
+        return $slug;
     }
 }

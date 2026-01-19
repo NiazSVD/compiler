@@ -55,6 +55,9 @@
                                    name="page_slug"
                                    class="form-control"
                                    value="{{ old('page_slug', $page->page_slug) }}">
+                            @error('page_slug')
+                                <small class="text-danger">{{ $message }}</small>
+                            @enderror
                         </div>
 
                         {{-- Order --}}

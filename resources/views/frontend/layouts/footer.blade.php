@@ -22,7 +22,7 @@
                         <li class="nav-item">
                             <a class="nav-link px-2"
                                 href="{{ $menu->menu_type === 'page' && $menu->page
-                                    ? route('dynamic.page', $menu->page->page_slug)
+                                    ? route('frontend.handle', $menu->page->page_slug)
                                     : ($menu->menu_type === 'language' && $menu->language
                                         ? url($menu->language->slug)
                                         : '#') }}">

@@ -90,7 +90,7 @@
             <div class="row g-3 g-md-4 justify-content-center" id="language-list">
                 @forelse ($languages as $language)
                     <div class="col-6 col-md-3 col-lg-2 language-item">
-                        <a href="{{ route('frontend.editor', $language->slug) }}" class="popular-lang-item">
+                        <a href="{{ route('frontend.handle', $language->slug) }}" class="popular-lang-item">
                             <div class="icon">
                                 <img src="{{ $language->icon_show }}" alt="{{ $language->name }}">
                             </div>

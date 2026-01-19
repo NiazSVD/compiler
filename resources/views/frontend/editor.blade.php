@@ -194,7 +194,7 @@
         style="background-color: {{ $landing->header_color ?? '#007bff' }}">
         <div class="p-2" style="margin-left: 75px">
             <a class="navbar-brand fw-bold text-white" href="{{ url('/') }}"><img
-                    src="{{ asset($settings->logo) }}" style="filter: brightness(0) invert(1);"></a>
+                    src="{{ asset($settings->logo) }}" style="height:50px"></a>
         </div>
     </nav>
 
@@ -207,7 +207,7 @@
 
             @foreach ($languages as $lang)
                 @if (is_object($lang))
-                    <a href="{{ route('frontend.editor', $lang->slug) }}"
+                    <a href="{{ route('frontend.handle', $lang->slug) }}"
                         class="{{ request()->route('slug') == $lang->slug ? 'active' : '' }}"
                         title="{{ $lang->display_name }}">
 

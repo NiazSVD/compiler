@@ -52,6 +52,9 @@
                             <div class="col-md-4 mb-3">
                                 <label class="form-label">Slug (URL Friendly)</label>
                                 <input type="text" name="slug" value="{{ $language->slug }}" class="form-control">
+                                @error('slug')
+                                    <small class="text-danger">{{ $message }}</small>
+                                @enderror
                                 <small class="text-muted">
                                     Used in URL or identifier. Change carefully.
                                 </small>
