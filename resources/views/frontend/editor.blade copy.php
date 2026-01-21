@@ -13,15 +13,6 @@
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" rel="stylesheet">
 
     <style>
-        .container,
-        .container-lg,
-        .container-md,
-        .container-sm,
-        .container-xl,
-        .container-xxl {
-            max-width: 1850px !important;
-        }
-
         html,
         body {
             height: 100%;
@@ -44,23 +35,25 @@
         .sidebar {
             width: 90px;
             min-height: 100vh;
-            background: #f8f9fa;
-            color: #212529;
+            height: 100%;
+            background: #1a1a1a;
+            color: #fff;
             display: flex;
             flex-direction: column;
             align-items: center;
             padding-top: 10px;
-            border-right: 1px solid #e0e0e0;
-            transition: background 0.3s, color 0.3s;
         }
 
+        /* Sidebar link */
         .sidebar a {
             width: 100%;
             display: flex;
+            flex-direction: column;
             align-items: center;
             justify-content: center;
+            gap: 4px;
             padding: 12px 0;
-            color: #495057;
+            color: #cfd8dc;
             font-size: 20px;
             text-decoration: none;
             border-radius: 8px;
@@ -68,35 +61,19 @@
             transition: all 0.2s ease;
         }
 
+        /* Hover */
         .sidebar a:hover {
-            background: rgba(0, 0, 0, 0.05);
-            color: #000;
-        }
-
-        .sidebar a.active {
-            background: #e7ecff;
-            color: #3b5bfd;
-        }
-
-        body.dark-mode .sidebar {
-            background: #1a1a1a;
-            color: #fff;
-            border-right: 1px solid #2c2c2c;
-        }
-
-        body.dark-mode .sidebar a {
-            color: #cfd8dc;
-        }
-
-        body.dark-mode .sidebar a:hover {
             background: rgba(255, 255, 255, 0.08);
             color: #fff;
         }
-        body.dark-mode .sidebar a.active {
+
+        /* Active */
+        .sidebar a.active {
             background: #3a485c;
             color: #fff;
         }
 
+        /* Editor & Output */
         .card,
         #editor,
         #userInput,
@@ -180,10 +157,16 @@
         }
 
         .footer {
-            background-color: #F7F8FF;
-            /* background-color: #007bff; */
+            background-color: #007bff;
             padding: 2rem 0;
             text-align: center;
+        }
+
+        .footer .container {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 20px;
         }
 
         .footer p {
@@ -191,26 +174,8 @@
         }
 
         .footer a {
-            color: rgb(51, 44, 44);
+            color: white;
             text-decoration: none;
-        }
-
-        .footer a:hover {
-            color: #7c3bed;
-        }
-
-        .logo-img {
-            height: 55px;
-        }
-
-        .navbar .nav-link:hover {
-            color: #7c3bed;
-        }
-
-        @media (max-width: 991px) {
-            .navbar-nav {
-                text-align: center;
-            }
         }
 
         /* Responsive adjustments */
@@ -225,61 +190,13 @@
 <body class="dark-mode">
 
     <!-- Navbar -->
-    <nav class="navbar navbar-expand-lg shadow-sm fixed-top navbar-light" style="background-color: #F7F8FF;">
-        <div class="container">
-
-            <!-- Logo -->
-            <a class="navbar-brand fw-bold ms-lg-5" href="{{ url('/') }}">
-                <img src="{{ asset($settings->logo) }}" class="logo-img">
-            </a>
-
-            <!-- Mobile Toggle -->
-            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#mainNavbar"
-                aria-controls="mainNavbar" aria-expanded="false" aria-label="Toggle navigation">
-                <span class="navbar-toggler-icon"></span>
-            </button>
-
-            <!-- Menu -->
-            <div class="collapse navbar-collapse" id="mainNavbar">
-                <ul class="navbar-nav ms-auto mt-3 mt-lg-0 gap-3 me-lg-5">
-
-                    <li class="nav-item">
-                        <a class="nav-link" href="{{ url('/') }}">Home</a>
-                    </li>
-
-                    @php
-                        $menus = App\Models\Menu::where('status', 1)
-                            ->where('position', 'header')
-                            ->orderBy('order', 'asc')
-                            ->get();
-                    @endphp
-
-                    @forelse ($menus as $menu)
-                        <li class="nav-item">
-                            <a class="nav-link"
-                                href="{{ $menu->menu_type === 'page' && $menu->page
-                                    ? route('frontend.handle', $menu->page->page_slug)
-                                    : ($menu->menu_type === 'language' && $menu->language
-                                        ? url($menu->language->slug)
-                                        : '#') }}">
-                                {{ $menu->menu_type === 'page' && $menu->page
-                                    ? $menu->page->page_title
-                                    : ($menu->menu_type === 'language' && $menu->language
-                                        ? $menu->language->display_name
-                                        : 'No Page Selected') }}
-                            </a>
-                        </li>
-                    @empty
-                        <li class="nav-item">
-                            <a class="nav-link" href="#">No Page Selected</a>
-                        </li>
-                    @endforelse
-
-                </ul>
-            </div>
+    <nav class="navbar navbar-expand-lg navbar-dark shadow-sm fixed-top"
+        style="background-color: {{ $landing->header_color ?? '#007bff' }}">
+        <div class="p-2" style="margin-left: 75px">
+            <a class="navbar-brand fw-bold text-white" href="{{ url('/') }}"><img
+                    src="{{ asset($settings->logo) }}" style="height:50px"></a>
         </div>
     </nav>
-
 
     <div class="d-flex flex-grow-1">
         <!-- Sidebar -->
@@ -425,73 +342,15 @@
     </div>
 
     <section class="container mb-5">
-        <div class="row">
-            <div class="col-md-10 mx-auto">
-                <div class="language-description">{!! $language->description !!}</div>
-            </div>
-        </div>
+        <div class="language-description">{!! $language->description !!}</div>
     </section>
 
     <!-- Footer -->
-    <footer class="footer py-3 border-top">
+    <footer class="footer" style="background-color: {{ $landing->footer_color ?? '#007bff' }}">
         <div class="container">
-            <div class="row">
-
-                @php
-                    $menus = App\Models\Menu::where('status', 1)
-                        ->where('position', 'footer')
-                        ->orderBy('order', 'asc')
-                        ->get();
-                   $landingRaw = DB::table('landing_pages')->get();
-
-                    $landing = [];
-                    foreach ($landingRaw as $item) {
-                        $landing[$item->key] = $item->value;
-                    }
-                @endphp
-
-                <div class="col-md-6 mb-2 mt-2 mb-md-0">
-                    <div class="d-flex align-items-center justify-content-center justify-content-md-start"
-                        style="margin-left: 45px">
-                        <img src="{{ asset('frontend/assets/img/footer-icon.svg') }}" alt="Icon" class="me-2"
-                            width="28">
-                        <p class="m-0" style="color: black">
-                            {{ $landing['footer_text'] }}
-                            {{-- <span class="fw-semibold">Softvence</span> --}}
-                        </p>
-                    </div>
-                </div>
-
-                <div class="col-md-6">
-                    <ul class="nav justify-content-center justify-content-md-end" style="margin-right: 45px">
-                        @forelse ($menus as $menu)
-                            <li class="nav-item">
-                                <a class="nav-link px-2"
-                                    href="{{ $menu->menu_type === 'page' && $menu->page
-                                        ? route('frontend.handle', $menu->page->page_slug)
-                                        : ($menu->menu_type === 'language' && $menu->language
-                                            ? url($menu->language->slug)
-                                            : '#') }}">
-                                    {{ $menu->menu_type === 'page' && $menu->page
-                                        ? $menu->page->page_title
-                                        : ($menu->menu_type === 'language' && $menu->language
-                                            ? $menu->language->display_name
-                                            : 'No Page') }}
-                                </a>
-                            </li>
-                        @empty
-                            <li class="nav-item">
-                                <span class="nav-link text-muted">No Page Selected</span>
-                            </li>
-                        @endforelse
-
-                    </ul>
-                </div>
-
-            </div>
+            <p> {{ $settings->footer_text }}</p>
         </div>
     </footer>
-
 
     <!-- Scripts -->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>

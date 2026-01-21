@@ -39,7 +39,7 @@ class LanguageController extends Controller
                     }
                 },
             ],
-            'icon' => 'nullable|image|mimes:jpg,jpeg,png,webp|max:2048',
+            'icon' => 'nullable|image|mimes:jpg,jpeg,png,webp,svg|max:2048',
             'description' => 'nullable|string',
             'is_active' => 'nullable|boolean',
             'is_default' => 'nullable|boolean',
@@ -112,7 +112,7 @@ class LanguageController extends Controller
                     }
                 },
             ],
-            'icon'         => 'nullable|image|mimes:jpg,jpeg,png,webp|max:2048',
+            'icon'         => 'nullable|image|mimes:jpg,jpeg,png,webp,svg|max:2048',
             'description'  => 'nullable|string',
         ]);
 
