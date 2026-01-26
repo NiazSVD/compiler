@@ -242,10 +242,23 @@
             <!-- Menu -->
             <div class="collapse navbar-collapse" id="mainNavbar">
                 <ul class="navbar-nav ms-auto mt-3 mt-lg-0 gap-3 me-lg-5">
-
                     <li class="nav-item">
                         <a class="nav-link" href="{{ url('/') }}">Home</a>
                     </li>
+                    @if(!(
+                        $homeSettings &&
+                        $homeSettings->type === 'page' &&
+                        $homeSettings->slug === 'landing'
+                        ))
+                        <li class="nav-item">
+                            <a class="nav-link" href="{{ route('landing.home') }}">
+                                All Languages
+                            </a>
+                        </li>
+                    @endif
+                    {{-- <li class="nav-item">
+                        <a class="nav-link" href="{{ route('landing.home') }}">All Languages</a>
+                    </li> --}}
 
                     @php
                         $menus = App\Models\Menu::where('status', 1)

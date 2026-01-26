@@ -68,6 +68,20 @@ class FrontendController extends Controller
         return view('frontend.home', compact('languages', 'landing'));
     }
 
+    public function landing()
+    {
+        $languages = Language::where('is_active', true)
+            ->orderBy('display_name')
+            ->get();
+
+        $landingRaw = DB::table('landing_pages')->get();
+        $landing = [];
+        foreach ($landingRaw as $item) {
+            $landing[$item->key] = $item->value;
+        }
+        return view('frontend.home', compact('languages', 'landing'));
+    }
+
     // public function show($slug)
     // {
     //     $page = DynamicPage::where('page_slug', $slug)

@@ -13,6 +13,18 @@
                 <li class="nav-item">
                     <a class="nav-link" href="{{ url('/') }}">Home</a>
                 </li>
+                @if(!(
+                    $homeSettings &&
+                    $homeSettings->type === 'page' &&
+                    $homeSettings->slug === 'landing'
+                    ))
+                    <li class="nav-item">
+                        <a class="nav-link" href="{{ route('landing.home') }}">
+                            All Languages
+                        </a>
+                    </li>
+                @endif
+
                 @php
                     $menus = App\Models\Menu::where('status', 1)
                         ->where('position', 'header')

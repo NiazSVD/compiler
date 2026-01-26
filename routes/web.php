@@ -58,20 +58,19 @@ Route::prefix('admin')->middleware(['auth'])->group(function () {
 
 //Frontend routes start here
 // Route::get('/', [FrontendController::class,'home'])->name('frontend.home');
+Route::get('/all-languages', [FrontendController::class, 'landing'])->name('landing.home');
 
 Route::get('/', [FrontendController::class, 'index'])->name('home');
 // Route::get('/page/{slug}', [FrontendController::class, 'show'])->name('dynamic.page');
 
 Route::get('/{slug}', [FrontendController::class, 'handle'])->name('frontend.handle');
 
-
 Route::get('/editor/1/{slug}', [FrontendController::class, 'editor1'])->name('frontend.editor1');
-
-
-// Route::get('/{slug}', [FrontendController::class, 'editor'])->name('frontend.editor');
 
 Route::post('/run', [FrontendController::class, 'runCode'])->name('frontend.run');
 
 
 Route::post('/share-code', [FrontendController::class, 'shareCode'])->name('frontend.shareCode');
 Route::get('/share/{token}', [FrontendController::class, 'openShared'])->name('frontend.openShared');
+
+
