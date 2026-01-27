@@ -30,7 +30,8 @@
                 </div>
 
                 <div class="card-body">
-                    <form method="POST" action="{{ route('admin.languages.update', $language) }}" enctype="multipart/form-data">
+                    <form method="POST" action="{{ route('admin.languages.update', $language) }}"
+                        enctype="multipart/form-data">
                         @csrf
                         @method('PUT')
 
@@ -130,15 +131,46 @@
 @endsection
 
 @section('script')
+    {{-- <script src="https://cdn.ckeditor.com/4.22.1/standard/ckeditor.js"></script>
+
+    <script>
+        CKEDITOR.replace('editor');
+    </script> --}}
     <!-- Summernote JS -->
-    <script src="https://cdn.jsdelivr.net/npm/summernote@0.8.20/dist/summernote.min.js"></script>
+
+    {{-- <script src="https://code.jquery.com/jquery-3.4.1.slim.min.js"
+        integrity="sha384-J6qa4849blE2+poT4WnyKhv5vZF5SrPo0iEjwBvKU7imGFAV0wwj1yYfoRSJoZ+n" crossorigin="anonymous">
+    </script>
+
+    <script src="https://cdn.jsdelivr.net/npm/summernote@0.9.0/dist/summernote-lite.min.js"></script>
+
+
+    <script>
+        $('#description').summernote({
+            placeholder: 'Hello stand alone ui',
+            tabsize: 2,
+            height: 300,
+            toolbar: [
+                ['style', ['style']],
+                ['font', ['bold', 'underline', 'clear']],
+                ['color', ['color']],
+                ['para', ['ul', 'ol', 'paragraph']],
+                ['table', ['table']],
+                ['insert', ['link', 'picture', 'video']],
+                ['view', ['fullscreen', 'codeview', 'help']]
+            ]
+        });
+    </script> --}}
+
+
+    {{-- <script src="https://cdn.jsdelivr.net/npm/summernote@0.8.16/dist/summernote.min.js"></script>
 
 
     <script>
         $(document).ready(function() {
             var drEvent = $('#icon').dropify();
 
-            drEvent.on('dropify.afterClear', function(event, element){
+            drEvent.on('dropify.afterClear', function(event, element) {
                 $('<input>').attr({
                     type: 'hidden',
                     name: 'remove_icon',
@@ -151,7 +183,7 @@
     <script>
         $(document).ready(function() {
             $('#description').summernote({
-                height: 200,               // editor height
+                height: 200, // editor height
                 placeholder: 'Enter language description...',
                 toolbar: [
                     ['style', ['bold', 'italic', 'underline', 'clear']],
@@ -162,5 +194,5 @@
                 ]
             });
         });
-    </script>
+    </script> --}}
 @endsection

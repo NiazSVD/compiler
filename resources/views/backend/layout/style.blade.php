@@ -25,7 +25,9 @@
 <link type="text/css" href="{{ asset('backend/vendor/select2/select2-bootstrap-5-theme.min.css') }}" rel="stylesheet">
 
 <!-- Summernote CSS -->
-<link href="https://cdn.jsdelivr.net/npm/summernote@0.8.20/dist/summernote.min.css" rel="stylesheet">
+{{-- <link href="https://cdn.jsdelivr.net/npm/summernote@0.8.20/dist/summernote.min.css" rel="stylesheet"> --}}
+<link href="https://cdn.jsdelivr.net/npm/summernote@0.9.0/dist/summernote-lite.min.css" rel="stylesheet">
+
 
 
 <!-- Bootstrap Icon -->

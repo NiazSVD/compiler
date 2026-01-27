@@ -219,6 +219,14 @@ table th {
     appearance: none;
 }
 
+.note-editor .note-toolbar .note-dropdown-menu, .note-popover .popover-content .note-dropdown-menu {
+    min-width: 252px;
+}
+
+.note-editor .note-toolbar .note-color-all .note-dropdown-menu, .note-popover .popover-content .note-color-all .note-dropdown-menu {
+    min-width: 347px;
+}
+
 
 @media (max-width: 767.98px) {
 

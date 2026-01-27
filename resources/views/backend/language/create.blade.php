@@ -33,77 +33,77 @@
                     <form method="POST" action="{{ route('admin.languages.store') }}" enctype="multipart/form-data">
                         @csrf
                         <div class="row">
-                        <div class="col-md-4 mb-3">
-                            <label class="form-label">Language Key</label>
-                            <input type="text" name="name" class="form-control" placeholder="python"
-                                value="{{ old('name') }}" required>
-                            @error('name')
-                                <small class="text-danger">{{ $message }}</small>
-                            @enderror
-                        </div>
+                            <div class="col-md-4 mb-3">
+                                <label class="form-label">Language Key</label>
+                                <input type="text" name="name" class="form-control" placeholder="python"
+                                    value="{{ old('name') }}" required>
+                                @error('name')
+                                    <small class="text-danger">{{ $message }}</small>
+                                @enderror
+                            </div>
 
-                        <div class="col-md-4 mb-3">
-                            <label class="form-label">Display Name</label>
-                            <input type="text" name="display_name" class="form-control" placeholder="Python"
-                                value="{{ old('display_name') }}" required>
-                            @error('display_name')
-                                <small class="text-danger">{{ $message }}</small>
-                            @enderror
-                        </div>
+                            <div class="col-md-4 mb-3">
+                                <label class="form-label">Display Name</label>
+                                <input type="text" name="display_name" class="form-control" placeholder="Python"
+                                    value="{{ old('display_name') }}" required>
+                                @error('display_name')
+                                    <small class="text-danger">{{ $message }}</small>
+                                @enderror
+                            </div>
 
-                        <div class="col-md-4 mb-3">
-                            <label class="form-label">Slug (URL Friendly)</label>
-                            <input type="text" name="slug" class="form-control" value="{{ old('slug') }}">
-                            @error('slug')
-                                <small class="text-danger">{{ $message }}</small>
-                            @enderror
-                            <small class="text-muted">Used in URL or identifier. Change carefully.</small>
-                        </div>
+                            <div class="col-md-4 mb-3">
+                                <label class="form-label">Slug (URL Friendly)</label>
+                                <input type="text" name="slug" class="form-control" value="{{ old('slug') }}">
+                                @error('slug')
+                                    <small class="text-danger">{{ $message }}</small>
+                                @enderror
+                                <small class="text-muted">Used in URL or identifier. Change carefully.</small>
+                            </div>
 
-                        <div class="col-md-4 mb-3">
-                            <label class="form-label">Version</label>
-                            <input type="text" name="version" class="form-control" placeholder="3.10.0"
-                                value="{{ old('version') }}">
-                            @error('version')
-                                <small class="text-danger">{{ $message }}</small>
-                            @enderror
-                        </div>
+                            <div class="col-md-4 mb-3">
+                                <label class="form-label">Version</label>
+                                <input type="text" name="version" class="form-control" placeholder="3.10.0"
+                                    value="{{ old('version') }}">
+                                @error('version')
+                                    <small class="text-danger">{{ $message }}</small>
+                                @enderror
+                            </div>
 
-                        <div class="col-md-6 mb-3">
-                            <label class="form-label">Runtime</label>
-                            <input type="text" name="runtime" class="form-control" placeholder="python3"
-                                value="{{ old('runtime') }}">
-                            @error('runtime')
-                                <small class="text-danger">{{ $message }}</small>
-                            @enderror
-                        </div>
+                            <div class="col-md-6 mb-3">
+                                <label class="form-label">Runtime</label>
+                                <input type="text" name="runtime" class="form-control" placeholder="python3"
+                                    value="{{ old('runtime') }}">
+                                @error('runtime')
+                                    <small class="text-danger">{{ $message }}</small>
+                                @enderror
+                            </div>
 
-                        <div class="col-md-4 mb-3">
-                            <label class="form-label">Icon</label>
-                            <input type="file" name="icon" id="icon" class="form-control dropify"
-                                data-allow-remove="true">
-                            @error('icon')
-                                <small class="text-danger">{{ $message }}</small>
-                            @enderror
-                            <small class="text-muted">Upload an icon image (jpg, png, webp).</small>
-                        </div>
+                            <div class="col-md-4 mb-3">
+                                <label class="form-label">Icon</label>
+                                <input type="file" name="icon" id="icon" class="form-control dropify"
+                                    data-allow-remove="true">
+                                @error('icon')
+                                    <small class="text-danger">{{ $message }}</small>
+                                @enderror
+                                <small class="text-muted">Upload an icon image (jpg, png, webp).</small>
+                            </div>
 
-                        <div class="mb-3">
-                            <label class="form-label">Description</label>
-                            <textarea name="description" id="description" class="form-control" rows="4">{{ old('description') }}</textarea>
-                            @error('description')
-                                <small class="text-danger">{{ $message }}</small>
-                            @enderror
-                        </div>
+                            <div class="mb-3">
+                                <label class="form-label">Description</label>
+                                <textarea name="description" id="description" class="form-control" rows="4">{{ old('description') }}</textarea>
+                                @error('description')
+                                    <small class="text-danger">{{ $message }}</small>
+                                @enderror
+                            </div>
 
 
-                        {{-- Status --}}
-                        <div class="form-check form-switch mb-4">
-                            <input class="form-check-input" type="checkbox" name="is_active" value="1">
-                            <label class="form-check-label">
-                                Active
-                            </label>
-                        </div>
+                            {{-- Status --}}
+                            <div class="form-check form-switch mb-4">
+                                <input class="form-check-input" type="checkbox" name="is_active" value="1">
+                                <label class="form-check-label">
+                                    Active
+                                </label>
+                            </div>
                         </div>
 
                         <div class="d-flex gap-2">
@@ -122,7 +122,7 @@
     </div>
 @endsection
 
-
+{{--
 @section('script')
     <!-- Dropify CSS/JS -->
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/dropify/dist/css/dropify.min.css">
@@ -150,4 +150,4 @@
             });
         });
     </script>
-@endsection
+@endsection --}}

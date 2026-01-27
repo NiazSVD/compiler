@@ -88,7 +88,7 @@
 
                         <div class="mb-4">
                             <label class="form-label fw-semibold">About Description</label>
-                            <textarea name="about_description" id="summernote" class="form-control">
+                            <textarea name="about_description" id="description" class="form-control">
                                 {{ old('about_description', $landing->about_description ?? '') }}
                             </textarea>
                         </div>
@@ -414,7 +414,7 @@
 @endsection
 
 @section('script')
-    <!-- jQuery -->
+    {{-- <!-- jQuery -->
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 
     <!-- Summernote CSS & JS -->
@@ -435,7 +435,7 @@
                 ]
             });
         });
-    </script>
+    </script> --}}
 
     <script>
         const syncColor = (pickerId, textId) => {
