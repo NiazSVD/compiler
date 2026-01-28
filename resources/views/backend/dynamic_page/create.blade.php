@@ -88,6 +88,43 @@
                                 </label>
                             </div>
 
+
+                            <hr>
+                            <h5 class="mb-4">SEO Information</h5>
+
+                            <div class="mb-3">
+                                <label class="form-label">Meta Title</label>
+                                <input type="text" name="meta_title" id="meta_title" class="form-control"
+                                    value="{{ old('meta_title') }}" maxlength="60">
+
+                                @error('meta_title')
+                                    <small class="text-danger">{{ $message }}</small>
+                                @enderror
+                            </div>
+
+
+                            <div class="mb-3">
+                                <label class="form-label">Meta Tags</label>
+                                <div>
+                                    <input type="text" name="meta_tags" id="meta_tags" value="{{ old('meta_tags') }}"
+                                        class="tag-input">
+                                </div>
+
+                                @error('meta_tags')
+                                    <small class="text-danger">{{ $message }}</small>
+                                @enderror
+                            </div>
+
+
+                            <div class="mb-3">
+                                <label class="form-label">Meta Description</label>
+                                <textarea name="meta_description" id="meta_description" class="form-control" rows="4" maxlength="160">{{ old('meta_description') }}</textarea>
+
+                                @error('meta_description')
+                                    <small class="text-danger">{{ $message }}</small>
+                                @enderror
+                            </div>
+
                         </div>
 
                         <div class="d-flex gap-2">
@@ -136,20 +173,19 @@
     </script>
 
     <script>
-    const setHome = document.getElementById('setHomeSwitch');
-    const status  = document.getElementById('statusSwitch');
+        const setHome = document.getElementById('setHomeSwitch');
+        const status = document.getElementById('statusSwitch');
 
-    function syncHomeStatus() {
-        if (setHome.checked) {
-            status.checked = true;
-            status.disabled = true;
-        } else {
-            status.disabled = false;
+        function syncHomeStatus() {
+            if (setHome.checked) {
+                status.checked = true;
+                status.disabled = true;
+            } else {
+                status.disabled = false;
+            }
         }
-    }
 
-    setHome.addEventListener('change', syncHomeStatus);
-    document.addEventListener('DOMContentLoaded', syncHomeStatus);
-</script>
-
+        setHome.addEventListener('change', syncHomeStatus);
+        document.addEventListener('DOMContentLoaded', syncHomeStatus);
+    </script>
 @endsection

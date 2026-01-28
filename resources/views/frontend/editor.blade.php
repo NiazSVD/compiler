@@ -7,6 +7,10 @@
     <title>{{ $settings->site_name ?? 'SVD Delta' }} | {{ $language->display_name }}</title>
     <link rel="icon" type="image/x-icon" href="{{ asset($settings->favicon ?? '') }}">
 
+
+    <meta name="keywords" content="{{ $language->meta_tags }}">
+    <meta name="description" content="{{ $language->meta_description }}">
+
     <!-- Bootstrap 5 CSS -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
     <!-- Font Awesome -->
@@ -92,6 +96,7 @@
             background: rgba(255, 255, 255, 0.08);
             color: #fff;
         }
+
         body.dark-mode .sidebar a.active {
             background: #3a485c;
             color: #fff;
@@ -245,11 +250,7 @@
                     <li class="nav-item">
                         <a class="nav-link" href="{{ url('/') }}">Home</a>
                     </li>
-                    @if(!(
-                        $homeSettings &&
-                        $homeSettings->type === 'page' &&
-                        $homeSettings->slug === 'landing'
-                        ))
+                    @if (!($homeSettings && $homeSettings->type === 'page' && $homeSettings->slug === 'landing'))
                         <li class="nav-item">
                             <a class="nav-link" href="{{ route('landing.home') }}">
                                 All Languages
@@ -455,7 +456,7 @@
                         ->where('position', 'footer')
                         ->orderBy('order', 'asc')
                         ->get();
-                   $landingRaw = DB::table('landing_pages')->get();
+                    $landingRaw = DB::table('landing_pages')->get();
 
                     $landing = [];
                     foreach ($landingRaw as $item) {

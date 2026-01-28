@@ -2,6 +2,14 @@
 
 @section('title', $page->page_title)
 
+
+@section('meta')
+
+    <meta name="keywords" content="{{ $page->meta_tags }}">
+    <meta name="description" content="{{ $page->meta_description }}">
+
+@endsection
+
 @section('content')
 
     <div class="container">

@@ -6,7 +6,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>{{ $settings->site_name }} | @yield('title')</title>
     <link rel="icon" type="image/x-icon" href="{{ asset($settings->favicon ?? '') }}">
-
+    @yield('meta')
     @include('frontend.layouts.styles')
 </head>
 

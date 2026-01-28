@@ -26,9 +26,9 @@ class LanguageController extends Controller
     public function store(Request $request)
     {
         $request->validate([
-            'name' => 'required|string|max:255',
-            'display_name' => 'required|string|max:255',
-            'slug'         => [
+            'name'           => 'required|string|max:255',
+            'display_name'   => 'required|string|max:255',
+            'slug'           => [
                 'nullable',
                 'string',
                 'max:255',
@@ -39,27 +39,39 @@ class LanguageController extends Controller
                     }
                 },
             ],
-            'icon' => 'nullable|mimes:jpg,jpeg,png,webp,svg|max:2048',
-            'description' => 'nullable|string',
-            'is_active' => 'nullable|boolean',
-            'is_default' => 'nullable|boolean',
-            'version' => 'nullable|string|max:50',
-            'runtime' => 'nullable|string|max:50',
+            'icon'            => 'nullable|mimes:jpg,jpeg,png,webp,svg|max:2048',
+            'description'     => 'nullable|string',
+
+            'meta_title'       => 'nullable|string',
+            'meta_tags'        => 'nullable|string',
+            'meta_description' => 'nullable|string',
+
+            'is_active'       => 'nullable|boolean',
+            'is_default'      => 'nullable|boolean',
+            'version'         => 'nullable|string|max:50',
+            'runtime'         => 'nullable|string|max:50',
         ]);
 
-        $baseSlug = $request->filled('slug') ? Str::slug($request->slug) : Str::slug($request->name);
+        $baseSlug = $request->filled('slug')
+            ? Str::slug($request->slug)
+            : Str::slug($request->name);
 
         $uniqueSlug = $this->generateUniqueSlugForLanguage($baseSlug);
 
         $data = [
-            'name' => strtolower($request->name),
-            'display_name' => $request->display_name,
-            'version'      => $request->version ?? 'latest',
-            'runtime'      => $request->runtime ?? strtolower($request->name),
-            'slug'         => $uniqueSlug,
-            'description'  => $request->description,
-            'is_active'    => $request->is_active ?? false,
-            'is_default'   => $request->is_default ?? false,
+            'name'              => strtolower($request->name),
+            'display_name'      => $request->display_name,
+            'version'           => $request->version ?? 'latest',
+            'runtime'           => $request->runtime ?? strtolower($request->name),
+            'slug'              => $uniqueSlug,
+            'description'       => $request->description,
+
+            'meta_title'        => $request->meta_title,
+            'meta_tags'         => $request->meta_tags,
+            'meta_description'  => $request->meta_description,
+
+            'is_active'         => $request->is_active ?? false,
+            'is_default'        => $request->is_default ?? false,
         ];
 
         if ($request->hasFile('icon')) {
@@ -70,9 +82,7 @@ class LanguageController extends Controller
                 mkdir($uploadPath, 0755, true);
             }
 
-            $extension = $image->getClientOriginalExtension();
-            $filename = time() . '_' . uniqid() . '.' . $extension;
-
+            $filename = time() . '_' . uniqid() . '.' . $image->getClientOriginalExtension();
             $image->move($uploadPath, $filename);
 
             $data['icon'] = 'uploads/languages/' . $filename;
@@ -85,7 +95,9 @@ class LanguageController extends Controller
                 ->update(['is_default' => false]);
         }
 
-        return redirect()->route('admin.languages.index')->with('success', 'Language added successfully');
+        return redirect()
+            ->route('admin.languages.index')
+            ->with('success', 'Language added successfully');
     }
 
 
@@ -114,14 +126,24 @@ class LanguageController extends Controller
             ],
             'icon'         => 'nullable|mimes:jpg,jpeg,png,webp,svg|max:2048',
             'description'  => 'nullable|string',
+
+            'meta_title'       => 'nullable|string',
+            'meta_tags'        => 'nullable|string',
+            'meta_description' => 'nullable|string',
         ]);
 
         $data = [
-            'display_name' => $request->display_name,
-            'is_active'    => $request->is_active ?? false,
-            'is_default'   => $request->is_default ?? false,
-            'slug'         => $request->slug ? Str::slug($request->slug) : Str::slug($request->display_name),
-            'description'  => $request->description,
+            'display_name'     => $request->display_name,
+            'is_active'        => $request->is_active ?? false,
+            'is_default'       => $request->is_default ?? false,
+            'slug'             => $request->slug
+                ? Str::slug($request->slug)
+                : Str::slug($request->display_name),
+            'description'      => $request->description,
+
+            'meta_title'       => $request->meta_title,
+            'meta_tags'        => $request->meta_tags,
+            'meta_description' => $request->meta_description,
         ];
 
         if ($request->has('remove_icon') && $language->icon) {
@@ -134,17 +156,17 @@ class LanguageController extends Controller
 
         if ($request->hasFile('icon')) {
             $image = $request->file('icon');
+
             if ($language->icon && file_exists(public_path($language->icon))) {
                 unlink(public_path($language->icon));
             }
+
             $uploadPath = public_path('uploads/languages');
             if (!file_exists($uploadPath)) {
                 mkdir($uploadPath, 0755, true);
             }
 
-            $extension = $image->getClientOriginalExtension();
-            $filename = time() . '_' . uniqid() . '.' . $extension;
-
+            $filename = time() . '_' . uniqid() . '.' . $image->getClientOriginalExtension();
             $image->move($uploadPath, $filename);
 
             $data['icon'] = 'uploads/languages/' . $filename;
@@ -157,8 +179,11 @@ class LanguageController extends Controller
                 ->update(['is_default' => false]);
         }
 
-        return redirect()->route('admin.languages.index')->with('success', 'Language updated successfully');
+        return redirect()
+            ->route('admin.languages.index')
+            ->with('success', 'Language updated successfully');
     }
+
 
 
 

@@ -399,6 +399,44 @@
 
                     </div>
 
+                    <div class="card card-body shadow mt-5">
+                        <h5>SEO Information</h5>
+
+
+                        <div class="mb-3">
+                            <label class="form-label">Meta Title</label>
+                            <input type="text" name="meta_title" id="meta_title" class="form-control"
+                                value="{{ old('meta_title', $landing->meta_title) }}" maxlength="60">
+
+                            @error('meta_title')
+                                <small class="text-danger">{{ $message }}</small>
+                            @enderror
+                        </div>
+
+                        <div class="mb-3">
+                            <label class="form-label">Meta Tags</label>
+                            <div>
+                                <input type="text" name="meta_tags" id="meta_tags" class="tag-input"
+                                    value="{{ old('meta_tags', $landing->meta_tags) }}">
+                            </div>
+
+
+                            @error('meta_tags')
+                                <small class="text-danger">{{ $message }}</small>
+                            @enderror
+                        </div>
+
+                        <div class="mb-3">
+                            <label class="form-label">Meta Description</label>
+                            <textarea name="meta_description" id="meta_description" class="form-control" rows="4" maxlength="160">{{ old('meta_description', $landing->meta_description) }}</textarea>
+
+                            @error('meta_description')
+                                <small class="text-danger">{{ $message }}</small>
+                            @enderror
+                        </div>
+
+                    </div>
+
 
                     <div class="d-flex gap-2 mt-5">
                         <button type="submit" class="btn btn-primary">

@@ -98,11 +98,48 @@
 
 
                             {{-- Status --}}
-                            <div class="form-check form-switch mb-4">
-                                <input class="form-check-input" type="checkbox" name="is_active" value="1">
-                                <label class="form-check-label">
-                                    Active
-                                </label>
+                            <div class="mb-3">
+                                <div class="form-check form-switch mb-4">
+                                    <input class="form-check-input" type="checkbox" name="is_active" value="1">
+                                    <label class="form-check-label">
+                                        Active
+                                    </label>
+                                </div>
+                            </div>
+
+                            <h5 class="mb-4">SEO Information</h5>
+
+                            <div class="mb-3">
+                                <label class="form-label">Meta Title</label>
+                                <input type="text" name="meta_title" id="meta_title" class="form-control"
+                                    value="{{ old('meta_title') }}" maxlength="60">
+
+                                @error('meta_title')
+                                    <small class="text-danger">{{ $message }}</small>
+                                @enderror
+                            </div>
+
+
+                            <div class="mb-3">
+                                <label class="form-label">Meta Tags</label>
+                                <div>
+                                    <input type="text" name="meta_tags" id="meta_tags" value="{{ old('meta_tags') }}"
+                                        class="tag-input">
+                                </div>
+
+                                @error('meta_tags')
+                                    <small class="text-danger">{{ $message }}</small>
+                                @enderror
+                            </div>
+
+
+                            <div class="mb-3">
+                                <label class="form-label">Meta Description</label>
+                                <textarea name="meta_description" id="meta_description" class="form-control" rows="4" maxlength="160">{{ old('meta_description') }}</textarea>
+
+                                @error('meta_description')
+                                    <small class="text-danger">{{ $message }}</small>
+                                @enderror
                             </div>
                         </div>
 

@@ -20,14 +20,18 @@ class Language extends Model
         'slug',
         'icon',
         'icon_color',
-        'description'
+        'description',
+        'meta_title',
+        'meta_tags',
+        'meta_description'
     ];
 
 
     protected $casts = [
         'is_active' => 'boolean',
-        'is_default' => 'boolean'
+        'is_default' => 'boolean',
     ];
+
 
     public function getRouteKeyName()
     {

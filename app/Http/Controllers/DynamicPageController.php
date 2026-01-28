@@ -40,6 +40,9 @@ class DynamicPageController extends Controller
                 },
             ],
             'order' => 'nullable|integer',
+            'meta_title'       => 'nullable|string|max:255',
+            'meta_tags'        => 'nullable|string',
+            'meta_description' => 'nullable|string|max:160',
         ]);
 
         try {
@@ -63,6 +66,10 @@ class DynamicPageController extends Controller
             $page->order        = $request->order;
             $page->page_slug    = $uniqueSlug;
             $page->status       = $status;
+            $page->meta_title       = $request->meta_title;
+            $page->meta_description = $request->meta_description;
+            $page->meta_tags = $request->meta_tags;
+
             $page->save();
 
             if ($request->input('set_home') == 1) {
@@ -80,10 +87,11 @@ class DynamicPageController extends Controller
                 ->with('success', 'Page created successfully');
         } catch (\Exception $e) {
             return back()
-                ->with('error', 'Failed to create page')
+                ->with('error', 'Failed to create page: ' . $e->getMessage())
                 ->withInput();
         }
     }
+
 
 
     public function edit(string $id)
@@ -170,6 +178,9 @@ class DynamicPageController extends Controller
                 },
             ],
             'order'        => 'nullable|integer',
+            'meta_title'       => 'nullable|string|max:255',
+            'meta_tags'        => 'nullable|string',
+            'meta_description' => 'nullable|string|max:160',
         ]);
 
         $baseSlug = $request->page_slug
@@ -178,7 +189,7 @@ class DynamicPageController extends Controller
 
         $slug = $this->generateUniqueSlug($baseSlug, $page->id);
 
-        $page->update([
+        $data = [
             'page_title'   => $request->page_title,
             'page_content' => $request->page_content,
             'page_slug'    => $slug,
@@ -186,7 +197,12 @@ class DynamicPageController extends Controller
             'status'       => in_array($request->input('status'), ['active', 'inactive'])
                 ? $request->input('status')
                 : 'inactive',
-        ]);
+            'meta_title'       => $request->meta_title,
+            'meta_description' => $request->meta_description,
+            'meta_tags'        => $request->meta_tags,
+        ];
+
+        $page->update($data);
 
         if ($request->input('set_home') == 1) {
             HomeSettings::updateOrCreate(
@@ -206,6 +222,7 @@ class DynamicPageController extends Controller
             ->route('admin.dynamic_page.index')
             ->with('success', 'Page updated successfully');
     }
+
 
 
     public function delete(string $id)

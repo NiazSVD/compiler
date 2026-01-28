@@ -19,8 +19,31 @@
  <script src="{{ asset('backend/vendor/select2/select2.min.js') }}"></script>
  <script src="{{ asset('backend/vendor/notyf/notyf.min.js') }}"></script>
  <script src="{{ asset('backend/vendor/simplebar/dist/simplebar.min.js') }}"></script>
+ <script src="https://cdn.jsdelivr.net/npm/@yaireo/tagify"></script>
  <script src="{{ asset('backend/assets/js/volt.js') }}"></script>
  <script src="{{ asset('backend/assets/js/custom.js') }}"></script>
+
+ {{-- <script>
+     document.addEventListener('DOMContentLoaded', function() {
+         new Tagify(document.querySelector('#meta_tags'), {
+             delimiters: ",",
+             maxTags: 100,
+             dropdown: {
+                 enabled: 0
+             }
+         });
+     });
+ </script> --}}
+
+ <script>
+     var input = document.getElementById('meta_tags');
+     var tagify = new Tagify(input);
+
+     input.form.addEventListener('submit', function() {
+         input.value = tagify.value.map(t => t.value).join(', ');
+     });
+ </script>
+
  <!-- Dropify JS -->
  <script src="https://cdn.jsdelivr.net/npm/dropify/dist/js/dropify.min.js"></script>
 
@@ -33,16 +56,39 @@
          tabsize: 2,
          height: 300,
          toolbar: [
+             // Style group
              ['style', ['style']],
-             ['font', ['bold', 'underline', 'clear']],
+
+             // Font group
+             ['font', ['bold', 'italic', 'underline', 'strikethrough', 'clear']],
+
+             // Font size
+             ['fontsize', ['fontsize']],
+
+             // Color
              ['color', ['color']],
+
+             // Paragraph / lists
              ['para', ['ul', 'ol', 'paragraph']],
+
+             // Table
              ['table', ['table']],
-             ['insert', ['link', 'picture', 'video']],
-             ['view', ['fullscreen', 'codeview', 'help']]
-         ]
+
+             // Insert media
+             ['insert', ['link', 'picture', 'video', 'hr', 'table']],
+
+             // Misc / view
+             ['view', ['fullscreen', 'codeview', 'help']],
+
+             // Undo / redo
+             ['history', ['undo', 'redo']]
+         ],
+         // Optional: add some extra settings
+         fontSizes: ['8', '9', '10', '11', '12', '14', '16', '18', '20', '22', '24', '26', '28', '36', '48',
+             '72']
      });
  </script>
+
 
 
  <script>

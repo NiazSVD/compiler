@@ -6,5 +6,14 @@ use Illuminate\Database\Eloquent\Model;
 
 class DynamicPage extends Model
 {
-    protected $fillable = ['page_title','page_slug','order','page_content','status'];
+    protected $fillable = [
+        'page_title',
+        'page_slug',
+        'order',
+        'page_content',
+        'status',
+        'meta_title',
+        'meta_tags',
+        'meta_description'
+    ];
 }

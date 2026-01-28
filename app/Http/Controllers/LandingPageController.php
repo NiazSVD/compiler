@@ -65,6 +65,11 @@ class LandingPageController extends Controller
         // ===== FOOTER =====
         $this->updateKeyValue('footer_text', $request->footer_text);
 
+        // ===== SEO =====
+        $this->updateKeyValue('meta_title', $request->meta_title);
+        $this->updateKeyValue('meta_description', $request->meta_description);
+        $this->updateKeyValue('meta_tags', $request->meta_tags);
+
         return redirect()->back()->with('success', 'Landing page updated successfully');
     }
 

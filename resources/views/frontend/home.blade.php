@@ -2,6 +2,14 @@
 
 @section('title', 'Home')
 
+
+@section('meta')
+
+    <meta name="keywords" content="{{ $landing['meta_tags'] }}">
+    <meta name="description" content="{{ $landing['meta_description'] }}">
+
+@endsection
+
 @section('content')
     <section class="hero">
         <div class="container">
