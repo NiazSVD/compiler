@@ -13,8 +13,7 @@
                 <form method="POST" action="{{ route('admin.landing.update') }}" enctype="multipart/form-data">
                     @csrf
 
-                    <div class="row">
-                        {{-- Header Color --}}
+                    {{-- <div class="row">
                         <div class="col-md-2 mb-3">
                             <label class="form-label fw-semibold">Theme Color</label>
                             <div class="d-flex gap-2 align-items-center">
@@ -24,7 +23,7 @@
                                     value="{{ old('theme_color', $landing->theme_color ?? '#ffffff') }}">
                             </div>
                         </div>
-                    </div>
+                    </div> --}}
 
 
                     <div class="card card-body shadow" style="background-color: rgb(248, 247, 247)">
@@ -406,7 +405,7 @@
                         <div class="mb-3">
                             <label class="form-label">Meta Title</label>
                             <input type="text" name="meta_title" id="meta_title" class="form-control"
-                                value="{{ old('meta_title', $landing->meta_title) }}" maxlength="60">
+                                value="{{ old('meta_title', $landing->meta_title ?? '') }}" maxlength="60">
 
                             @error('meta_title')
                                 <small class="text-danger">{{ $message }}</small>
@@ -417,7 +416,7 @@
                             <label class="form-label">Meta Tags</label>
                             <div>
                                 <input type="text" name="meta_tags" id="meta_tags" class="tag-input"
-                                    value="{{ old('meta_tags', $landing->meta_tags) }}">
+                                    value="{{ old('meta_tags', $landing->meta_tags ?? '') }}">
                             </div>
 
 
@@ -428,7 +427,7 @@
 
                         <div class="mb-3">
                             <label class="form-label">Meta Description</label>
-                            <textarea name="meta_description" id="meta_description" class="form-control" rows="4" maxlength="160">{{ old('meta_description', $landing->meta_description) }}</textarea>
+                            <textarea name="meta_description" id="meta_description" class="form-control" rows="4" maxlength="160">{{ old('meta_description', $landing->meta_description ?? '') }}</textarea>
 
                             @error('meta_description')
                                 <small class="text-danger">{{ $message }}</small>
@@ -452,29 +451,6 @@
 @endsection
 
 @section('script')
-    {{-- <!-- jQuery -->
-    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-
-    <!-- Summernote CSS & JS -->
-    <link href="https://cdn.jsdelivr.net/npm/summernote@0.8.20/dist/summernote.min.css" rel="stylesheet">
-    <script src="https://cdn.jsdelivr.net/npm/summernote@0.8.20/dist/summernote.min.js"></script>
-
-    <script>
-        $(document).ready(function() {
-            $('#summernote').summernote({
-                height: 300, // editor height
-                placeholder: 'Enter main landing page description...',
-                toolbar: [
-                    ['style', ['bold', 'italic', 'underline', 'clear']],
-                    ['font', ['fontsize', 'color', 'strikethrough']],
-                    ['para', ['ul', 'ol', 'paragraph']],
-                    ['insert', ['link', 'picture', 'video']],
-                    ['view', ['fullscreen', 'codeview', 'help']]
-                ]
-            });
-        });
-    </script> --}}
-
     <script>
         const syncColor = (pickerId, textId) => {
             const picker = document.getElementById(pickerId);

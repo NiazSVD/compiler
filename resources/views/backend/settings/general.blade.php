@@ -69,11 +69,11 @@
                             <textarea name="site_description" class="form-control" rows="3">{{ $setting->site_description ?? '' }}</textarea>
                         </div>
 
-                        <div class="mb-3">
+                        {{-- <div class="mb-3">
                             <label class="form-label">{{ __('settings.footer_text') }}</label>
                             <input type="text" name="footer_text" class="form-control"
                                 value="{{ $setting->footer_text ?? '' }}">
-                        </div>
+                        </div> --}}
 
                         <button class="btn btn-primary mt-3 animate-up-2" type="submit">
                             <i class="bi bi-save me-1"></i> {{ __('settings.save_changes') }}
