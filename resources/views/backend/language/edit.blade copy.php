@@ -1,0 +1,235 @@
+@extends('backend.master')
+
+@section('content')
+    <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center py-4">
+        <div>
+            <nav aria-label="breadcrumb" class="d-none d-md-inline-block">
+                <ol class="breadcrumb breadcrumb-dark breadcrumb-transparent">
+                    <li class="breadcrumb-item">
+                        <a href="{{ route('dashboard') }}">
+                            <i class="bi bi-house-door fs-6"></i>
+                        </a>
+                    </li>
+                    <li class="breadcrumb-item">
+                        <a href="{{ route('admin.languages.index') }}">Languages</a>
+                    </li>
+                    <li class="breadcrumb-item active">Edit</li>
+                </ol>
+            </nav>
+
+            <h2 class="h4 mb-0">Edit Language</h2>
+            <small class="text-muted">Update language configuration</small>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-md-8">
+            <div class="card border-0 shadow">
+                <div class="card-header">
+                    <h5 class="card-title mb-0">Language Information</h5>
+                </div>
+
+                <div class="card-body">
+                    <form method="POST" action="{{ route('admin.languages.update', $language) }}"
+                        enctype="multipart/form-data">
+                        @csrf
+                        @method('PUT')
+
+                        <div class="row">
+                            {{-- Language Key --}}
+                            <div class="col-md-4 mb-3">
+                                <label class="form-label">Language Key</label>
+                                <input type="text" class="form-control" value="{{ $language->name }}" disabled>
+                            </div>
+
+                            {{-- Display Name --}}
+                            <div class="col-md-4 mb-3">
+                                <label class="form-label">Display Name</label>
+                                <input type="text" name="display_name" value="{{ $language->display_name }}"
+                                    class="form-control" required>
+                            </div>
+
+                            {{-- Slug --}}
+                            <div class="col-md-4 mb-3">
+                                <label class="form-label">Slug (URL Friendly)</label>
+                                <input type="text" name="slug" value="{{ $language->slug }}" class="form-control">
+                                @error('slug')
+                                    <small class="text-danger">{{ $message }}</small>
+                                @enderror
+                                <small class="text-muted">
+                                    Used in URL or identifier. Change carefully.
+                                </small>
+                            </div>
+                        </div>
+
+                        <div class="row">
+                            {{-- Version --}}
+                            <div class="col-md-3 mb-3">
+                                <label class="form-label">Version</label>
+                                <input type="text" class="form-control" value="{{ $language->version }}" disabled>
+                            </div>
+
+                            {{-- Runtime --}}
+                            <div class="col-md-3 mb-3">
+                                <label class="form-label">Runtime</label>
+                                <input type="text" class="form-control" value="{{ $language->runtime }}" disabled>
+                            </div>
+
+                            <div class="col-md-4 mb-3">
+                                <label for="icon" class="form-label">Icon</label>
+                                <input type="file" name="icon" id="icon" class="form-control dropify"
+                                    data-default-file="{{ $language->icon_show }}" data-allow-remove="true">
+                                {{-- <small class="text-muted">FontAwesome icon class, example: fa-brands fa-python</small> --}}
+                            </div>
+
+                            {{-- <div class="col-md-2 mb-3">
+                                <label for="icon_color" class="form-label">Icon Color</label>
+                                <input type="color" name="icon_color" id="icon_color"
+                                    class="form-control form-control-color"
+                                    value="{{ old('icon_color', $language->icon_color ?? '#000000') }}">
+                            </div> --}}
+
+                        </div>
+
+                        {{-- Status --}}
+                        <div class="form-check form-switch mb-3">
+                            <input class="form-check-input" type="checkbox" name="is_active" value="1"
+                                {{ $language->is_active ? 'checked' : '' }}>
+                            <label class="form-check-label">
+                                Active
+                            </label>
+                        </div>
+
+                        {{-- Default --}}
+                        {{-- <div class="form-check form-switch mb-4">
+                            <input class="form-check-input" type="checkbox" name="is_default" value="1"
+                                {{ $language->is_default ? 'checked' : '' }}>
+                            <label class="form-check-label">
+                                Default Language
+                            </label>
+                        </div> --}}
+
+                        <div class="mb-5">
+                            <label for="description" class="form-label">Description</label>
+                            <textarea name="description" id="description" class="form-control" rows="4">{{ old('description', $language->description) }}</textarea>
+                        </div>
+
+
+
+                        <h5 class="mb-4">SEO Information</h5>
+
+                        <div class="mb-3">
+                            <label class="form-label">Meta Title</label>
+                            <input type="text" name="meta_title" id="meta_title" class="form-control"
+                                value="{{ old('meta_title', $language->meta_title) }}" maxlength="60">
+
+                            @error('meta_title')
+                                <small class="text-danger">{{ $message }}</small>
+                            @enderror
+                        </div>
+
+                        <div class="mb-3">
+                            <label class="form-label">Meta Tags</label>
+                            <div>
+                                <input type="text" name="meta_tags" id="meta_tags" class="tag-input"
+                                    value="{{ old('meta_tags', $language->meta_tags) }}">
+                            </div>
+
+
+                            @error('meta_tags')
+                                <small class="text-danger">{{ $message }}</small>
+                            @enderror
+                        </div>
+
+                        <div class="mb-3">
+                            <label class="form-label">Meta Description</label>
+                            <textarea name="meta_description" id="meta_description" class="form-control" rows="4" maxlength="160">{{ old('meta_description', $language->meta_description) }}</textarea>
+
+                            @error('meta_description')
+                                <small class="text-danger">{{ $message }}</small>
+                            @enderror
+                        </div>
+
+
+                        <div class="d-flex gap-2">
+                            <button type="submit" class="btn btn-primary">
+                                <i class="bi bi-check-circle me-1"></i> Update
+                            </button>
+
+                            <a href="{{ route('admin.languages.index') }}" class="btn btn-outline-secondary">
+                                <i class="bi bi-arrow-left me-1"></i> Back
+                            </a>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+@endsection
+
+@section('script')
+    {{-- <script src="https://cdn.ckeditor.com/4.22.1/standard/ckeditor.js"></script>
+
+    <script>
+        CKEDITOR.replace('editor');
+    </script> --}}
+    <!-- Summernote JS -->
+
+    {{-- <script src="https://code.jquery.com/jquery-3.4.1.slim.min.js"
+        integrity="sha384-J6qa4849blE2+poT4WnyKhv5vZF5SrPo0iEjwBvKU7imGFAV0wwj1yYfoRSJoZ+n" crossorigin="anonymous">
+    </script>
+
+    <script src="https://cdn.jsdelivr.net/npm/summernote@0.9.0/dist/summernote-lite.min.js"></script>
+
+
+    <script>
+        $('#description').summernote({
+            placeholder: 'Hello stand alone ui',
+            tabsize: 2,
+            height: 300,
+            toolbar: [
+                ['style', ['style']],
+                ['font', ['bold', 'underline', 'clear']],
+                ['color', ['color']],
+                ['para', ['ul', 'ol', 'paragraph']],
+                ['table', ['table']],
+                ['insert', ['link', 'picture', 'video']],
+                ['view', ['fullscreen', 'codeview', 'help']]
+            ]
+        });
+    </script> --}}
+
+
+    {{-- <script src="https://cdn.jsdelivr.net/npm/summernote@0.8.16/dist/summernote.min.js"></script>
+
+
+    <script>
+        $(document).ready(function() {
+            var drEvent = $('#icon').dropify();
+
+            drEvent.on('dropify.afterClear', function(event, element) {
+                $('<input>').attr({
+                    type: 'hidden',
+                    name: 'remove_icon',
+                    value: '1'
+                }).appendTo('form');
+            });
+        });
+    </script>
+
+    <script>
+        $(document).ready(function() {
+            $('#description').summernote({
+                height: 200, // editor height
+                placeholder: 'Enter language description...',
+                toolbar: [
+                    ['style', ['bold', 'italic', 'underline', 'clear']],
+                    ['font', ['fontsize', 'color', 'strikethrough']],
+                    ['para', ['ul', 'ol', 'paragraph']],
+                    ['insert', ['link', 'picture', 'video']],
+                    ['view', ['fullscreen', 'codeview', 'help']]
+                ]
+            });
+        });
+    </script> --}}
+@endsection

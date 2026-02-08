@@ -5,8 +5,10 @@ namespace App\Http\Controllers;
 use App\Models\DynamicPage;
 use Illuminate\Validation\Rule;
 use App\Models\Language;
+use App\Models\MultiLang;
 use Illuminate\Support\Facades\Http;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Str;
 
 class LanguageController extends Controller
@@ -18,11 +20,13 @@ class LanguageController extends Controller
         return view('backend.language.index', compact('languages'));
     }
 
+
     public function create()
     {
         return view('backend.language.create');
     }
 
+    
     public function store(Request $request)
     {
         $request->validate([
@@ -101,16 +105,18 @@ class LanguageController extends Controller
     }
 
 
-
     public function edit(Language $language)
     {
-        return view('backend.language.edit', compact('language'));
+        $multiLanguages = MultiLang::where('active', 1)->get();
+        return view('backend.language.edit', compact('language', 'multiLanguages'));
     }
+
 
     public function update(Request $request, Language $language)
     {
-        $request->validate([
-            'display_name' => 'required|string|max:255',
+        $multiLanguages = MultiLang::where('active', 1)->get();
+
+        $rules = [
             'is_active'    => 'nullable|boolean',
             'is_default'   => 'nullable|boolean',
             'slug'         => [
@@ -124,96 +130,75 @@ class LanguageController extends Controller
                     }
                 },
             ],
-            'icon'         => 'nullable|mimes:jpg,jpeg,png,webp,svg|max:2048',
-            'description'  => 'nullable|string',
-
+            'icon'             => 'nullable|mimes:jpg,jpeg,png,webp,svg|max:2048',
             'meta_title'       => 'nullable|string',
             'meta_tags'        => 'nullable|string',
             'meta_description' => 'nullable|string',
-        ]);
-
-        $data = [
-            'display_name'     => $request->display_name,
-            'is_active'        => $request->is_active ?? false,
-            'is_default'       => $request->is_default ?? false,
-            'slug'             => $request->slug
-                ? Str::slug($request->slug)
-                : Str::slug($request->display_name),
-            'description'      => $request->description,
-
-            'meta_title'       => $request->meta_title,
-            'meta_tags'        => $request->meta_tags,
-            'meta_description' => $request->meta_description,
         ];
 
-        if ($request->has('remove_icon') && $language->icon) {
-            $oldPath = public_path($language->icon);
-            if (file_exists($oldPath)) {
-                unlink($oldPath);
-            }
-            $data['icon'] = null;
+        foreach ($multiLanguages as $lang) {
+            $rules['display_name_' . $lang->code] = $lang->code == 'en' ? 'required|string|max:255' : 'nullable|string|max:255';
+            $rules['description_' . $lang->code]  = 'nullable|string';
         }
+        $request->validate($rules);
 
-        if ($request->hasFile('icon')) {
-            $image = $request->file('icon');
+        DB::beginTransaction();
+        try {
+            $data = [
+                'display_name'     => $request->display_name_en,
+                'is_active'        => $request->is_active ?? false,
+                'is_default'       => $request->is_default ?? false,
+                'slug'             => $request->slug ? Str::slug($request->slug) : Str::slug($request->display_name_en),
+                'description'      => $request->description_en,
+                'meta_title'       => $request->meta_title,
+                'meta_tags'        => $request->meta_tags,
+                'meta_description' => $request->meta_description,
+            ];
 
-            if ($language->icon && file_exists(public_path($language->icon))) {
-                unlink(public_path($language->icon));
+            if ($request->hasFile('icon')) {
+                if ($language->icon && file_exists(public_path($language->icon))) {
+                    unlink(public_path($language->icon));
+                }
+                $image = $request->file('icon');
+                $filename = time() . '_' . uniqid() . '.' . $image->getClientOriginalExtension();
+                $image->move(public_path('uploads/languages'), $filename);
+                $data['icon'] = 'uploads/languages/' . $filename;
             }
 
-            $uploadPath = public_path('uploads/languages');
-            if (!file_exists($uploadPath)) {
-                mkdir($uploadPath, 0755, true);
+            $language->update($data);
+
+            foreach ($multiLanguages as $lang) {
+
+                $language->translations()->updateOrCreate(
+                    ['locale' => $lang->code, 'key' => 'display_name'],
+                    ['value' => $request->input('display_name_' . $lang->code)]
+                );
+
+                $language->translations()->updateOrCreate(
+                    ['locale' => $lang->code, 'key' => 'description'],
+                    ['value' => $request->input('description_' . $lang->code)]
+                );
             }
 
-            $filename = time() . '_' . uniqid() . '.' . $image->getClientOriginalExtension();
-            $image->move($uploadPath, $filename);
+            if ($request->is_default) {
+                Language::where('id', '!=', $language->id)->update(['is_default' => false]);
+            }
 
-            $data['icon'] = 'uploads/languages/' . $filename;
+            DB::commit();
+            return redirect()->route('admin.languages.index')->with('success', 'Language updated successfully');
+        } catch (\Exception $e) {
+            DB::rollback();
+            return back()->with('error', 'Something went wrong: ' . $e->getMessage());
         }
-
-        $language->update($data);
-
-        if ($request->is_default) {
-            Language::where('id', '!=', $language->id)
-                ->update(['is_default' => false]);
-        }
-
-        return redirect()
-            ->route('admin.languages.index')
-            ->with('success', 'Language updated successfully');
     }
 
-
-
-
-    // public function update(Request $request, Language $language)
-    // {
-    //     $language->update([
-    //         'display_name' => $request->display_name,
-    //         'is_active' => $request->is_active ?? false,
-    //         'is_default' => $request->is_default ?? false,
-    //         'slug' => $request->slug ? Str::slug($request->slug) : Str::slug($language->display_name),
-    //         'icon' => $request->icon,
-    //         'icon_color' => $request->icon_color,
-    //         'description' => $request->description,
-    //     ]);
-
-    //     if ($request->is_default) {
-    //         Language::where('id', '!=', $language->id)
-    //             ->update(['is_default' => false]);
-    //     }
-
-
-    //     return redirect()->route('admin.languages.index')
-    //         ->with('success', 'Language updated');
-    // }
 
     public function destroy(Language $language)
     {
         $language->delete();
         return back()->with('success', 'Language removed');
     }
+
 
     public function syncPiston()
     {
@@ -251,7 +236,6 @@ class LanguageController extends Controller
 
         return back()->with('success', 'New Piston languages synced successfully!');
     }
-
 
 
     private function generateUniqueSlugForLanguage(string $slug): string

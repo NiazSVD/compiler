@@ -67,6 +67,17 @@
 
             <li role="separator" class="dropdown-divider mt-4 mb-3 border-gray-700"></li>
 
+            <li class="nav-item {{ request()->routeIs('admin.multi_languages.*') ? 'active' : '' }}">
+                <a href="{{ route('admin.multi_languages.index') }}" class="nav-link">
+                    <span class="sidebar-icon">
+                        <i class="bi bi-translate me-2"></i>
+                    </span>
+                    <span class="sidebar-text">{{ __('Multi Languages') }}</span>
+                </a>
+            </li>
+
+            <li role="separator" class="dropdown-divider mt-4 mb-3 border-gray-700"></li>
+
             <li class="nav-item {{ request()->routeIs('admin.dynamic_home.*') ? 'active' : '' }}">
                 <a href="{{ route('admin.dynamic_home.index') }}" class="nav-link">
                     <span class="sidebar-icon"><i class="bi bi-house-check-fill me-2"></i></span>

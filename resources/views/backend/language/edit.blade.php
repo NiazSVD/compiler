@@ -6,119 +6,72 @@
             <nav aria-label="breadcrumb" class="d-none d-md-inline-block">
                 <ol class="breadcrumb breadcrumb-dark breadcrumb-transparent">
                     <li class="breadcrumb-item">
-                        <a href="{{ route('dashboard') }}">
-                            <i class="bi bi-house-door fs-6"></i>
-                        </a>
+                        <a href="{{ route('dashboard') }}"><i class="bi bi-house-door fs-6"></i></a>
                     </li>
                     <li class="breadcrumb-item">
-                        <a href="{{ route('admin.languages.index') }}">Languages</a>
+                        <a href="{{ route('admin.languages.index') }}">Programming Languages</a>
                     </li>
                     <li class="breadcrumb-item active">Edit</li>
                 </ol>
             </nav>
-
-            <h2 class="h4 mb-0">Edit Language</h2>
-            <small class="text-muted">Update language configuration</small>
+            <h2 class="h4 mb-0">Edit Programming Language</h2>
+            <small class="text-muted">Update configuration and translations for <b>{{ $language->name }}</b></small>
         </div>
     </div>
 
-    <div class="row">
-        <div class="col-md-8">
-            <div class="card border-0 shadow">
-                <div class="card-header">
-                    <h5 class="card-title mb-0">Language Information</h5>
+    <form method="POST" action="{{ route('admin.languages.update', $language) }}" enctype="multipart/form-data">
+        @csrf
+        @method('PUT')
+        <div class="row">
+
+            <div class="col-md-8">
+                <div class="card border-0 shadow mb-4">
+                    <div class="card-header bg-primary text-white">
+                        <h5 class="card-title mb-0"><i class="bi bi-translate me-2"></i>Content Translations</h5>
+                    </div>
+                    <div class="card-body">
+
+                        <ul class="nav nav-tabs mb-3" id="langTabs" role="tablist">
+                            @foreach($multiLanguages as $lang)
+                            <li class="nav-item">
+                                <button class="nav-link {{ $lang->code == 'en' ? 'active' : '' }}"
+                                    id="{{ $lang->code }}-tab" data-bs-toggle="tab"
+                                    data-bs-target="#lang-{{ $lang->code }}" type="button" role="tab">
+                                    <i class="bi bi-translate me-1"></i>
+                                    {{ $lang->name }}
+                                </button>
+                            </li>
+                            @endforeach
+                        </ul>
+
+                        <div class="tab-content p-2 border rounded" id="langTabsContent">
+                            @foreach($multiLanguages as $lang)
+                            <div class="tab-pane fade {{ $lang->code == 'en' ? 'show active' : '' }}"
+                                 id="lang-{{ $lang->code }}" role="tabpanel">
+
+                                <div class="mb-3 mt-3">
+                                    <label class="form-label fw-bold">Display Name ({{ strtoupper($lang->code) }})</label>
+                                    <input type="text" name="display_name_{{ $lang->code }}"
+                                        class="form-control"
+                                        value="{{ old('display_name_'.$lang->code, $language->getTranslation('display_name', $lang->code)) }}"
+                                        {{ $lang->code == 'en' ? 'required' : '' }}>
+                                </div>
+
+                                <div class="mb-3">
+                                    <label class="form-label fw-bold">Description ({{ strtoupper($lang->code) }})</label>
+                                    <textarea name="description_{{ $lang->code }}" class="form-control summernote" rows="5">{{ old('description_'.$lang->code, $language->getTranslation('description', $lang->code)) }}</textarea>
+                                </div>
+                            </div>
+                            @endforeach
+                        </div>
+                    </div>
                 </div>
 
-                <div class="card-body">
-                    <form method="POST" action="{{ route('admin.languages.update', $language) }}"
-                        enctype="multipart/form-data">
-                        @csrf
-                        @method('PUT')
-
-                        <div class="row">
-                            {{-- Language Key --}}
-                            <div class="col-md-4 mb-3">
-                                <label class="form-label">Language Key</label>
-                                <input type="text" class="form-control" value="{{ $language->name }}" disabled>
-                            </div>
-
-                            {{-- Display Name --}}
-                            <div class="col-md-4 mb-3">
-                                <label class="form-label">Display Name</label>
-                                <input type="text" name="display_name" value="{{ $language->display_name }}"
-                                    class="form-control" required>
-                            </div>
-
-                            {{-- Slug --}}
-                            <div class="col-md-4 mb-3">
-                                <label class="form-label">Slug (URL Friendly)</label>
-                                <input type="text" name="slug" value="{{ $language->slug }}" class="form-control">
-                                @error('slug')
-                                    <small class="text-danger">{{ $message }}</small>
-                                @enderror
-                                <small class="text-muted">
-                                    Used in URL or identifier. Change carefully.
-                                </small>
-                            </div>
-                        </div>
-
-                        <div class="row">
-                            {{-- Version --}}
-                            <div class="col-md-3 mb-3">
-                                <label class="form-label">Version</label>
-                                <input type="text" class="form-control" value="{{ $language->version }}" disabled>
-                            </div>
-
-                            {{-- Runtime --}}
-                            <div class="col-md-3 mb-3">
-                                <label class="form-label">Runtime</label>
-                                <input type="text" class="form-control" value="{{ $language->runtime }}" disabled>
-                            </div>
-
-                            <div class="col-md-4 mb-3">
-                                <label for="icon" class="form-label">Icon</label>
-                                <input type="file" name="icon" id="icon" class="form-control dropify"
-                                    data-default-file="{{ $language->icon_show }}" data-allow-remove="true">
-                                {{-- <small class="text-muted">FontAwesome icon class, example: fa-brands fa-python</small> --}}
-                            </div>
-
-                            {{-- <div class="col-md-2 mb-3">
-                                <label for="icon_color" class="form-label">Icon Color</label>
-                                <input type="color" name="icon_color" id="icon_color"
-                                    class="form-control form-control-color"
-                                    value="{{ old('icon_color', $language->icon_color ?? '#000000') }}">
-                            </div> --}}
-
-                        </div>
-
-                        {{-- Status --}}
-                        <div class="form-check form-switch mb-3">
-                            <input class="form-check-input" type="checkbox" name="is_active" value="1"
-                                {{ $language->is_active ? 'checked' : '' }}>
-                            <label class="form-check-label">
-                                Active
-                            </label>
-                        </div>
-
-                        {{-- Default --}}
-                        {{-- <div class="form-check form-switch mb-4">
-                            <input class="form-check-input" type="checkbox" name="is_default" value="1"
-                                {{ $language->is_default ? 'checked' : '' }}>
-                            <label class="form-check-label">
-                                Default Language
-                            </label>
-                        </div> --}}
-
-                        <div class="mb-5">
-                            <label for="description" class="form-label">Description</label>
-                            <textarea name="description" id="description" class="form-control" rows="4">{{ old('description', $language->description) }}</textarea>
-                        </div>
-
-
-
-                        <h5 class="mb-4">SEO Information</h5>
-
-                        <div class="mb-3">
+                {{-- SEO Information (Global) --}}
+                <div class="card border-0 shadow">
+                    <div class="card-header"><h5 class="card-title mb-0"><i class="bi bi-search me-2"></i>SEO Information (Meta Details)</h5></div>
+                    <div class="card-body">
+                         <div class="mb-3">
                             <label class="form-label">Meta Title</label>
                             <input type="text" name="meta_title" id="meta_title" class="form-control"
                                 value="{{ old('meta_title', $language->meta_title) }}" maxlength="60">
@@ -149,87 +102,71 @@
                                 <small class="text-danger">{{ $message }}</small>
                             @enderror
                         </div>
+                    </div>
+                </div>
+            </div>
 
-
-                        <div class="d-flex gap-2">
-                            <button type="submit" class="btn btn-primary">
-                                <i class="bi bi-check-circle me-1"></i> Update
-                            </button>
-
-                            <a href="{{ route('admin.languages.index') }}" class="btn btn-outline-secondary">
-                                <i class="bi bi-arrow-left me-1"></i> Back
-                            </a>
+         
+            <div class="col-md-4">
+                <div class="card border-0 shadow mb-4">
+                    <div class="card-header"><h5 class="card-title mb-0">System Configuration</h5></div>
+                    <div class="card-body">
+                        <div class="mb-3">
+                            <label class="form-label text-muted small">Language Key</label>
+                            <input type="text" class="form-control bg-light" value="{{ $language->name }}" readonly disabled>
                         </div>
-                    </form>
+                        <div class="row">
+                            <div class="col-6 mb-3">
+                                <label class="form-label small">Version</label>
+                                <input type="text" class="form-control bg-light" value="{{ $language->version }}" disabled>
+                            </div>
+                            <div class="col-6 mb-3">
+                                <label class="form-label small">Runtime</label>
+                                <input type="text" class="form-control bg-light" value="{{ $language->runtime }}" disabled>
+                            </div>
+                        </div>
+
+                        <div class="mb-3">
+                            <label class="form-label fw-bold">Slug (URL Friendly)</label>
+                            <input type="text" name="slug" value="{{ old('slug', $language->slug) }}" class="form-control">
+                            <small class="text-muted">Used for the editor URL.</small>
+                        </div>
+
+                        <div class="mb-3">
+                            <label class="form-label fw-bold">Icon</label>
+                            <input type="file" name="icon" class="dropify" data-default-file="{{ $language->icon ? asset($language->icon) : '' }}">
+                        </div>
+
+                        <div class="form-check form-switch mb-3">
+                            <input class="form-check-input" type="checkbox" name="is_active" value="1" {{ $language->is_active ? 'checked' : '' }}>
+                            <label class="form-check-label">Active for Users</label>
+                        </div>
+
+                        <div class="d-grid gap-2 mt-4">
+                            <button type="submit" class="btn btn-primary btn-lg">Update Configuration</button>
+                            <a href="{{ route('admin.languages.index') }}" class="btn btn-outline-secondary">Back to List</a>
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>
-    </div>
+    </form>
 @endsection
 
 @section('script')
-    {{-- <script src="https://cdn.ckeditor.com/4.22.1/standard/ckeditor.js"></script>
-
-    <script>
-        CKEDITOR.replace('editor');
-    </script> --}}
-    <!-- Summernote JS -->
-
-    {{-- <script src="https://code.jquery.com/jquery-3.4.1.slim.min.js"
-        integrity="sha384-J6qa4849blE2+poT4WnyKhv5vZF5SrPo0iEjwBvKU7imGFAV0wwj1yYfoRSJoZ+n" crossorigin="anonymous">
-    </script>
-
-    <script src="https://cdn.jsdelivr.net/npm/summernote@0.9.0/dist/summernote-lite.min.js"></script>
+    <link href="https://cdn.jsdelivr.net/npm/summernote@0.8.18/dist/summernote-bs4.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-tagsinput/0.8.0/bootstrap-tagsinput.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/dropify/dist/css/dropify.min.css">
 
 
-    <script>
-        $('#description').summernote({
-            placeholder: 'Hello stand alone ui',
-            tabsize: 2,
-            height: 300,
-            toolbar: [
-                ['style', ['style']],
-                ['font', ['bold', 'underline', 'clear']],
-                ['color', ['color']],
-                ['para', ['ul', 'ol', 'paragraph']],
-                ['table', ['table']],
-                ['insert', ['link', 'picture', 'video']],
-                ['view', ['fullscreen', 'codeview', 'help']]
-            ]
-        });
-    </script> --}}
-
-
-    {{-- <script src="https://cdn.jsdelivr.net/npm/summernote@0.8.16/dist/summernote.min.js"></script>
-
+    <script src="https://cdn.jsdelivr.net/npm/summernote@0.8.18/dist/summernote-bs4.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-tagsinput/0.8.0/bootstrap-tagsinput.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/dropify/dist/js/dropify.min.js"></script>
 
     <script>
         $(document).ready(function() {
-            var drEvent = $('#icon').dropify();
-
-            drEvent.on('dropify.afterClear', function(event, element) {
-                $('<input>').attr({
-                    type: 'hidden',
-                    name: 'remove_icon',
-                    value: '1'
-                }).appendTo('form');
-            });
+            $('.summernote').summernote({ height: 250 });
+            $('.dropify').dropify();
         });
     </script>
-
-    <script>
-        $(document).ready(function() {
-            $('#description').summernote({
-                height: 200, // editor height
-                placeholder: 'Enter language description...',
-                toolbar: [
-                    ['style', ['bold', 'italic', 'underline', 'clear']],
-                    ['font', ['fontsize', 'color', 'strikethrough']],
-                    ['para', ['ul', 'ol', 'paragraph']],
-                    ['insert', ['link', 'picture', 'video']],
-                    ['view', ['fullscreen', 'codeview', 'help']]
-                ]
-            });
-        });
-    </script> --}}
 @endsection

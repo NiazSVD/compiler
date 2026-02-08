@@ -3,9 +3,12 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
+use App\Traits\Translatable;
 
 class DynamicPage extends Model
 {
+    use Translatable;
+
     protected $fillable = [
         'page_title',
         'page_slug',

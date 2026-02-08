@@ -12,6 +12,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Str;
+use App\Models\MultiLangsContent;
 
 class FrontendController extends Controller
 {
@@ -22,11 +23,12 @@ class FrontendController extends Controller
         $languages = Language::where('is_active', true)
             ->orderBy('display_name')
             ->get();
-        $landingRaw = DB::table('landing_pages')->get();
+
+        $landingRaw = LandingPage::all();
 
         $landing = [];
         foreach ($landingRaw as $item) {
-            $landing[$item->key] = $item->value;
+            $landing[$item->key] = $item->getTranslation($item->key);
         }
 
         if (!$home) {
@@ -34,12 +36,12 @@ class FrontendController extends Controller
         }
 
         if ($home->type === 'page') {
-
             if ($home->slug === 'landing') {
                 return view('frontend.home', compact('languages', 'landing'));
             }
 
-            $page = DynamicPage::where('page_slug', $home->slug)
+            $page = DynamicPage::with('translations')
+                ->where('page_slug', $home->slug)
                 ->where('status', 'active')
                 ->first();
 
@@ -51,8 +53,8 @@ class FrontendController extends Controller
         }
 
         if ($home->type === 'language') {
-
-            $language = Language::where('slug', $home->slug)
+            $language = Language::with('translations')
+                ->where('slug', $home->slug)
                 ->where('is_active', true)
                 ->first();
 
@@ -63,10 +65,9 @@ class FrontendController extends Controller
             return view('frontend.editor', compact('languages', 'language'));
         }
 
-        // dd($languages);
-
         return view('frontend.home', compact('languages', 'landing'));
     }
+
 
     public function landing()
     {
@@ -74,27 +75,18 @@ class FrontendController extends Controller
             ->orderBy('display_name')
             ->get();
 
-        $landingRaw = DB::table('landing_pages')->get();
+        $landingRaw = LandingPage::all();
         $landing = [];
         foreach ($landingRaw as $item) {
-            $landing[$item->key] = $item->value;
+            $landing[$item->key] = $item->getTranslation($item->key);
         }
+
         return view('frontend.home', compact('languages', 'landing'));
     }
-
-    // public function show($slug)
-    // {
-    //     $page = DynamicPage::where('page_slug', $slug)
-    //         ->where('status', 'active')
-    //         ->firstOrFail();
-
-    //     return view('frontend.dynamic_page', compact('page'));
-    // }
 
 
     public function handle($slug)
     {
-        ///editor route handling
         $language = Language::where('slug', $slug)
             ->where('is_active', true)
             ->first();
@@ -110,27 +102,12 @@ class FrontendController extends Controller
             ));
         }
 
-        ///dynamic page route handling
         $page = DynamicPage::where('page_slug', $slug)
             ->where('status', 'active')
             ->firstOrFail();
 
         return view('frontend.dynamic_page', compact('page'));
     }
-
-
-    // public function editor($slug)
-    // {
-    //     $landing = LandingPage::first();
-
-    //     $language = Language::where('slug', $slug)
-    //         ->where('is_active', true)
-    //         ->firstOrFail();
-
-    //     $languages = Language::where('is_active', true)->get();
-
-    //     return view('frontend.editor', compact('language', 'languages', 'landing'));
-    // }
 
 
     public function runCode(Request $request)

@@ -248,21 +248,22 @@
             <div class="collapse navbar-collapse" id="mainNavbar">
                 <ul class="navbar-nav ms-auto mt-3 mt-lg-0 gap-3 me-lg-5">
                     <li class="nav-item">
-                        <a class="nav-link" href="{{ url('/') }}">Home</a>
+                        <a class="nav-link" href="{{ url('/') }}">
+                            {{ app()->getLocale() == 'bn' ? 'হোম' : 'Home' }}
+                        </a>
                     </li>
+
                     @if (!($homeSettings && $homeSettings->type === 'page' && $homeSettings->slug === 'landing'))
                         <li class="nav-item">
                             <a class="nav-link" href="{{ route('landing.home') }}">
-                                All Languages
+                                {{ app()->getLocale() == 'bn' ? 'সব ভাষা' : 'All Languages' }}
                             </a>
                         </li>
                     @endif
-                    {{-- <li class="nav-item">
-                        <a class="nav-link" href="{{ route('landing.home') }}">All Languages</a>
-                    </li> --}}
 
                     @php
-                        $menus = App\Models\Menu::where('status', 1)
+                        $menus = App\Models\Menu::with(['translations', 'page', 'language'])
+                            ->where('status', 1)
                             ->where('position', 'header')
                             ->orderBy('order', 'asc')
                             ->get();
@@ -276,18 +277,39 @@
                                     : ($menu->menu_type === 'language' && $menu->language
                                         ? url($menu->language->slug)
                                         : '#') }}">
-                                {{ $menu->menu_type === 'page' && $menu->page
-                                    ? $menu->page->page_title
-                                    : ($menu->menu_type === 'language' && $menu->language
-                                        ? $menu->language->display_name
-                                        : 'No Page Selected') }}
+
+                                {{ $menu->getTranslation('name') }}
                             </a>
                         </li>
                     @empty
                         <li class="nav-item">
-                            <a class="nav-link" href="#">No Page Selected</a>
+                            <a class="nav-link" href="#">
+                                {{ app()->getLocale() == 'bn' ? 'কোন মেনু নেই' : 'No Menu Available' }}
+                            </a>
                         </li>
                     @endforelse
+
+                    <li class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle" href="#" id="languageDropdown" role="button"
+                            data-bs-toggle="dropdown" aria-expanded="false">
+                            <i class="bi bi-translate"></i> {{ strtoupper(app()->getLocale()) }}
+                        </a>
+                        <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="languageDropdown">
+                            @php
+                                $supportedLocales = LaravelLocalization::getSupportedLocales();
+                            @endphp
+
+                            @foreach ($supportedLocales as $localeCode => $properties)
+                                <li>
+                                    <a class="dropdown-item {{ app()->getLocale() == $localeCode ? 'active' : '' }}"
+                                        rel="alternate" hreflang="{{ $localeCode }}"
+                                        href="{{ LaravelLocalization::getLocalizedURL($localeCode, null, [], true) }}">
+                                        {{ $properties['name'] }}
+                                    </a>
+                                </li>
+                            @endforeach
+                        </ul>
+                    </li>
 
                 </ul>
             </div>
@@ -441,7 +463,7 @@
     <section class="container mb-5">
         <div class="row">
             <div class="col-md-10 mx-auto">
-                <div class="language-description">{!! $language->description !!}</div>
+                <div class="language-description">{!! $language->getTranslation('description') !!}</div>
             </div>
         </div>
     </section>
@@ -452,15 +474,11 @@
             <div class="row">
 
                 @php
-                    $menus = App\Models\Menu::where('status', 1)
-                        ->where('position', 'footer')
-                        ->orderBy('order', 'asc')
-                        ->get();
-                    $landingRaw = DB::table('landing_pages')->get();
+                    $landingRaw = \App\Models\LandingPage::with('translations')->get();
 
                     $landing = [];
                     foreach ($landingRaw as $item) {
-                        $landing[$item->key] = $item->value;
+                        $landing[$item->key] = $item->getTranslation($item->key);
                     }
                 @endphp
 
@@ -478,7 +496,15 @@
 
                 <div class="col-md-6">
                     <ul class="nav justify-content-center justify-content-md-end" style="margin-right: 45px">
-                        @forelse ($menus as $menu)
+                        @php
+                            $footerMenus = App\Models\Menu::with(['translations', 'page', 'language'])
+                                ->where('status', 1)
+                                ->where('position', 'footer')
+                                ->orderBy('order', 'asc')
+                                ->get();
+                        @endphp
+
+                        @foreach ($footerMenus as $menu)
                             <li class="nav-item">
                                 <a class="nav-link px-2"
                                     href="{{ $menu->menu_type === 'page' && $menu->page
@@ -486,18 +512,11 @@
                                         : ($menu->menu_type === 'language' && $menu->language
                                             ? url($menu->language->slug)
                                             : '#') }}">
-                                    {{ $menu->menu_type === 'page' && $menu->page
-                                        ? $menu->page->page_title
-                                        : ($menu->menu_type === 'language' && $menu->language
-                                            ? $menu->language->display_name
-                                            : 'No Page') }}
+
+                                    {{ $menu->getTranslation('name') }}
                                 </a>
                             </li>
-                        @empty
-                            <li class="nav-item">
-                                <span class="nav-link text-muted">No Page Selected</span>
-                            </li>
-                        @endforelse
+                        @endforeach
 
                     </ul>
                 </div>

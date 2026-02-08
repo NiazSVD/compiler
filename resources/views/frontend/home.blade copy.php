@@ -90,6 +90,8 @@
                     <div class="heading-text">
                         <h3>{{ $landing['lang_header'] }}</h3>
                         <p>{{ $landing['lang_description'] }}</p>
+                        {{-- <h3>{{ $landing->getTranslation('title', app()->getLocale()) }}</h3>
+                        <p>{{ $landing->getTranslation('description', app()->getLocale()) }}</p> --}}
                     </div>
                 </div>
             </div>
@@ -102,7 +104,7 @@
                             <div class="icon">
                                 <img src="{{ $language->icon_show }}" alt="{{ $language->name }}">
                             </div>
-                            <p>{{ $language->getTranslation('display_name') }}</p>
+                            <p>{{ $language->display_name }}</p>
                         </a>
                     </div>
                 @empty

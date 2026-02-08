@@ -6,8 +6,12 @@ use App\Http\Controllers\Frontend\FrontendController;
 use App\Http\Controllers\LandingPageController;
 use App\Http\Controllers\LanguageController;
 use App\Http\Controllers\MenuController;
+use App\Http\Controllers\MultiLangController;
+use App\Http\Controllers\MultiLangsContentController;
 use App\Http\Controllers\ProfileController;
 use Illuminate\Support\Facades\Route;
+use Illuminate\Support\Facades\Session;
+use Mcamara\LaravelLocalization\Facades\LaravelLocalization;
 
 // Route::get('/', function () {
 //     return view('welcome');
@@ -52,25 +56,41 @@ Route::prefix('admin')->middleware(['auth'])->group(function () {
     Route::get('/menu-builder/edit/{id}', [MenuController::class, 'edit'])->name('admin.menu.edit');
     Route::post('/menu-builder/update/{id}', [MenuController::class, 'update'])->name('admin.menu.update');
     Route::delete('/menu-builder/delete/{id}', [MenuController::class, 'delete'])->name('admin.menu.delete');
+
+
+    //multi language routes
+    Route::get('multi-languages', [MultiLangController::class,'index'])->name('admin.multi_languages.index');
+    Route::get('multi-languages/create', [MultiLangController::class,'create'])->name('admin.multi_languages.create');
+    Route::post('multi-languages/store', [MultiLangController::class,'store'])->name('admin.multi_languages.store');
+    Route::get('multi-languages/{id}/edit', [MultiLangController::class,'edit'])->name('admin.multi_languages.edit');
+    Route::post('multi-languages/{id}/update', [MultiLangController::class,'update'])->name('admin.multi_languages.update');
+    Route::post('multi-languages/{id}/delete', [MultiLangController::class,'destroy'])->name('admin.multi_languages.destroy');
+
 });
 
 
 
-//Frontend routes start here
-// Route::get('/', [FrontendController::class,'home'])->name('frontend.home');
-Route::get('/all-languages', [FrontendController::class, 'landing'])->name('landing.home');
 
-Route::get('/', [FrontendController::class, 'index'])->name('home');
-// Route::get('/page/{slug}', [FrontendController::class, 'show'])->name('dynamic.page');
+// Route::get('lang/{locale}', function ($locale) {
 
-Route::get('/{slug}', [FrontendController::class, 'handle'])->name('frontend.handle');
-
-Route::get('/editor/1/{slug}', [FrontendController::class, 'editor1'])->name('frontend.editor1');
-
-Route::post('/run', [FrontendController::class, 'runCode'])->name('frontend.run');
+//     Session::put('locale', $locale);
+//     return redirect()->back();
+// });
 
 
-Route::post('/share-code', [FrontendController::class, 'shareCode'])->name('frontend.shareCode');
-Route::get('/share/{token}', [FrontendController::class, 'openShared'])->name('frontend.openShared');
 
 
+Route::group([
+        'prefix' => LaravelLocalization::setLocale(),
+        'middleware' => [ 'localeSessionRedirect', 'localizationRedirect', 'localeViewPath' ]
+    ], function() {
+
+        Route::get('/all-languages', [FrontendController::class, 'landing'])->name('landing.home');
+        Route::get('/', [FrontendController::class, 'index'])->name('home');
+        Route::get('/{slug}', [FrontendController::class, 'handle'])->name('frontend.handle');
+        Route::get('/editor/1/{slug}', [FrontendController::class, 'editor1'])->name('frontend.editor1');
+        Route::post('/share-code', [FrontendController::class, 'shareCode'])->name('frontend.shareCode');
+        Route::get('/share/{token}', [FrontendController::class, 'openShared'])->name('frontend.openShared');
+});
+
+  Route::post('/run', [FrontendController::class, 'runCode'])->name('frontend.run');

@@ -11,9 +11,6 @@ use Illuminate\Support\Facades\Hash;
 
 class ProfileController extends Controller
 {
-    /**
-     * Show profile edit page
-     */
     public function index()
     {
         $user = Auth::user();
@@ -21,9 +18,6 @@ class ProfileController extends Controller
         return view('backend.profile.edit', compact('user'));
     }
 
-    /**
-     * Update profile info + password + avatar
-     */
 
     public function update(Request $request)
     {

@@ -3,9 +3,12 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
+use App\Traits\Translatable;
 
 class Menu extends Model
 {
+    use Translatable;
+
     protected $fillable = [
         'page_id',
         'lang_id',
@@ -16,7 +19,7 @@ class Menu extends Model
         'status',
     ];
 
-     public function page()
+    public function page()
     {
         return $this->belongsTo(DynamicPage::class, 'page_id', 'id');
     }

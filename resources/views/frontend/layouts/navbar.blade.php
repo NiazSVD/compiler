@@ -8,25 +8,27 @@
             aria-controls="collapsibleNavId" aria-expanded="false" aria-label="Toggle navigation">
             <span class="navbar-toggler-icon"></span>
         </button>
+
         <div class="collapse navbar-collapse" id="collapsibleNavId">
             <ul class="navbar-nav ms-auto mt-2 mt-lg-0">
+
                 <li class="nav-item">
-                    <a class="nav-link" href="{{ url('/') }}">Home</a>
+                    <a class="nav-link" href="{{ url('/') }}">
+                        {{ app()->getLocale() == 'bn' ? 'হোম' : 'Home' }}
+                    </a>
                 </li>
-                @if(!(
-                    $homeSettings &&
-                    $homeSettings->type === 'page' &&
-                    $homeSettings->slug === 'landing'
-                    ))
+
+                @if (!($homeSettings && $homeSettings->type === 'page' && $homeSettings->slug === 'landing'))
                     <li class="nav-item">
                         <a class="nav-link" href="{{ route('landing.home') }}">
-                            All Languages
+                            {{ app()->getLocale() == 'bn' ? 'সব ভাষা' : 'All Languages' }}
                         </a>
                     </li>
                 @endif
 
                 @php
-                    $menus = App\Models\Menu::where('status', 1)
+                    $menus = App\Models\Menu::with(['translations', 'page', 'language'])
+                        ->where('status', 1)
                         ->where('position', 'header')
                         ->orderBy('order', 'asc')
                         ->get();
@@ -40,20 +42,43 @@
                                 : ($menu->menu_type === 'language' && $menu->language
                                     ? url($menu->language->slug)
                                     : '#') }}">
-                            {{ $menu->menu_type === 'page' && $menu->page
-                                ? $menu->page->page_title
-                                : ($menu->menu_type === 'language' && $menu->language
-                                    ? $menu->language->display_name
-                                    : 'No Page Selected') }}
+
+                            {{ $menu->getTranslation('name') }}
                         </a>
                     </li>
                 @empty
                     <li class="nav-item">
-                        <a class="nav-link" href="#">No Page Selected</a>
+                        <a class="nav-link" href="#">
+                            {{ app()->getLocale() == 'bn' ? 'কোন মেনু নেই' : 'No Menu Available' }}
+                        </a>
                     </li>
                 @endforelse
 
+                <li class="nav-item dropdown">
+                    <a class="nav-link dropdown-toggle" href="#" id="languageDropdown" role="button"
+                        data-bs-toggle="dropdown" aria-expanded="false">
+                        <i class="bi bi-translate"></i> {{ strtoupper(app()->getLocale()) }}
+                    </a>
+                    <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="languageDropdown">
+                        @php
+                            $supportedLocales = LaravelLocalization::getSupportedLocales();
+                        @endphp
+
+                        @foreach ($supportedLocales as $localeCode => $properties)
+                            <li>
+                                <a class="dropdown-item {{ app()->getLocale() == $localeCode ? 'active' : '' }}"
+                                    rel="alternate" hreflang="{{ $localeCode }}"
+                                    href="{{ LaravelLocalization::getLocalizedURL($localeCode, null, [], true) }}">
+                                    {{ $properties['name'] }}
+                                </a>
+                            </li>
+                        @endforeach
+                    </ul>
+                </li>
+
             </ul>
         </div>
+
+
     </div>
 </nav>
