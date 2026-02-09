@@ -55,11 +55,15 @@
                                     <td>{{ ucfirst($menu->menu_type) }}</td>
                                     <td>
                                         @if ($menu->menu_type == 'page' && $menu->page_id)
-                                            <span class="badge bg-light text-primary">Page:
-                                                {{ $menu->page->page_title ?? 'N/A' }}</span>
+                                            <a href="{{ url($menu->page->page_slug ?? '#') }}" target="_blank"
+                                                class="btn btn-sm btn-outline-primary">
+                                                {{ $menu->page->page_title ?? 'N/A' }}
+                                            </a>
                                         @elseif ($menu->menu_type == 'language' && $menu->lang_id)
-                                            <span class="badge bg-light text-success">Lang Link:
-                                                {{ $menu->language->name ?? 'N/A' }}</span>
+                                            <a href="{{ url($menu->language->slug ?? '#') }}" target="_blank"
+                                                class="btn btn-sm btn-outline-success">
+                                                {{ $menu->language->display_name ?? 'N/A' }}
+                                            </a>
                                         @else
                                             <span class="text-muted">N/A</span>
                                         @endif
