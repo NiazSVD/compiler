@@ -50,14 +50,16 @@
                             @forelse ($menus as $menu)
                                 <tr>
                                     <td>{{ $loop->iteration }}</td>
-                                    {{-- Trait এর মাধ্যমে বর্তমান ভাষার নাম দেখানো হচ্ছে --}}
+
                                     <td><strong>{{ $menu->getTranslation('name') }}</strong></td>
                                     <td>{{ ucfirst($menu->menu_type) }}</td>
                                     <td>
                                         @if ($menu->menu_type == 'page' && $menu->page_id)
-                                            <span class="badge bg-light text-primary">Page: {{ $menu->page->page_title ?? 'N/A' }}</span>
+                                            <span class="badge bg-light text-primary">Page:
+                                                {{ $menu->page->page_title ?? 'N/A' }}</span>
                                         @elseif ($menu->menu_type == 'language' && $menu->lang_id)
-                                            <span class="badge bg-light text-success">Lang Link: {{ $menu->language->name ?? 'N/A' }}</span>
+                                            <span class="badge bg-light text-success">Lang Link:
+                                                {{ $menu->language->name ?? 'N/A' }}</span>
                                         @else
                                             <span class="text-muted">N/A</span>
                                         @endif
@@ -111,14 +113,29 @@
                     </div>
 
                     <div class="modal-body">
-                        {{-- MultiLang অনুযায়ী ডাইনামিক নাম ইনপুট --}}
+
                         <div class="p-2 bg-light mb-3 rounded">
                             <h6>Menu Names (Multi-language)</h6>
-                            @foreach($multiLanguages as $lang)
+                            @foreach ($multiLanguages as $lang)
                                 <div class="mb-2">
-                                    <label class="form-label small mb-0">{{ $lang->name }} Name ({{ strtoupper($lang->code) }})</label>
-                                    <input type="text" name="name_{{ $lang->code }}" class="form-control form-control-sm"
-                                           placeholder="Enter menu name in {{ $lang->name }}" {{ $lang->code == 'en' ? 'required' : '' }}>
+                                    <label class="form-label small mb-1">
+                                        {{ $lang->name }} Name
+                                        <span class="text-muted">
+                                            (@if($lang->flag)
+                                                <img src="{{ asset('uploads/flag/' . $lang->flag) }}"
+                                                    alt="{{ $lang->code }}" class="mx-1"
+                                                    style="width: 16px; height: 11px; object-fit: cover; vertical-align: middle; margin-top: -2px;">
+                                            @else
+                                                <i class="bi bi-translate mx-1" style="font-size: 10px;"></i>
+                                            @endif
+                                            {{ strtoupper($lang->code) }})
+                                        </span>
+                                    </label>
+
+                                    <input type="text" name="name_{{ $lang->code }}"
+                                        class="form-control form-control-sm"
+                                        placeholder="Enter menu name in {{ $lang->name }}"
+                                        {{ $lang->code == 'en' ? 'required' : '' }}>
                                 </div>
                             @endforeach
                         </div>
@@ -175,7 +192,7 @@
         <div class="modal-dialog">
             <form method="POST" id="editMenuForm">
                 @csrf
-                {{-- update method post হিসেবে কাজ করছে কন্ট্রোলারে, তাই method PUT দেয়ার প্রয়োজন নেই যদি কন্ট্রোলার route এ post থাকে --}}
+
                 <div class="modal-content">
                     <div class="modal-header">
                         <h5 class="modal-title">Edit Menu</h5>
@@ -183,14 +200,26 @@
                     </div>
 
                     <div class="modal-body">
-                        {{-- MultiLang অনুযায়ী ডাইনামিক নাম এডিট ইনপুট --}}
+
                         <div class="p-2 bg-light mb-3 rounded">
                             <h6>Menu Names (Multi-language)</h6>
-                            @foreach($multiLanguages as $lang)
+                            @foreach ($multiLanguages as $lang)
                                 <div class="mb-2">
-                                    <label class="form-label small mb-0">{{ $lang->name }} Name ({{ strtoupper($lang->code) }})</label>
-                                    <input type="text" name="name_{{ $lang->code }}" id="edit-name-{{ $lang->code }}"
-                                           class="form-control form-control-sm">
+                                    <label class="form-label small mb-1">
+                                        {{ $lang->name }} Name
+                                        <span class="text-muted">
+                                            (@if($lang->flag)
+                                                <img src="{{ asset('uploads/flag/' . $lang->flag) }}"
+                                                    alt="{{ $lang->code }}" class="mx-1"
+                                                    style="width: 16px; height: 11px; object-fit: cover; vertical-align: middle; margin-top: -2px;">
+                                            @else
+                                                <i class="bi bi-translate mx-1" style="font-size: 10px;"></i>
+                                            @endif
+                                            {{ strtoupper($lang->code) }})
+                                        </span>
+                                    </label>
+                                    <input type="text" name="name_{{ $lang->code }}"
+                                        id="edit-name-{{ $lang->code }}" class="form-control form-control-sm">
                                 </div>
                             @endforeach
                         </div>
@@ -244,10 +273,9 @@
 
 @section('script')
     <script>
-        // কন্ট্রোলার থেকে আসা পুরাতন লজিকের ডাটা
         const pages = @json($pages);
-        const oldLanguages = @json($languages); // old logic Language model data
-        const multiLangs = @json($multiLanguages); // new multi-language translation data
+        const oldLanguages = @json($languages);
+        const multiLangs = @json($multiLanguages);
 
         // ================= ADD MENU DYNAMIC SELECT =================
         document.getElementById('menu_type_select').addEventListener('change', function() {
@@ -256,7 +284,8 @@
 
         // ================= EDIT MENU DYNAMIC SELECT =================
         document.getElementById('edit-menu-type').addEventListener('change', function() {
-            updateDynamicDropdown(this.value, 'edit_dynamic_container', 'edit_dynamic_label', 'edit_dynamic_select');
+            updateDynamicDropdown(this.value, 'edit_dynamic_container', 'edit_dynamic_label',
+                'edit_dynamic_select');
         });
 
         // ================= REUSABLE DROPDOWN FUNCTION =================
@@ -272,7 +301,7 @@
                     const opt = document.createElement('option');
                     opt.value = p.id;
                     opt.text = p.page_title;
-                    if(selectedId && selectedId == p.id) opt.selected = true;
+                    if (selectedId && selectedId == p.id) opt.selected = true;
                     select.add(opt);
                 });
                 container.style.display = 'block';
@@ -282,7 +311,7 @@
                     const opt = document.createElement('option');
                     opt.value = l.id;
                     opt.text = l.name;
-                    if(selectedId && selectedId == l.id) opt.selected = true;
+                    if (selectedId && selectedId == l.id) opt.selected = true;
                     select.add(opt);
                 });
                 container.style.display = 'block';
@@ -298,32 +327,30 @@
             fetch(url)
                 .then(res => res.json())
                 .then(data => {
-                    // ১. মাল্টি-ল্যাঙ্গুয়েজ নাম ফিল্ডগুলো ক্লিয়ার করা
+
                     multiLangs.forEach(lang => {
                         document.getElementById('edit-name-' + lang.code).value = '';
                     });
 
-                    // ২. ট্রান্সলেশন ডাটা ফিল্ডে বসানো
-                    if(data.translations) {
+                    if (data.translations) {
                         data.translations.forEach(t => {
-                            if(t.key === 'name') {
+                            if (t.key === 'name') {
                                 let input = document.getElementById('edit-name-' + t.locale);
-                                if(input) input.value = t.value;
+                                if (input) input.value = t.value;
                             }
                         });
                     }
 
-                    // ৩. স্ট্যাটিক ফিল্ডগুলো বসানো
                     document.getElementById('edit-menu-type').value = data.menu_type;
                     document.getElementById('edit-position').value = data.position;
                     document.getElementById('edit-order').value = data.order;
                     document.getElementById('edit-status').value = data.status;
 
-                    // ৪. ডাইনামিক ড্রপডাউন আপডেট (Page/Language)
-                    updateDynamicDropdown(data.menu_type, 'edit_dynamic_container', 'edit_dynamic_label', 'edit_dynamic_select', (data.page_id || data.lang_id));
+                    updateDynamicDropdown(data.menu_type, 'edit_dynamic_container', 'edit_dynamic_label',
+                        'edit_dynamic_select', (data.page_id || data.lang_id));
 
-                    // ৫. ফর্ম অ্যাকশন আপডেট
-                    document.getElementById('editMenuForm').action = "{{ route('admin.menu.update', ':id') }}".replace(':id', id);
+                    document.getElementById('editMenuForm').action = "{{ route('admin.menu.update', ':id') }}".replace(
+                        ':id', id);
 
                     new bootstrap.Modal(document.getElementById('editMenuModal')).show();
                 });

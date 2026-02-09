@@ -6,5 +6,5 @@ use Illuminate\Database\Eloquent\Model;
 
 class MultiLang extends Model
 {
-    protected $fillable = ['name', 'code', 'active'];
+    protected $fillable = ['name', 'code', 'flag', 'active'];
 }

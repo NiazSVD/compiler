@@ -290,20 +290,46 @@
                     @endforelse
 
                     <li class="nav-item dropdown">
-                        <a class="nav-link dropdown-toggle" href="#" id="languageDropdown" role="button"
+                        @php
+                            $dbLanguages = \App\Models\MultiLang::where('active', 1)->get()->keyBy('code');
+                            $currentLocale = app()->getLocale();
+                            $currentLangData = $dbLanguages[$currentLocale] ?? null;
+                        @endphp
+
+                        <a class="nav-link dropdown-toggle d-flex align-items-center" href="#" id="languageDropdown" role="button"
                             data-bs-toggle="dropdown" aria-expanded="false">
-                            <i class="bi bi-translate"></i> {{ strtoupper(app()->getLocale()) }}
+
+                            @if($currentLangData && $currentLangData->flag)
+                                <img src="{{ asset('uploads/flag/' . $currentLangData->flag) }}"
+                                    class="me-1" style="width: 20px; height: 13px; object-fit: cover; border-radius: 2px;">
+                            @else
+                                <i class="bi bi-translate me-1"></i>
+                            @endif
+
+                            {{ strtoupper($currentLocale) }}
                         </a>
+
                         <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="languageDropdown">
                             @php
                                 $supportedLocales = LaravelLocalization::getSupportedLocales();
                             @endphp
 
                             @foreach ($supportedLocales as $localeCode => $properties)
+                                @php
+                                    $langInfo = $dbLanguages[$localeCode] ?? null;
+                                @endphp
                                 <li>
-                                    <a class="dropdown-item {{ app()->getLocale() == $localeCode ? 'active' : '' }}"
+                                    <a class="dropdown-item {{ $currentLocale == $localeCode ? 'active' : '' }} d-flex align-items-center"
                                         rel="alternate" hreflang="{{ $localeCode }}"
                                         href="{{ LaravelLocalization::getLocalizedURL($localeCode, null, [], true) }}">
+
+                                        @if($langInfo && $langInfo->flag)
+                                            <img src="{{ asset('uploads/flag/' . $langInfo->flag) }}"
+                                                class="me-2" style="width: 20px; height: 13px; object-fit: cover; border-radius: 2px;">
+                                        @else
+                                            <i class="bi bi-translate me-2"></i>
+                                        @endif
+
                                         {{ $properties['name'] }}
                                     </a>
                                 </li>
