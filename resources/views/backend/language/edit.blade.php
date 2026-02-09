@@ -68,7 +68,7 @@
                                     <div class="mb-3">
                                         <label class="form-label fw-bold">Description
                                             ({{ strtoupper($lang->code) }})</label>
-                                        <textarea name="description_{{ $lang->code }}" class="form-control summernote" rows="5">{{ old('description_' . $lang->code, $language->getTranslation('description', $lang->code)) }}</textarea>
+                                        <textarea name="description_{{ $lang->code }}" class="form-control my-editor" rows="5">{{ old('description_' . $lang->code, $language->getTranslation('description', $lang->code)) }}</textarea>
                                     </div>
                                 </div>
                             @endforeach
@@ -76,7 +76,7 @@
                     </div>
                 </div>
 
-                {{-- SEO Information (Global) --}}
+
                 <div class="card border-0 shadow">
                     <div class="card-header">
                         <h5 class="card-title mb-0"><i class="bi bi-search me-2"></i>SEO Information (Meta Details)</h5>
@@ -173,7 +173,7 @@
     </form>
 @endsection
 
-@section('script')
+{{-- @section('script')
     <link href="https://cdn.jsdelivr.net/npm/summernote@0.8.18/dist/summernote-bs4.min.css" rel="stylesheet">
     <link rel="stylesheet"
         href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-tagsinput/0.8.0/bootstrap-tagsinput.css">
@@ -192,4 +192,4 @@
             $('.dropify').dropify();
         });
     </script>
-@endsection
+@endsection --}}

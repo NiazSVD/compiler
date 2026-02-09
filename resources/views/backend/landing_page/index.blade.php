@@ -161,7 +161,7 @@
                                         <textarea name="about_short_description_{{ $lang->code }}" class="form-control" rows="2">{{ getLandingData($landing, 'about_short_description', $lang->code) }}</textarea>
                                     </div>
                                     <div class="mb-0"><label class="small fw-bold">Full Desc</label>
-                                        <textarea name="about_description_{{ $lang->code }}" class="form-control summernote">{{ getLandingData($landing, 'about_description', $lang->code) }}</textarea>
+                                        <textarea name="about_description_{{ $lang->code }}" class="form-control my-editor">{{ getLandingData($landing, 'about_description', $lang->code) }}</textarea>
                                     </div>
                                 </div>
                             </div>
@@ -365,26 +365,5 @@
     </style>
 
 
-    <script src="https://cdn.jsdelivr.net/npm/summernote@0.8.18/dist/summernote-bs4.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-tagsinput/0.8.0/bootstrap-tagsinput.min.js"></script>
-
-    <script>
-        $(document).ready(function() {
-
-            $('.summernote').summernote({
-                height: 200,
-                placeholder: 'Translate content...'
-            });
-
-            // $('.tags-input').tagsinput({ confirmKeys: [13, 44] });
-
-            $(window).scroll(function() {
-                if ($(this).scrollTop() > 100) {
-                    $('.sticky-top').addClass('shadow');
-                } else {
-                    $('.sticky-top').removeClass('shadow');
-                }
-            });
-        });
-    </script>
+    
 @endsection

@@ -90,7 +90,7 @@
 
                             <div class="mb-3">
                                 <label class="form-label">Description</label>
-                                <textarea name="description" id="description" class="form-control" rows="4">{{ old('description') }}</textarea>
+                                <textarea name="description" id="description" class="form-control my-editor" rows="4">{{ old('description') }}</textarea>
                                 @error('description')
                                     <small class="text-danger">{{ $message }}</small>
                                 @enderror
@@ -159,32 +159,4 @@
     </div>
 @endsection
 
-{{--
-@section('script')
-    <!-- Dropify CSS/JS -->
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/dropify/dist/css/dropify.min.css">
-    <script src="https://cdn.jsdelivr.net/npm/dropify/dist/js/dropify.min.js"></script>
 
-    <!-- Summernote -->
-    <script src="https://cdn.jsdelivr.net/npm/summernote@0.8.20/dist/summernote.min.js"></script>
-
-    <script>
-        $(document).ready(function() {
-            // Initialize Dropify
-            $('.dropify').dropify();
-
-            // Summernote description editor
-            $('#description').summernote({
-                height: 200,
-                placeholder: 'Describe the language...',
-                toolbar: [
-                    ['style', ['bold', 'italic', 'underline', 'clear']],
-                    ['font', ['fontsize', 'color', 'strikethrough']],
-                    ['para', ['ul', 'ol', 'paragraph']],
-                    ['insert', ['link', 'picture', 'video']],
-                    ['view', ['fullscreen', 'codeview', 'help']]
-                ]
-            });
-        });
-    </script>
-@endsection --}}

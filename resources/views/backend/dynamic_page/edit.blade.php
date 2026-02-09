@@ -60,7 +60,8 @@
 
                                     <div class="mb-3 mt-3">
                                         <label class="form-label fw-bold">Page Title
-                                            ({{ strtoupper($lang->code) }})</label>
+                                            ({{ strtoupper($lang->code) }})
+                                        </label>
                                         <input type="text" name="page_title_{{ $lang->code }}"
                                             class="form-control @error('page_title_' . $lang->code) is-invalid @enderror"
                                             placeholder="Enter title in {{ $lang->name }}"
@@ -74,7 +75,7 @@
                                     <div class="mb-3">
                                         <label class="form-label fw-bold">Page Content
                                             ({{ strtoupper($lang->code) }})</label>
-                                        <textarea name="page_content_{{ $lang->code }}" class="form-control summernote">{{ old('page_content_' . $lang->code, $page->getTranslation('page_content', $lang->code)) }}</textarea>
+                                        <textarea name="page_content_{{ $lang->code }}" class="form-control my-editor">{{ old('page_content_' . $lang->code, $page->getTranslation('page_content', $lang->code)) }}</textarea>
                                         @error('page_content_' . $lang->code)
                                             <small class="text-danger">{{ $message }}</small>
                                         @enderror
@@ -175,49 +176,4 @@
     </form>
 @endsection
 
-@section('script')
-    {{-- CSS Libraries --}}
-    <link href="https://cdn.jsdelivr.net/npm/summernote@0.8.18/dist/summernote-bs4.min.css" rel="stylesheet">
-    <link rel="stylesheet"
-        href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-tagsinput/0.8.0/bootstrap-tagsinput.css">
 
-
-    {{-- JS Libraries --}}
-    <script src="https://cdn.jsdelivr.net/npm/summernote@0.8.18/dist/summernote-bs4.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-tagsinput/0.8.0/bootstrap-tagsinput.min.js"></script>
-
-    <script>
-        $(document).ready(function() {
-            // Summernote Initialize
-            $('.summernote').summernote({
-                height: 300,
-                placeholder: 'Update page content...',
-                toolbar: [
-                    ['style', ['style']],
-                    ['font', ['bold', 'underline', 'clear']],
-                    ['color', ['color']],
-                    ['para', ['ul', 'ol', 'paragraph']],
-                    ['insert', ['link', 'picture', 'video']],
-                    ['view', ['fullscreen', 'codeview']]
-                ]
-            });
-
-
-            // Status & Home Sync Logic
-            const setHome = document.getElementById('setHomeSwitch');
-            const status = document.getElementById('statusSwitch');
-
-            function syncHomeStatus() {
-                if (setHome.checked) {
-                    status.checked = true;
-                    status.disabled = true;
-                } else {
-                    status.disabled = false;
-                }
-            }
-
-            setHome.addEventListener('change', syncHomeStatus);
-            syncHomeStatus(); // Initial check
-        });
-    </script>
-@endsection

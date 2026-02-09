@@ -191,10 +191,9 @@
 
 @section('script')
     <script>
-        // Create Language AJAX
         $('#createLanguageForm').on('submit', function(e) {
             e.preventDefault();
-            $('.error-text').text(''); // Clear errors
+            $('.error-text').text('');
 
             let formData = new FormData(this);
 
@@ -220,14 +219,13 @@
             });
         });
 
-        // Update Language AJAX
         $('.editLanguageForm').on('submit', function(e) {
             e.preventDefault();
             let id = $(this).data('id');
-            $('.error-text').text(''); // Clear errors
+            $('.error-text').text('');
 
             let formData = new FormData(this);
-            // আপনার রাউট অনুযায়ী ইউআরএল (multi-languages/{id}/update)
+
             let updateUrl = "{{ url('admin/multi-languages') }}/" + id + "/update";
 
             $.ajax({
@@ -256,7 +254,7 @@
             });
         });
 
-        // Delete Confirmation
+
         function confirmDelete(id) {
             Swal.fire({
                 title: "Are you sure?",

@@ -74,7 +74,7 @@
                                     <div class="mb-3">
                                         <label class="form-label fw-bold">Page Content
                                             ({{ strtoupper($lang->code) }})</label>
-                                        <textarea name="page_content_{{ $lang->code }}" class="form-control summernote" rows="10">{{ old('page_content_' . $lang->code) }}</textarea>
+                                        <textarea name="page_content_{{ $lang->code }}" class="form-control my-editor" rows="10">{{ old('page_content_' . $lang->code) }}</textarea>
                                         @error('page_content_' . $lang->code)
                                             <small class="text-danger">{{ $message }}</small>
                                         @enderror
@@ -170,45 +170,4 @@
     </form>
 @endsection
 
-@section('script')
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/dropify/dist/css/dropify.min.css">
-    <script src="https://cdn.jsdelivr.net/npm/dropify/dist/js/dropify.min.js"></script>
-    <!-- Summernote CSS/JS -->
-    <link href="https://cdn.jsdelivr.net/npm/summernote@0.8.18/dist/summernote-bs4.min.css" rel="stylesheet">
-    <script src="https://cdn.jsdelivr.net/npm/summernote@0.8.18/dist/summernote-bs4.min.js"></script>
 
-    <script>
-        $(document).ready(function() {
-            // Initialize Summernote for all instances with class .summernote
-            $('.summernote').summernote({
-                height: 300,
-                placeholder: 'Write your page content here...',
-                toolbar: [
-                    ['style', ['style']],
-                    ['font', ['bold', 'underline', 'clear']],
-                    ['color', ['color']],
-                    ['para', ['ul', 'ol', 'paragraph']],
-                    ['table', ['table']],
-                    ['insert', ['link', 'picture', 'video']],
-                    ['view', ['fullscreen', 'codeview', 'help']]
-                ]
-            });
-
-            // Home switch logic
-            const setHome = document.getElementById('setHomeSwitch');
-            const status = document.getElementById('statusSwitch');
-
-            function syncHomeStatus() {
-                if (setHome.checked) {
-                    status.checked = true;
-                    status.disabled = true;
-                } else {
-                    status.disabled = false;
-                }
-            }
-
-            setHome.addEventListener('change', syncHomeStatus);
-            syncHomeStatus();
-        });
-    </script>
-@endsection
